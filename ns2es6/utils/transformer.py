@@ -12,5 +12,5 @@ class Transformer:
     if not self.match_rx:
       return None
     if self.replacement:
-      return self.match_rx.sub(text, self.replacement, flags=re.DOTALL)
+      return self.match_rx.sub(self.replacement, text)
     return self.match_rx.search(text, flags=re.DOTALL)
