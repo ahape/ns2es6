@@ -3,10 +3,11 @@ from ..utils.transformer import Transformer, LineWalker
 class _LineRemover(Transformer):
   stdout = False
 
-  def __init__(self, rx,
-               *,
+  def __init__(self,
+               match=None,
+               replace=None,
                stdout=False):
-    super().__init__(rx)
+    super().__init__(match, replace)
     self.stdout = stdout
 
   def replace(self):

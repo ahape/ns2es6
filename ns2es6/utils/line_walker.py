@@ -1,9 +1,9 @@
-from ..logger import Logger
+from .logger import logger
 
 class LineWalker:
   file_path = None
   tfs = []
-  has_changed = False 
+  has_changed = False
   line = None
   out_lines = []
 
@@ -21,29 +21,24 @@ class LineWalker:
 
     if self.has_changed:
       res = "".join(self.out_lines)
-      logger.debug("Result\n\n", res)
+      logger.debug("Result\n\n%s", res)
 
       if self.commit_changes:
         logger.debug("Committing changes")
         with open(self.file_path, "w", encoding="utf8") as file:
             file.write(res)
 
-  def analyze_line(self):
+  def analyze_line(self, line):
     self.line = line
-    self.run_matches()
-    self.run_replaces()
+    self.run_tfs()
     self.write_result()
 
   def write_result(self):
     if self.line != "<DELETE>":
       self.out_lines.append(self.line)
 
-  def run_matches(self):
+  def run_tfs(self):
     for tf in self.tfs:
-      tf.match(self.line)
-
-  def run_replaces(self):
-    for tf in self.tfs:
-      if repl := tf.replace(self.line):
+      if (res := tf.analyze(self.line)) and res != self.line:
         self.has_changed = True
-        self.line = repl
+        self.line = res

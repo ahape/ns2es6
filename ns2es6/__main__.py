@@ -1,5 +1,3 @@
-#!/opt/homebrew/bin/python3.11
-from .transforms.sanitize_files import CommentRemover
+from .transforms.sanitize_files import remove_all_comments
 
-
-print(CommentRemover("a"))
+remove_all_comments("tests/sanitize.ts")
