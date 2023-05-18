@@ -1,17 +1,8 @@
-from ..utils.transformer import Transformer, LineWalker
+from ..utils import Transformer, LineWalker
 
 class _LineRemover(Transformer):
-  stdout = False
-
-  def __init__(self,
-               match=None,
-               replace=None,
-               stdout=False):
-    super().__init__(match, replace)
-    self.stdout = stdout
-
-  def replace(self):
-    super().replace("<DELETE>")
+  def __init__(self, match_rx, replacement="<DELETE>"):
+    super().__init__(match_rx, replacement)
 
 def remove_all_comments(file_path):
   reference_remover = _LineRemover(replace=r"\/\/\/\s*\<reference ")
