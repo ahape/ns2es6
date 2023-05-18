@@ -25,8 +25,11 @@ class LineWalker:
       print("Result\n\n%s", res)
 
       if self.commit_changes:
-        print("Committing changes")
-        with open(self.file_path, "w", encoding="utf8") as file:
+        path = self.file_path
+        if isinstance(self.commit_changes, str):
+          path = self.commit_changes
+        print("Committing changes to %s", path)
+        with open(path, "w", encoding="utf8") as file:
             file.write(res)
     else:
       print("No changes found")
