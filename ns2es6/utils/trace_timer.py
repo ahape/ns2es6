@@ -1,4 +1,4 @@
-import time
+from time import time
 
 class TraceTimer:
   def __init__(self):
