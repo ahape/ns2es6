@@ -1,6 +1,4 @@
-import os
-from logging import getLogger, DEBUG
+import logging
 
-logger = getLogger()
-if os.getenv("DEBUG", None):
-  logger.setLevel(DEBUG)
+logging.basicConfig()
+logger = logging.getLogger("ns2es6")

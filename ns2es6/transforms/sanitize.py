@@ -1,9 +1,18 @@
+import os
 from ..utils.transformer import Transformer
 from ..utils.line_walker import LineWalker
+from ..utils.logger import logger
 
 class _LineRemover(Transformer):
   def __init__(self, match_rx):
     super().__init__(match_rx, "<DELETE>")
+
+def run(directory):
+  for root, dirs, files in os.walk(directory):
+    for name in files:
+      file_path = os.path.join(root, name)
+      logger.info("Sanitizing file %s", file_path)
+      remove_all_comments(file_path)
 
 def remove_all_comments(file_path, commit_changes=False):
   reference_remover = _LineRemover(r"\/\/\/\s*\<reference ")
