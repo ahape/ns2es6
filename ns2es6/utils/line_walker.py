@@ -28,7 +28,7 @@ class LineWalker:
           path = self.commit_changes
         logger.info("Committing changes to %s", path)
         with open(path, "w", encoding="utf8") as file:
-            file.write(res)
+          file.write(res)
     else:
       logger.debug("No changes found")
 

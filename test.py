@@ -1,17 +1,31 @@
 #!/opt/homebrew/bin/python3.11
-import os, hashlib, tempfile
+import os, tempfile
 from ns2es6.transforms import sanitize
+from ns2es6.utils.line_walker import LineWalker
 
-def hexify(text):
-  m = hashlib.sha256()
-  m.update(text.encode("utf8"))
-  return m.hexdigest()
+def test(name, expectation_file, assertion_file):
+  assertion = open(assertion_file).read()
+  expectation = open(expectation_file).read()
+  try:
+    assert expectation == assertion, f"diff {expectation_file} {assertion_file}"
+  except AssertionError:
+    print(f"Test {name} FAILED. Running diff to see comparison")
+    print(f"git diff --no-index {expectation_file} {assertion_file}")
+    os.system(f"git diff --no-index {expectation_file} {assertion_file}")
+    raise SystemExit
 
-_, path = tempfile.mkstemp()
+def test_sanitize():
+  subject_file = "tests/sanitize.ts"
+  assertion_file = tempfile.mkstemp()[1]
+  expectation_file = "tests/expectations/sanitize.ts"
+  walker = LineWalker(subject_file, assertion_file)
+  walker.add_transformer(sanitize.create_reference_tag_remover())
+  walker.add_transformer(sanitize.create_jshint_remover())
+  walker.add_transformer(sanitize.create_unindenter())
+  walker.add_transformer(sanitize.create_namespace_remover())
+  walker.walk()
+  test("sanitize", expectation_file, assertion_file)
 
-# Test sanitize
-sanitize.remove_all_comments("tests/sanitize.ts", path)
-output = open(path).read()
-assert hexify(output) == "7a69bc8d974476a79a7e2f2c21a621c5ffddba105636203bcc05e4bec4833d20", output
+test_sanitize()
 
 print("All tests passed!")

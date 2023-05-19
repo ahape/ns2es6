@@ -1,6 +1,7 @@
 # PRE
 
 - Need to move certain things around so they are semantically correct
+    - Any file paths that don't line up with the namespace path
     - IAlert
     - etc
 - Remove export namespace in Reports base (Needs to be done before step 3

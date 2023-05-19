@@ -1,9 +1,6 @@
 import re
 
 class Transformer:
-  match_rx = None
-  replacement = None
-
   def __init__(self, match_rx, replacement=None):
     self.match_rx = re.compile(match_rx)
     self.replacement = replacement
@@ -11,6 +8,6 @@ class Transformer:
   def analyze(self, text):
     if not self.match_rx:
       return None
-    if self.replacement:
+    if self.replacement is not None:
       return self.match_rx.sub(self.replacement, text)
-    return self.match_rx.search(text, flags=re.DOTALL)
+    return self.match_rx.search(text)

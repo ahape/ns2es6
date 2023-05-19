@@ -2,5 +2,12 @@
 /// <reference path="something" />
 ///<reference path="something" />
 // jshint ignore:true
-// tslint:disable:no-console
-// This is is the only line that should remain
+// This comment should be left alone
+namespace Foo.Bar.Baz {
+    var foo = "bar";
+    var bar = [
+        "one",
+        "two",
+        "three",
+    ]
+}
