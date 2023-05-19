@@ -1,4 +1,4 @@
-#from .logger import logger
+from .logger import logger
 
 class LineWalker:
   file_path = None
@@ -15,24 +15,24 @@ class LineWalker:
     self.tfs.append(tf)
 
   def walk(self):
-    print("Analyzing file: %s", self.file_path)
+    logger.debug("Analyzing file: %s", self.file_path)
     with open(self.file_path, "r", encoding="utf8") as file:
       for line in file.readlines():
         self.analyze_line(line)
 
     if self.has_changed:
       res = "".join(self.out_lines)
-      print("Result\n\n%s", res)
+      logger.debug("Result\n\n%s", res)
 
       if self.commit_changes:
         path = self.file_path
         if isinstance(self.commit_changes, str):
           path = self.commit_changes
-        print("Committing changes to %s", path)
+        logger.debug("Committing changes to %s", path)
         with open(path, "w", encoding="utf8") as file:
             file.write(res)
     else:
-      print("No changes found")
+      logger.debug("No changes found")
 
   def analyze_line(self, line):
     self.line = line

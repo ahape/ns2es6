@@ -1,6 +1,6 @@
+import os
 from logging import getLogger, DEBUG
 
 logger = getLogger()
-logger.setLevel = DEBUG
-
-# TODO
+if os.getenv("DEBUG", None):
+  logger.setLevel(DEBUG)
