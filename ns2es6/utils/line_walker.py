@@ -1,15 +1,13 @@
 from .logger import logger
 
 class LineWalker:
-  file_path = None
-  line = None
-  has_changed = False
-  out_lines = []
-  tfs = []
-
   def __init__(self, file_path, commit_changes=False):
     self.file_path = file_path
     self.commit_changes = commit_changes
+    self.out_lines = []
+    self.tfs = []
+    self.has_changed = False
+    self.line = None
 
   def add_transformer(self, tf):
     self.tfs.append(tf)
@@ -22,13 +20,13 @@ class LineWalker:
 
     if self.has_changed:
       res = "".join(self.out_lines)
-      logger.debug("Result\n\n%s", res)
+      #logger.debug("Result\n\n%s", res)
 
       if self.commit_changes:
         path = self.file_path
         if isinstance(self.commit_changes, str):
           path = self.commit_changes
-        logger.debug("Committing changes to %s", path)
+        logger.info("Committing changes to %s", path)
         with open(path, "w", encoding="utf8") as file:
             file.write(res)
     else:
