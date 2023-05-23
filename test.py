@@ -14,7 +14,7 @@ def test(name, expectation_file, assertion_file):
     os.system(f"git diff --no-index {expectation_file} {assertion_file}")
     raise SystemExit
 
-def test_sanitize():
+def test_sanitize_01():
   subject_file = "tests/sanitize.ts"
   assertion_file = tempfile.mkstemp()[1]
   expectation_file = "tests/expectations/sanitize.ts"
@@ -26,6 +26,6 @@ def test_sanitize():
   walker.walk()
   test("sanitize", expectation_file, assertion_file)
 
-test_sanitize()
+test_sanitize_01()
 
 print("All tests passed!")
