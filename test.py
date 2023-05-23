@@ -1,5 +1,5 @@
 #!/opt/homebrew/bin/python3.11
-import os, tempfile
+import os, tempfile, json
 from ns2es6.transforms import sanitize
 from ns2es6.utils.line_walker import LineWalker
 
@@ -29,6 +29,17 @@ def test_sanitize_01():
   walker.walk()
   test("sanitize", expectation_file, assertion_file)
 
+def test_collect_exports_01():
+  subject_file = "tests/collect_exports.ts"
+  walker = LineWalker(subject_file)
+  walker.add_transformer(create_namespace_collector())
+  export_tf = collect_exports.create_export_collector()
+  walker.add_transformer(export_tf)
+  walker.walk()
+  # TODO
+  assert "Clazz" == export_tf.exports[0]
+
 test_sanitize_01()
+test_collect_exports_01()
 
 print("All tests passed!")
