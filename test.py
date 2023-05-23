@@ -21,8 +21,8 @@ def test_sanitize():
   walker = LineWalker(subject_file, assertion_file)
   walker.add_transformer(sanitize.create_reference_tag_remover())
   walker.add_transformer(sanitize.create_jshint_remover())
-  walker.add_transformer(sanitize.create_unindenter())
   walker.add_transformer(sanitize.create_namespace_remover())
+  walker.add_transformer(sanitize.create_unindenter(walker))
   walker.walk()
   test("sanitize", expectation_file, assertion_file)
 

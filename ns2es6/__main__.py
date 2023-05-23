@@ -15,7 +15,7 @@ def set_logger_level(args):
     logger.setLevel(logging.INFO)
 
 def main(args):
-  sanitize.run(args.directory)
+  sanitize.update_files(args.directory)
 
 if __name__ == "__main__":
   _args = parse_args()

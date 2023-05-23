@@ -1,3 +1,4 @@
+import re
 from .logger import logger
 
 class LineWalker:
@@ -8,6 +9,13 @@ class LineWalker:
     self.tfs = []
     self.has_changed = False
     self.line = None
+    self.tags = set()
+
+  def check_tags_for(self, tag):
+    return tag in self.tags
+
+  def add_tags_if_any(self):
+    self.tags.update(re.findall("(\<@\w+@\>)", self.line))
 
   def add_transformer(self, tf):
     self.tfs.append(tf)
@@ -36,6 +44,7 @@ class LineWalker:
     self.line = line
     self.run_tfs()
     self.write_result()
+    self.add_tags_if_any()
 
   def write_result(self):
     if "<DELETE>" not in self.line:
