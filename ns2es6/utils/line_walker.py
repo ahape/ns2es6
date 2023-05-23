@@ -1,5 +1,5 @@
 import re
-from .logger import logger
+from ns2es6.utils.logger import logger
 
 class LineWalker:
   def __init__(self, file_path, commit_changes=False):
@@ -15,7 +15,7 @@ class LineWalker:
     return tag in self.tags
 
   def add_tags_if_any(self):
-    self.tags.update(re.findall("(\<@\w+@\>)", self.line))
+    self.tags.update(re.findall(r"(\<@\w+@\>)", self.line))
 
   def add_transformer(self, tf):
     self.tfs.append(tf)
@@ -34,7 +34,7 @@ class LineWalker:
         path = self.file_path
         if isinstance(self.commit_changes, str):
           path = self.commit_changes
-        logger.info("Committing changes to %s", path)
+        logger.debug("Committing changes to %s", path)
         with open(path, "w", encoding="utf8") as file:
           file.write(res)
     else:

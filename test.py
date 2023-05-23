@@ -4,15 +4,18 @@ from ns2es6.transforms import sanitize
 from ns2es6.utils.line_walker import LineWalker
 
 def test(name, expectation_file, assertion_file):
-  assertion = open(assertion_file).read()
-  expectation = open(expectation_file).read()
+  expectation = assertion = None
+  with open(assertion_file, "r", encoding="utf8") as f:
+    assertion = f.read()
+  with open(expectation_file, "r", encoding="utf8") as f:
+    expectation = f.read()
   try:
     assert expectation == assertion, f"diff {expectation_file} {assertion_file}"
-  except AssertionError:
+  except AssertionError as ex:
     print(f"Test {name} FAILED. Running diff to see comparison")
     print(f"git diff --no-index {expectation_file} {assertion_file}")
     os.system(f"git diff --no-index {expectation_file} {assertion_file}")
-    raise SystemExit
+    raise ex
 
 def test_sanitize_01():
   subject_file = "tests/sanitize.ts"

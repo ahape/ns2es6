@@ -1,8 +1,9 @@
 import os, re
-from ..utils.transformer import Transformer
-from ..utils.line_walker import LineWalker
-from ..utils.logger import logger
-from ..utils.trace_timer import TraceTimer
+from ns2es6.utils.transformer import Transformer
+from ns2es6.utils.line_walker import LineWalker
+from ns2es6.utils.logger import logger
+from ns2es6.utils.trace_timer import TraceTimer
+import ns2es6.utils.helpers as helpers
 
 class _Unindenter(Transformer):
   def __init__(self, walker):
@@ -19,7 +20,7 @@ class _NamespaceRemover(Transformer):
   tag = "<@NamespaceRemover@>"
 
   def __init__(self):
-    super().__init__(r"^namespace ", f"<DELETE>{self.tag}")
+    super().__init__(helpers.Regex.namespace, f"<DELETE>{self.tag}")
 
   def analyze(self, text):
     res = super().analyze(text)
@@ -28,10 +29,6 @@ class _NamespaceRemover(Transformer):
     if res and self.tag in res:
       self.match_rx = re.compile(r"^\}")
     return res
-
-def should_exclude_file(file_path):
-  return "node_modules" in file_path or \
-      not file_path.endswith(".ts")
 
 # Remove all '/// <reference />' comments
 def create_reference_tag_remover():
@@ -50,15 +47,12 @@ def create_unindenter(walker):
 def create_namespace_remover():
   return _NamespaceRemover()
 
-def update_files(directory):
+def update_files(directory, commit_changes=False):
   timer = TraceTimer()
   timer.start()
-  for root, dirs, files in os.walk(directory):
-    for name in files:
-      file_path = os.path.join(root, name)
-      if should_exclude_file(file_path):
-        continue
-      update_file(file_path, True)
+
+  helpers.for_each_file(directory, lambda f: update_file(f, commit_changes))
+
   timer.stop()
   logger.info("Operation took %s seconds", timer.elapsed)
 

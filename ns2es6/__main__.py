@@ -1,6 +1,6 @@
 import os, sys, argparse, logging
-from .transforms import sanitize
-from .utils.logger import logger
+from ns2es6.transforms import sanitize, collect_exports
+from ns2es6.utils.logger import logger
 
 def parse_args():
   parser = argparse.ArgumentParser()
@@ -9,15 +9,20 @@ def parse_args():
   return parser.parse_args()
 
 def set_logger_level(args):
-  if _args.debug:
+  if args.debug:
     logger.setLevel(logging.DEBUG)
   else:
     logger.setLevel(logging.INFO)
 
-def main(args):
-  sanitize.update_files(args.directory)
+def program(args):
+  #sanitize.update_files(args.directory)
+  collect_exports.run_for_directory(args.directory)
+
+def main():
+  args = parse_args()
+  set_logger_level(args)
+
+  program(args)
 
 if __name__ == "__main__":
-  _args = parse_args()
-  set_logger_level(_args)
-  main(_args)
+  main()

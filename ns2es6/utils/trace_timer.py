@@ -2,7 +2,9 @@ from time import time
 
 class TraceTimer:
   def __init__(self):
-    self.reset()
+    self.duration = 0
+    self.last_time = None
+    self.running = False
   def start(self):
     if not self.running:
       self.last_time = time()
