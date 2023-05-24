@@ -12,8 +12,8 @@ class Transformer:
     if self.replacement is not None:
       return self.match_rx.sub(self.replacement, text)
     if match := self.match_rx.search(text):
-      self.handle_match(match[1]) # Capture is expected
+      self.handle_match(match[1], match)
     return text
 
-  def handle_match(self, match):
+  def handle_match(self, capture, match):
     ...

@@ -1,22 +1,5 @@
 import os, sys
 
-_keywords = "|".join([
-  "class",
-  "namespace",
-  "function",
-  "type",
-  "interface",
-  "enum",
-  "const",
-  "let",
-  "abstract",
-  "var",
-])
-
-class Regex:
-  namespace = r"^\s*namespace\s+(\S+)[ {]"
-  export = fr"^\s*export\s+(?:(?:{_keywords})\s+)+(\w+)\b"
-
 def should_exclude_file(file_path):
   return "node_modules" in file_path or \
       not file_path.endswith(".ts")

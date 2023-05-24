@@ -23,7 +23,7 @@ class NamespaceRemover(Transformer):
   tag = "<@NamespaceRemover@>"
 
   def __init__(self):
-    super().__init__(helpers.Regex.namespace, f"<DELETE>{self.tag}")
+    super().__init__(r"^namespace\s+(\S+)[ {]", f"<DELETE>{self.tag}")
 
   def analyze(self, text):
     res = super().analyze(text)

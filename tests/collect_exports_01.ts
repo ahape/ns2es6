@@ -8,12 +8,15 @@ namespace Foo.Bar.Baz {
     // ...
   }
 }
-namespace Foo.Bar.Baz.Three.More.Levels {
+function norMe() {
+  // ...
+}
+ namespace Foo.Bar.Baz.Three.More.Levels {
   export const foo: string = "asdf";
   export let bar = () => 1
   export var baz: Record<string, number> = {};
 }
-namespace Foo.Bar.Baz.Three.More.Levels.Five.More.For.Good.Measure {
+namespace Foo.Bar.Baz.Three.More.Levels.Five.More.For.Good.Measure{
   // This is export within a comment
   // export within a comment
   /* export within a comment */
@@ -26,6 +29,6 @@ namespace Foo.Bar.Baz.Three.More.Levels.Five.More.For.Good.Measure {
   export enum EFoo { One, Two, Export }
   export function funFoo() { }
   export namespace Last {
-    "use strict";
+    export type Hi = string | number;
   }
 }

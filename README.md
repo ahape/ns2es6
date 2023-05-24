@@ -1,3 +1,8 @@
+# NOTES
+
+- I don't think we need to format each file. They are mostly formatted, aside
+  from perhaps line-ending and whitespace inconsistencies
+
 # PRE
 
 - Need to move certain things around so they are semantically correct
