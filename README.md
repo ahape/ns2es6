@@ -4,6 +4,9 @@
     - Any file paths that don't line up with the namespace path
     - IAlert
     - etc
+- Need to move all sub-namespaces to their own file
+    - ReportHelpers, Dates, other "export namespace" declarations
+    - Otherwise, the scraping logic gets more complicated
 - Remove export namespace in Reports base (Needs to be done before step 3
   below)
     - See what broke to determine next step

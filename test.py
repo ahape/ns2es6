@@ -1,18 +1,23 @@
 #!/opt/homebrew/bin/python3.11
 import os, tempfile, json
-from ns2es6.transforms import sanitize
+from ns2es6.transforms import sanitize, collect_exports
 from ns2es6.utils.line_walker import LineWalker
 
-def test(name, expectation_file, assertion_file):
-  expectation = assertion = None
-  with open(assertion_file, "r", encoding="utf8") as f:
-    assertion = f.read()
-  with open(expectation_file, "r", encoding="utf8") as f:
-    expectation = f.read()
+def read_file(file_path):
+  with open(file_path, "r", encoding="utf8") as f:
+    return f.read()
+
+def read_file_as_json(file_path):
+  with open(file_path, "r", encoding="utf8") as f:
+    return json.load(f)
+
+def assert_files_are_same(test_name, expectation_file, assertion_file):
+  expectation = read_file(expectation_file)
+  assertion = read_file(assertion_file)
   try:
     assert expectation == assertion, f"diff {expectation_file} {assertion_file}"
   except AssertionError as ex:
-    print(f"Test {name} FAILED. Running diff to see comparison")
+    print(f"Test {test_name} FAILED. Running diff to see comparison")
     print(f"git diff --no-index {expectation_file} {assertion_file}")
     os.system(f"git diff --no-index {expectation_file} {assertion_file}")
     raise ex
@@ -21,23 +26,16 @@ def test_sanitize_01():
   subject_file = "tests/sanitize.ts"
   assertion_file = tempfile.mkstemp()[1]
   expectation_file = "tests/expectations/sanitize.ts"
-  walker = LineWalker(subject_file, assertion_file)
-  walker.add_transformer(sanitize.create_reference_tag_remover())
-  walker.add_transformer(sanitize.create_jshint_remover())
-  walker.add_transformer(sanitize.create_namespace_remover())
-  walker.add_transformer(sanitize.create_unindenter(walker))
-  walker.walk()
-  test("sanitize", expectation_file, assertion_file)
+  sanitize.update_file(subject_file, assertion_file)
+  assert_files_are_same("sanitize", expectation_file, assertion_file)
 
 def test_collect_exports_01():
   subject_file = "tests/collect_exports.ts"
-  walker = LineWalker(subject_file)
-  walker.add_transformer(create_namespace_collector())
-  export_tf = collect_exports.create_export_collector()
-  walker.add_transformer(export_tf)
-  walker.walk()
-  # TODO
-  assert "Clazz" == export_tf.exports[0]
+  expectation_file = "tests/expectations/collect_exports.json"
+  assertion = collect_exports.process_file(subject_file)
+  expectation = read_file_as_json(expectation_file)
+  for i, e in enumerate(expectation):
+    assert e == assertion[i], (e, assertion[i])
 
 test_sanitize_01()
 test_collect_exports_01()

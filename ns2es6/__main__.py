@@ -15,8 +15,8 @@ def set_logger_level(args):
     logger.setLevel(logging.INFO)
 
 def program(args):
-  #sanitize.update_files(args.directory)
-  collect_exports.run_for_directory(args.directory)
+  #sanitize.run(args.directory)
+  collect_exports.run(args.directory)
 
 def main():
   args = parse_args()

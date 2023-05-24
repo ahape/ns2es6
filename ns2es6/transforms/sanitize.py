@@ -3,20 +3,23 @@ from ns2es6.utils.transformer import Transformer
 from ns2es6.utils.line_walker import LineWalker
 from ns2es6.utils.logger import logger
 from ns2es6.utils.trace_timer import TraceTimer
-import ns2es6.utils.helpers as helpers
+from ns2es6.utils import helpers
 
-class _Unindenter(Transformer):
+# Unindent everything 1x. Since everything will be reduced by one block scope
+# (the namespace block that will be removed) this will make subsequent
+# changes easier to grok
+class Unindenter(Transformer):
   def __init__(self, walker):
     super().__init__(r"^\s{4}", "")
     self.walker = walker
   def analyze(self, text):
     res = super().analyze(text)
     # Only unindent if we've removed the outermost 'namespace' block
-    if self.walker.check_tags_for(_NamespaceRemover.tag):
+    if self.walker.check_tags_for(NamespaceRemover.tag):
       return res
     return text
 
-class _NamespaceRemover(Transformer):
+class NamespaceRemover(Transformer):
   tag = "<@NamespaceRemover@>"
 
   def __init__(self):
@@ -30,37 +33,18 @@ class _NamespaceRemover(Transformer):
       self.match_rx = re.compile(r"^\}")
     return res
 
-# Remove all '/// <reference />' comments
-def create_reference_tag_remover():
-  return Transformer(r"\/\/\/\s*\<reference ", "<DELETE>")
-
-# Remove all jshint comments
-def create_jshint_remover():
-  return Transformer(r"\bjshint\b", "<DELETE>")
-
-# Unindent everything 1x. Since everything will be reduced by one block scope
-# (the namespace block that will be removed) this will make subsequent
-# changes easier to grok
-def create_unindenter(walker):
-  return _Unindenter(walker)
-
-def create_namespace_remover():
-  return _NamespaceRemover()
-
-def update_files(directory, commit_changes=False):
+def run(directory, commit_changes=False):
   timer = TraceTimer()
   timer.start()
-
   helpers.for_each_file(directory, lambda f: update_file(f, commit_changes))
-
   timer.stop()
-  logger.info("Operation took %s seconds", timer.elapsed)
+  logger.debug("Operation took %s seconds", timer.elapsed)
 
 def update_file(file_path, commit_changes=False):
-  logger.info("Sanitizing file %s", file_path)
+  logger.debug("Sanitizing file %s", file_path)
   walker = LineWalker(file_path, commit_changes)
-  walker.add_transformer(create_reference_tag_remover())
-  walker.add_transformer(create_jshint_remover())
-  walker.add_transformer(create_namespace_remover())
-  walker.add_transformer(create_unindenter(walker))
+  walker.add_transformer(Transformer(r"\/\/\/\s*\<reference ", "<DELETE>"))
+  walker.add_transformer(Transformer(r"\bjshint\b", "<DELETE>"))
+  walker.add_transformer(NamespaceRemover())
+  walker.add_transformer(Unindenter(walker))
   walker.walk()
