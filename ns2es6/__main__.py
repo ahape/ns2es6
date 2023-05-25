@@ -16,7 +16,14 @@ def set_logger_level(args):
 
 def program(args):
   #sanitize.run(args.directory)
-  collect_exports.run(args.directory)
+  #collect_exports.run(args.directory)
+  apply_pre_patches(args)
+
+def apply_pre_patches(args):
+  for root, _, files in os.walk("/Users/alanhape/Projects/ns2es6/pre"):
+    for patch_file in files:
+      full_path = os.path.join(root, patch_file)
+      os.system(f"cd {args.directory} && git apply --whitespace=fix {full_path}")
 
 def main():
   args = parse_args()
