@@ -1,5 +1,7 @@
 import os, sys, argparse, logging
-from ns2es6.transforms import sanitize, collect_exports
+from ns2es6.transforms import (sanitize,
+                               collect_exports,
+                               replace_imports)
 from ns2es6.utils.logger import logger
 
 def parse_args():
@@ -18,8 +20,10 @@ def program(args):
   #sanitize.run(args.directory)
   #collect_exports.run(args.directory)
   apply_pre_patches(args)
+  replace_imports.run(args.directory)
 
 def apply_pre_patches(args):
+  # TODO First need to set a "git tag"
   for root, _, files in os.walk("/Users/alanhape/Projects/ns2es6/pre"):
     for patch_file in files:
       full_path = os.path.join(root, patch_file)
@@ -27,6 +31,10 @@ def apply_pre_patches(args):
       cmd += f" && git apply --whitespace=fix {full_path}"
       cmd += f' && git commit -am "{patch_file}"'
       os.system(cmd)
+
+def undo_git_changes(args):
+  # TODO should undo until the "git tag" we set if anything fails
+  ...
 
 def main():
   args = parse_args()

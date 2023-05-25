@@ -19,13 +19,17 @@ class ImportCollector(Transformer):
 
 class ImportReplacer(Transformer):
   def __init__(self, import_map):
-    rx = r"\b(" + "|".join(list(import_map.keys())) + ")(?=[" + re.escape(".[]()<>") + "])"
+    aliases = list(import_map.keys())
+    rx = r"\b(" + "|".join(aliases) + ")(?=[" + re.escape(".[]()<>") + "])" if aliases else None
     super().__init__(rx)
     self.import_map = import_map
 
   def analyze(self, text):
-    if (m := self.match_rx.search(text)):
-      self.replacement = self.import_map[m[1]]
+    if self.match_rx and (match := self.match_rx.search(text)):
+      try:
+        self.replacement = self.import_map[match[1]]
+      except KeyError:
+        logger.error("KeyError -- %s %s", match.groups(), match.string)
     return super().analyze(text)
 
 def run(directory):
