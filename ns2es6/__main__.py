@@ -23,7 +23,10 @@ def apply_pre_patches(args):
   for root, _, files in os.walk("/Users/alanhape/Projects/ns2es6/pre"):
     for patch_file in files:
       full_path = os.path.join(root, patch_file)
-      os.system(f"cd {args.directory} && git apply --whitespace=fix {full_path}")
+      cmd = f"cd {args.directory}"
+      cmd += f" && git apply --whitespace=fix {full_path}"
+      cmd += f' && git commit -am "{patch_file}"'
+      os.system(cmd)
 
 def main():
   args = parse_args()
