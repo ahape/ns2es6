@@ -1,6 +1,8 @@
 #!/opt/homebrew/bin/python3.11
 import os, tempfile, json
-from ns2es6.transforms import sanitize, collect_exports
+from ns2es6.transforms import (sanitize,
+                               collect_exports,
+                               replace_imports)
 from ns2es6.utils.line_walker import LineWalker
 
 def read_file(file_path):
@@ -45,8 +47,16 @@ def test_collect_exports_02():
   for i, e in enumerate(expectation):
     assert e == assertion[i], (e, assertion[i])
 
+def test_replace_imports():
+  subject_file = "tests/replace_imports.ts"
+  expectation_file = "tests/expectations/replace_imports.ts"
+  assertion_file = tempfile.mkstemp()[1]
+  replace_imports.update_file(subject_file, assertion_file)
+  assert_files_are_same("replace_imports", expectation_file, assertion_file)
+
 test_sanitize_01()
 test_collect_exports_01()
 test_collect_exports_02()
+test_replace_imports()
 
 print("All tests passed!")

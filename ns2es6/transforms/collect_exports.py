@@ -31,7 +31,7 @@ class NamespaceCollector(Transformer):
     return ".".join(self.ns_stack)
 
   def analyze(self, text):
-    if m := re.search(r"^\s*\}", text):
+    if re.search(r"^\s*\}", text):
       # NOTE This isn't robust enough to handle poorly formatted code
       if self.col_stack and text.index("}") <= self.col_stack[-1]:
         self.col_stack.pop()

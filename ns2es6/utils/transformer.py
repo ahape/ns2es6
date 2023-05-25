@@ -9,11 +9,12 @@ class Transformer:
   def analyze(self, text):
     if not self.match_rx:
       return None
+    res = text
     if self.replacement is not None:
-      return self.match_rx.sub(self.replacement, text)
+      res = self.match_rx.sub(self.replacement, text)
     if match := self.match_rx.search(text):
-      self.handle_match(match[1], match)
-    return text
+      self.handle_match(match[1] if match.groups() else None, match)
+    return res
 
   def handle_match(self, capture, match):
     ...
