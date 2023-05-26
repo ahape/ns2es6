@@ -20,7 +20,7 @@ def program(args):
   apply_pre_patches(args)
   sanitize.run(args.directory, True)
   #collect_exports.run(args.directory)
-  #replace_imports.run(args.directory)
+  replace_imports.run(args.directory)
 
 def apply_pre_patches(args):
   # TODO First need to set a "git tag"
