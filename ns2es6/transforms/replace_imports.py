@@ -25,12 +25,14 @@ class ImportReplacer(Transformer):
     self.import_map = import_map
 
   def analyze(self, text):
-    if self.match_rx and (match := self.match_rx.search(text)):
-      try:
-        self.replacement = self.import_map[match[1]]
-      except KeyError:
-        logger.error("KeyError -- %s %s", match.groups(), match.string)
-    return super().analyze(text)
+    if self.match_rx and self.match_rx.search(text):
+      for capture in self.match_rx.findall(text):
+        try:
+          replacement = self.import_map[capture]
+          text = text.replace(capture, replacement)
+        except KeyError:
+          logger.error("KeyError -- %s %s", capture, text)
+    return text
 
 def run(directory):
   timer = TraceTimer()

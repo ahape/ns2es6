@@ -47,16 +47,24 @@ def test_collect_exports_02():
   for i, e in enumerate(expectation):
     assert e == assertion[i], (e, assertion[i])
 
-def test_replace_imports():
-  subject_file = "tests/replace_imports.ts"
-  expectation_file = "tests/expectations/replace_imports.ts"
+def test_replace_imports_01():
+  subject_file = "tests/replace_imports_01.ts"
+  expectation_file = "tests/expectations/replace_imports_01.ts"
   assertion_file = tempfile.mkstemp()[1]
   replace_imports.update_file(subject_file, assertion_file)
-  assert_files_are_same("replace_imports", expectation_file, assertion_file)
+  assert_files_are_same("replace_imports_01", expectation_file, assertion_file)
+
+def test_replace_imports_02():
+  subject_file = "tests/replace_imports_02.ts"
+  expectation_file = "tests/expectations/replace_imports_02.ts"
+  assertion_file = tempfile.mkstemp()[1]
+  replace_imports.update_file(subject_file, assertion_file)
+  assert_files_are_same("replace_imports_02", expectation_file, assertion_file)
 
 test_sanitize_01()
 test_collect_exports_01()
 test_collect_exports_02()
-test_replace_imports()
+test_replace_imports_01()
+test_replace_imports_02()
 
 print("All tests passed!")
