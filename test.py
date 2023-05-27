@@ -24,75 +24,33 @@ def assert_files_are_same(test_name, expectation_file, assertion_file):
     os.system(f"git diff --no-index {expectation_file} {assertion_file}")
     raise ex
 
-def test_sanitize_01():
-  subject_file = "tests/sanitize.ts"
-  assertion_file = tempfile.mkstemp()[1]
-  expectation_file = "tests/expectations/sanitize.ts"
-  sanitize.update_file(subject_file, assertion_file)
-  assert_files_are_same("sanitize", expectation_file, assertion_file)
+def test_sanitize(file_count):
+  for i in range(1, file_count + 1):
+    subject_file = f"tests/sanitize_{str(i).zfill(2)}.ts"
+    expectation_file = f"tests/expectations/sanitize_{str(i).zfill(2)}.ts"
+    assertion_file = tempfile.mkstemp()[1]
+    sanitize.update_file(subject_file, assertion_file)
+    assert_files_are_same("sanitize", expectation_file, assertion_file)
 
-def test_collect_exports_01():
-  subject_file = "tests/collect_exports_01.ts"
-  expectation_file = "tests/expectations/collect_exports_01.json"
-  assertion = sorted(map(str, collect_exports.process_file(subject_file)))
-  expectation = sorted(map(str, read_file_as_json(expectation_file)))
-  for i, e in enumerate(expectation):
-    assert e == assertion[i], (e, assertion[i])
+def test_collect_exports(file_count):
+  for i in range(1, file_count + 1):
+    subject_file = f"tests/collect_exports_{str(i).zfill(2)}.ts"
+    expectation_file = f"tests/expectations/collect_exports_{str(i).zfill(2)}.json"
+    assertion = sorted(map(str, collect_exports.process_file(subject_file)))
+    expectation = sorted(map(str, read_file_as_json(expectation_file)))
+    for i, e in enumerate(expectation):
+      assert e == assertion[i], (e, assertion[i])
 
-def test_collect_exports_02():
-  subject_file = "tests/collect_exports_02.ts"
-  expectation_file = "tests/expectations/collect_exports_02.json"
-  assertion = sorted(map(str, collect_exports.process_file(subject_file)))
-  expectation = sorted(map(str, read_file_as_json(expectation_file)))
-  for i, e in enumerate(expectation):
-    assert e == assertion[i], (e, assertion[i])
+def test_replace_imports(file_count):
+  for i in range(1, file_count + 1):
+    subject_file = f"tests/replace_imports_{str(i).zfill(2)}.ts"
+    expectation_file = f"tests/expectations/replace_imports_{str(i).zfill(2)}.ts"
+    assertion_file = tempfile.mkstemp()[1]
+    replace_imports.update_file(subject_file, assertion_file)
+    assert_files_are_same("replace_imports", expectation_file, assertion_file)
 
-def test_collect_exports_03():
-  subject_file = "tests/collect_exports_03.ts"
-  expectation_file = "tests/expectations/collect_exports_03.json"
-  assertion = sorted(map(str, collect_exports.process_file(subject_file)))
-  expectation = sorted(map(str, read_file_as_json(expectation_file)))
-  for i, e in enumerate(expectation):
-    assert e == assertion[i], (e, assertion[i])
-
-def test_collect_exports_04():
-  subject_file = "tests/collect_exports_04.ts"
-  expectation_file = "tests/expectations/collect_exports_04.json"
-  assertion = sorted(map(str, collect_exports.process_file(subject_file)))
-  expectation = sorted(map(str, read_file_as_json(expectation_file)))
-  for i, e in enumerate(expectation):
-    assert e == assertion[i], (e, assertion[i])
-
-
-def test_collect_exports_05():
-  subject_file = "tests/collect_exports_05.ts"
-  expectation_file = "tests/expectations/collect_exports_05.json"
-  assertion = sorted(map(str, collect_exports.process_file(subject_file)))
-  expectation = sorted(map(str, read_file_as_json(expectation_file)))
-  for i, e in enumerate(expectation):
-    assert e == assertion[i], (e, assertion[i])
-
-def test_replace_imports_01():
-  subject_file = "tests/replace_imports_01.ts"
-  expectation_file = "tests/expectations/replace_imports_01.ts"
-  assertion_file = tempfile.mkstemp()[1]
-  replace_imports.update_file(subject_file, assertion_file)
-  assert_files_are_same("replace_imports_01", expectation_file, assertion_file)
-
-def test_replace_imports_02():
-  subject_file = "tests/replace_imports_02.ts"
-  expectation_file = "tests/expectations/replace_imports_02.ts"
-  assertion_file = tempfile.mkstemp()[1]
-  replace_imports.update_file(subject_file, assertion_file)
-  assert_files_are_same("replace_imports_02", expectation_file, assertion_file)
-
-#test_sanitize_01()
-test_collect_exports_01()
-test_collect_exports_02()
-test_collect_exports_03()
-test_collect_exports_04()
-test_collect_exports_05()
-test_replace_imports_01()
-test_replace_imports_02()
+test_sanitize(1)
+test_collect_exports(5)
+test_replace_imports(2)
 
 print("All tests passed!")
