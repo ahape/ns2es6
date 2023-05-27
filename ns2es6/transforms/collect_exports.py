@@ -50,7 +50,6 @@ class Symbol:
 class NamespaceCollector(Transformer):
   def __init__(self):
     super().__init__(r"^\s*(?:export\s+){0,1}namespace\s+(\S+)[ {]")
-    self.last_ns = None
     self.ns_stack = []
     self.col_stack = []
 
@@ -62,17 +61,16 @@ class NamespaceCollector(Transformer):
     if re.search(r"^\s*\}", text):
       # NOTE This isn't robust enough to handle poorly formatted code
       if self.col_stack and text.index("}") <= self.col_stack[-1]:
+        before = self.current
         self.col_stack.pop()
         self.ns_stack.pop()
     return super().analyze(text)
 
   def handle_match(self, capture, match):
-    print("NamespaceCollector", match.string)
     self.ns_stack.append(capture)
     text = match.string
     # could be "export" (from export namespace) or could be "namespace"
     self.col_stack.append(re.search(r"\b\w+\b", text).start())
-    self.last_ns = self.current
 
 class ExportCollector(Transformer):
   def __init__(self, ns_collector, file_path):
@@ -82,13 +80,12 @@ class ExportCollector(Transformer):
     self.ns_collector = ns_collector
 
   def handle_match(self, capture, match):
-    print("ExportCollector", match.string)
-    # TODO: Make these proper objects
-    last_ns = self.ns_collector.last_ns
+    # xTODO: Make these proper objects
+    current_ns = self.ns_collector.current
     # If the export is a namespace _itself_, avoid dup
-    if last_ns and last_ns.endswith(f".{capture}"):
-      last_ns = last_ns.replace(f".{capture}", "")
-    self.exports.add(Symbol(capture, last_ns, self.file_path))
+    if current_ns and current_ns.endswith(f".{capture}"):
+      current_ns = current_ns.replace(f".{capture}", "")
+    self.exports.add(Symbol(capture, current_ns, self.file_path))
 
 exps = []
 
@@ -101,7 +98,7 @@ def run(directory):
 
   tf = tempfile.mkstemp()[1]
   with open(tf, "w", encoding="utf8") as f:
-    f.write(json.dumps([*map(str, exps)]))
+    f.write(json.dumps(sorted(map(str, exps))))
     print(tf)
 
 def process_file(file_path):

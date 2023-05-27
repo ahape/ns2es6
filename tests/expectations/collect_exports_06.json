@@ -4,5 +4,5 @@
   "Brightmetrics.Utils.TimeKeeper.getNew",
   "Brightmetrics.Utils.stringTrim",
   "Brightmetrics.Utils.emailAddressRegex",
-  "Brightmetrics.Utils.validHostName"
+  "Brightmetrics.Utils.validHostnameRx"
 ]
