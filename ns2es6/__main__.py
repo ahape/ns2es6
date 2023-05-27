@@ -18,7 +18,7 @@ def set_logger_level(args):
     logger.setLevel(logging.INFO)
 
 def program(args):
-  os.system(f"cd {args.directory}")
+  os.chdir(f"{args.directory}")
   if args.clean:
     os.system("git reset --hard start")
 
