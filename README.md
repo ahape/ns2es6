@@ -27,8 +27,12 @@
 4. Gather all exports
     - Make sure to grab their context, and whatever other details
 5. Replace all export references w/ fully qualified
-    - If it's an export, and the context matches, then change it
-    - If replacing it with a fully qualified 
-
+    1. Ignore it if it's an export
+    2. If on the same namespace, then replace
+        ```
+        "Report" in "Brightmetrics.Reports.ViewModels[.Editor]"
+        "weekdayNames" in "Brightmetrics.Constants"
+        ```
+    3. If more than one symbol in match, then replace it
 
 # POST
