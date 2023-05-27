@@ -1,3 +1,4 @@
+import tempfile, json
 import os, re
 from ns2es6.utils.transformer import Transformer
 from ns2es6.utils.line_walker import LineWalker
@@ -18,11 +19,38 @@ _keywords = "|".join([
   "var",
 ])
 
-class NamespaceCollector(Transformer):
-  last_namespace = None
+class Symbol:
+  def __init__(self, symbol, ns, file):
+    self.symbol = symbol
+    self.ns = ns
+    self.file = file
 
+  def __hash__(self):
+    return hash(self.address)
+
+  def __eq__(self, other):
+    if isinstance(other, Symbol):
+      return hash(self) == hash(other)
+    return False
+
+  def __repr__(self):
+    return self.address
+
+  def __str__(self):
+    return self.address
+
+  @property
+  def address(self):
+    try:
+      return self.ns + "." + self.symbol
+    except Exception as ex:
+      print(self.symbol, self.file)
+      raise ex
+
+class NamespaceCollector(Transformer):
   def __init__(self):
     super().__init__(r"^\s*(?:export\s+){0,1}namespace\s+(\S+)[ {]")
+    self.last_ns = None
     self.ns_stack = []
     self.col_stack = []
 
@@ -39,25 +67,30 @@ class NamespaceCollector(Transformer):
     return super().analyze(text)
 
   def handle_match(self, capture, match):
+    print("NamespaceCollector", match.string)
     self.ns_stack.append(capture)
     text = match.string
-    # could be "export" or could be "namespace"
+    # could be "export" (from export namespace) or could be "namespace"
     self.col_stack.append(re.search(r"\b\w+\b", text).start())
-    NamespaceCollector.last_namespace = self.current
+    self.last_ns = self.current
 
 class ExportCollector(Transformer):
-  def __init__(self):
+  def __init__(self, ns_collector, file_path):
     super().__init__(fr"^\s*export\s+(?:(?:{_keywords})\s+)+(\w+)\b")
     self.exports = set()
+    self.file_path = file_path
+    self.ns_collector = ns_collector
 
   def handle_match(self, capture, match):
+    print("ExportCollector", match.string)
     # TODO: Make these proper objects
-    last_ns = NamespaceCollector.last_namespace
+    last_ns = self.ns_collector.last_ns
     # If the export is a namespace _itself_, avoid dup
-    if last_ns.endswith(f".{capture}"):
-      self.exports.add(last_ns)
-    else:
-      self.exports.add(f"{last_ns}.{capture}")
+    if last_ns and last_ns.endswith(f".{capture}"):
+      last_ns = last_ns.replace(f".{capture}", "")
+    self.exports.add(Symbol(capture, last_ns, self.file_path))
+
+exps = []
 
 def run(directory):
   timer = TraceTimer()
@@ -66,11 +99,19 @@ def run(directory):
   timer.stop()
   logger.debug("Operation took %s seconds", timer.elapsed)
 
+  tf = tempfile.mkstemp()[1]
+  with open(tf, "w", encoding="utf8") as f:
+    f.write(json.dumps([*map(str, exps)]))
+    print(tf)
+
 def process_file(file_path):
+  global exps
   logger.debug("Collecting export data from file %s", file_path)
   walker = LineWalker(file_path)
-  walker.add_transformer(NamespaceCollector())
-  export_tf = ExportCollector()
+  ns_collector = NamespaceCollector()
+  walker.add_transformer(ns_collector)
+  export_tf = ExportCollector(ns_collector, file_path)
   walker.add_transformer(export_tf)
   walker.walk()
-  return list(export_tf.exports)
+  exps += export_tf.exports
+  return export_tf.exports

@@ -14,20 +14,17 @@ class LineWalker:
     self.tfs.append(tf)
 
   def walk(self):
-    logger.debug("Analyzing file: %s", self.file_path)
     with open(self.file_path, "r", encoding="utf8") as file:
       for line in file.readlines():
         self.analyze_line(line)
 
     if self.has_changed:
       res = "".join(self.out_lines)
-      #logger.debug("Result\n\n%s", res)
 
       if self.commit_changes:
         path = self.file_path
         if isinstance(self.commit_changes, str):
           path = self.commit_changes
-        logger.debug("Committing changes to %s", path)
         with open(path, "w", encoding="utf8") as file:
           file.write(res)
     else:

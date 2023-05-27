@@ -25,9 +25,10 @@
 3. Replace all namespace imports
     - Make sure things that reference them (in-file) are replaced 
 4. Gather all exports
-    - Make sure to grab their context
-    - Write them to a file
-5. Make everything explict/fully qualified
+    - Make sure to grab their context, and whatever other details
+5. Replace all export references w/ fully qualified
     - If it's an export, and the context matches, then change it
+    - If replacing it with a fully qualified 
+
 
 # POST

@@ -3,7 +3,7 @@ index 9c7c7f4..9bed714 100644
 --- a/ts/Reports/Classes/report.ts
 +++ b/ts/Reports/Classes/report.ts
 @@ -1,15 +1,15 @@
- ﻿/// <reference path="../../enums/datatype.ts" />
+ /// <reference path="../../enums/datatype.ts" />
  namespace Brightmetrics.Reports.Classes {
 -    export class Report implements BRIDs.IReportSaved {
 -        public accessLevel: BREs.AccessLevel;
@@ -575,7 +575,7 @@ index 2141634..97a68d8 100644
 --- a/ts/Reports/ViewModels/detailquerydialog.ts
 +++ b/ts/Reports/ViewModels/detailquerydialog.ts
 @@ -1,13 +1,10 @@
- ﻿// jshint ignore: start
+ // jshint ignore: start
  
  namespace Brightmetrics.Reports.ViewModels {
 -    import BVs = Brightmetrics.ViewModels;
@@ -3592,7 +3592,7 @@ index 3028f9a..6a95373 100644
 --- a/ts/Reports/ViewModels/reporteditortopbar.ts
 +++ b/ts/Reports/ViewModels/reporteditortopbar.ts
 @@ -1,17 +1,10 @@
- ﻿// jshint ignore: start
+ // jshint ignore: start
  
  namespace Brightmetrics.Reports.ViewModels {
 -    import BVs = Brightmetrics.ViewModels;

@@ -1,0 +1,5 @@
+[
+  "Brightmetrics.Admin.Interfaces.ILinkSettings",
+  "Brightmetrics.Admin.Interfaces.ILinkEntry",
+  "Brightmetrics.Admin.Interfaces.ILinkIpAddress"
+]

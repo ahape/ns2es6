@@ -15,10 +15,7 @@ class Transformer:
     if self.replacement is not None:
       res = self.match_rx.sub(self.replacement, text)
     if match := self.match_rx.search(text):
-      try:
-        self.handle_match(match[1] if match.groups() else None, match)
-      except KeyError:
-        print("KeyError -- ", match.groups(), match.string)
+      self.handle_match(match[1] if match.groups() else None, match)
     return res
 
   def handle_match(self, capture, match):

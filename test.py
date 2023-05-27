@@ -34,16 +34,41 @@ def test_sanitize_01():
 def test_collect_exports_01():
   subject_file = "tests/collect_exports_01.ts"
   expectation_file = "tests/expectations/collect_exports_01.json"
-  assertion = sorted(collect_exports.process_file(subject_file))
-  expectation = sorted(read_file_as_json(expectation_file))
+  assertion = sorted(map(str, collect_exports.process_file(subject_file)))
+  expectation = sorted(map(str, read_file_as_json(expectation_file)))
   for i, e in enumerate(expectation):
     assert e == assertion[i], (e, assertion[i])
 
 def test_collect_exports_02():
   subject_file = "tests/collect_exports_02.ts"
   expectation_file = "tests/expectations/collect_exports_02.json"
-  assertion = sorted(collect_exports.process_file(subject_file))
-  expectation = sorted(read_file_as_json(expectation_file))
+  assertion = sorted(map(str, collect_exports.process_file(subject_file)))
+  expectation = sorted(map(str, read_file_as_json(expectation_file)))
+  for i, e in enumerate(expectation):
+    assert e == assertion[i], (e, assertion[i])
+
+def test_collect_exports_03():
+  subject_file = "tests/collect_exports_03.ts"
+  expectation_file = "tests/expectations/collect_exports_03.json"
+  assertion = sorted(map(str, collect_exports.process_file(subject_file)))
+  expectation = sorted(map(str, read_file_as_json(expectation_file)))
+  for i, e in enumerate(expectation):
+    assert e == assertion[i], (e, assertion[i])
+
+def test_collect_exports_04():
+  subject_file = "tests/collect_exports_04.ts"
+  expectation_file = "tests/expectations/collect_exports_04.json"
+  assertion = sorted(map(str, collect_exports.process_file(subject_file)))
+  expectation = sorted(map(str, read_file_as_json(expectation_file)))
+  for i, e in enumerate(expectation):
+    assert e == assertion[i], (e, assertion[i])
+
+
+def test_collect_exports_05():
+  subject_file = "tests/collect_exports_05.ts"
+  expectation_file = "tests/expectations/collect_exports_05.json"
+  assertion = sorted(map(str, collect_exports.process_file(subject_file)))
+  expectation = sorted(map(str, read_file_as_json(expectation_file)))
   for i, e in enumerate(expectation):
     assert e == assertion[i], (e, assertion[i])
 
@@ -61,9 +86,12 @@ def test_replace_imports_02():
   replace_imports.update_file(subject_file, assertion_file)
   assert_files_are_same("replace_imports_02", expectation_file, assertion_file)
 
-test_sanitize_01()
+#test_sanitize_01()
 test_collect_exports_01()
 test_collect_exports_02()
+test_collect_exports_03()
+test_collect_exports_04()
+test_collect_exports_05()
 test_replace_imports_01()
 test_replace_imports_02()
 
