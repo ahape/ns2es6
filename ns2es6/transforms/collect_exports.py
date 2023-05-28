@@ -2,7 +2,7 @@ import os, re
 from ns2es6.utils.transformer import Transformer
 from ns2es6.utils.line_walker import LineWalker
 from ns2es6.utils.logger import logger
-from ns2es6.utils.trace_timer import TraceTimer
+from ns2es6.utils.trace_timer import trace
 from ns2es6.utils.symbol import Symbol
 from ns2es6.utils import helpers
 
@@ -58,6 +58,7 @@ class ExportCollector(Transformer):
       current_ns = current_ns.replace(f".{capture}", "")
     self.exports.add(Symbol(capture, current_ns, self.file_path))
 
+@trace("collect exports")
 def run(directory):
   exports = []
 
@@ -65,11 +66,7 @@ def run(directory):
     nonlocal exports
     exports += process_file(file_path)
 
-  timer = TraceTimer()
-  timer.start()
   helpers.for_each_file(directory, file_fn)
-  timer.stop()
-  logger.debug("Operation took %s seconds", timer.elapsed)
   return exports
 
 def process_file(file_path):

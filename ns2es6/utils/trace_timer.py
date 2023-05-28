@@ -1,4 +1,5 @@
 from time import time
+from ns2es6.utils.logger import logger
 
 class TraceTimer:
   def __init__(self):
@@ -20,3 +21,15 @@ class TraceTimer:
   @property
   def elapsed(self):
     return f"{self.duration:f}"
+
+def trace(name):
+  def wrap_1(fn):
+    def wrap_2(*args):
+      timer = TraceTimer()
+      timer.start()
+      res = fn(*args)
+      timer.stop()
+      logger.info("'%s' took %s seconds", name, timer.elapsed)
+      return res
+    return wrap_2
+  return wrap_1

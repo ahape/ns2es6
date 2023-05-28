@@ -2,7 +2,7 @@ import os, re
 from ns2es6.utils.transformer import Transformer
 from ns2es6.utils.line_walker import LineWalker
 from ns2es6.utils.logger import logger
-from ns2es6.utils.trace_timer import TraceTimer
+from ns2es6.utils.trace_timer import trace
 from ns2es6.utils.symbol import Symbol
 from ns2es6.utils import helpers
 from ns2es6.transforms.collect_exports import NamespaceCollector
@@ -75,14 +75,11 @@ def create_matcher(exports):
   symbols = list(set(map(lambda x: x.symbol, exports)))
   return r"\b(" + "|".join(symbols) + r")\b"
 
+@trace("fully qualify")
 def run(directory, exports):
-  timer = TraceTimer()
-  timer.start()
   symbols_rx = create_matcher(exports)
   helpers.for_each_file(directory,
     lambda x: update_file(x, exports, symbols_rx))
-  timer.stop()
-  logger.debug("Operation took %s seconds", timer.elapsed)
 
 def update_file(file_path, exports, symbols_rx):
   walker = LineWalker(file_path, True)

@@ -2,7 +2,7 @@ import os, re
 from ns2es6.utils.transformer import Transformer
 from ns2es6.utils.line_walker import LineWalker
 from ns2es6.utils.logger import logger
-from ns2es6.utils.trace_timer import TraceTimer
+from ns2es6.utils.trace_timer import trace
 from ns2es6.utils import helpers
 
 ns_start_rx = r"^namespace\s+(\S+)[ {]"
@@ -38,12 +38,9 @@ class NamespaceRemover(Transformer):
       self.match_rx = re.compile(ns_end_rx)
     return super().analyze(text)
 
+@trace("sanitize")
 def run(directory, commit_changes=False):
-  timer = TraceTimer()
-  timer.start()
   helpers.for_each_file(directory, lambda f: update_file(f, commit_changes))
-  timer.stop()
-  logger.debug("Operation took %s seconds", timer.elapsed)
 
 def update_file(file_path, commit_changes=False):
   logger.debug("Sanitizing file %s", file_path)

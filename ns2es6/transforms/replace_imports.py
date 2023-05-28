@@ -2,7 +2,7 @@ import os, re
 from ns2es6.utils.transformer import Transformer
 from ns2es6.utils.line_walker import LineWalker
 from ns2es6.utils.logger import logger
-from ns2es6.utils.trace_timer import TraceTimer
+from ns2es6.utils.trace_timer import trace
 from ns2es6.utils import helpers
 
 class ImportCollector(Transformer):
@@ -20,8 +20,8 @@ class ImportCollector(Transformer):
 class ImportReplacer(Transformer):
   def __init__(self, import_map):
     aliases = list(import_map.keys())
-    b = re.escape(".") 
-    e = re.escape(".[]()<>") 
+    b = re.escape(".")
+    e = re.escape(".[]()<>")
     rx = fr"(?<![{b}])\b(" + "|".join(aliases) + fr")(?=[{e}])" if aliases else None
     super().__init__(rx)
     self.import_map = import_map
@@ -36,12 +36,9 @@ class ImportReplacer(Transformer):
           logger.error("KeyError -- %s %s", capture, text)
     return text
 
+@trace("replace imports")
 def run(directory):
-  timer = TraceTimer()
-  timer.start()
   helpers.for_each_file(directory, lambda f: update_file(f, True))
-  timer.stop()
-  logger.debug("Operation took %s seconds", timer.elapsed)
 
 def update_file(file_path, commit_changes=False):
   logger.debug("Replacing import statements from file %s", file_path)

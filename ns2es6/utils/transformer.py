@@ -19,4 +19,4 @@ class Transformer:
     return res
 
   def handle_match(self, capture, match):
-    ...
+    pass
