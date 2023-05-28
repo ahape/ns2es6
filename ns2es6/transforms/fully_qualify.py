@@ -18,7 +18,7 @@ def create_lookup(exports):
       return memo[val]
     found = [addr for addr in arr if addr.endswith(val)]
     if found:
-      ret = memo[val] = found[0]
+      ret = memo[val] = found
       return ret
     return None
   return lookup_fn
@@ -56,7 +56,20 @@ class ExportReferenceReplacer(Transformer):
     return self.ns_collector.current
 
   def word_has_potential(self, word):
-    return not word.startswith(".") and self.lookup(word)
+    if word.startswith("."):
+      return None
+    potentials = self.lookup(word)
+    if potentials:
+      word = tuple(word.split("."))
+      namespace = tuple(self.current_ns.split("."))
+      for potential in potentials:
+        pot = tuple(potential.split("."))
+        while namespace:
+          if pot == namespace + word:
+            return potential
+          namespace = tuple(list(namespace)[:-1])
+    return None
+
 
   def analyze(self, text):
     for match in self.match_rx.finditer(text):
@@ -64,11 +77,8 @@ class ExportReferenceReplacer(Transformer):
         symbol = match[1]
         words = extract_words(text)
         for word in words:
-          if symbol in word and (addr := self.word_has_potential(word)):
-            if ok_to_replace(word, addr):
-              text = text.replace(word, addr)
-            else:
-              pass
+          if symbol in word and (full := self.word_has_potential(word)) and word in full:
+            text = re.sub(fr"\b({word})\b(?>![.])", full, text)
     return text
 
 def create_matcher(exports):

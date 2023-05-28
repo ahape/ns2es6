@@ -21,8 +21,8 @@ class ImportReplacer(Transformer):
   def __init__(self, import_map):
     aliases = list(import_map.keys())
     b = re.escape(".")
-    e = re.escape(".[]()<>")
-    rx = fr"(?<![{b}])\b(" + "|".join(aliases) + fr")(?=[{e}])" if aliases else None
+    e = re.escape(".[]()<> ;,")
+    rx = fr"(?<![{b}])\b(" + "|".join(aliases) + fr")\b(?=[{e}])" if aliases else None
     super().__init__(rx)
     self.import_map = import_map
 
@@ -31,7 +31,7 @@ class ImportReplacer(Transformer):
       for capture in list(set(self.match_rx.findall(text))):
         try:
           replacement = self.import_map[capture]
-          text = text.replace(capture, replacement)
+          text = re.sub(fr"\b({capture})\b", replacement, text)
         except KeyError:
           logger.error("KeyError -- %s %s", capture, text)
     return text
