@@ -51,7 +51,7 @@ def test_replace_imports(file_count):
     assert_files_are_same("replace_imports", expectation_file, assertion_file)
 
 #test_sanitize(1)
-test_collect_exports(6, only=6)
-#test_replace_imports(2)
+test_collect_exports(6)
+test_replace_imports(3)
 
 print("All tests passed!")

@@ -1,7 +1,8 @@
 import os, sys, argparse, logging
 from ns2es6.transforms import (sanitize,
                                collect_exports,
-                               replace_imports)
+                               replace_imports,
+                               fully_qualify)
 from ns2es6.utils.logger import logger
 
 def parse_args():
@@ -23,9 +24,10 @@ def program(args):
     os.system("git reset --hard start")
 
   apply_pre_patches(args)
-  collect_exports.run(args.directory)
+  exports = collect_exports.run(args.directory)
+  replace_imports.run(args.directory)
+  fully_qualify.run(args.directory, exports)
   sanitize.run(args.directory, True)
-  #replace_imports.run(args.directory)
 
 def apply_pre_patches(args):
   # TODO Eventually need to set a "git tag"

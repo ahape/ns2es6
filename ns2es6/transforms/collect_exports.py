@@ -1,4 +1,3 @@
-import tempfile, json
 import os, re
 from ns2es6.utils.transformer import Transformer
 from ns2es6.utils.line_walker import LineWalker
@@ -34,7 +33,6 @@ class NamespaceCollector(Transformer):
     if re.search(r"^\s*\}", text):
       # NOTE This isn't robust enough to handle poorly formatted code
       if self.col_stack and text.index("}") <= self.col_stack[-1]:
-        before = self.current
         self.col_stack.pop()
         self.ns_stack.pop()
     return super().analyze(text)
@@ -60,22 +58,21 @@ class ExportCollector(Transformer):
       current_ns = current_ns.replace(f".{capture}", "")
     self.exports.add(Symbol(capture, current_ns, self.file_path))
 
-exps = []
-
 def run(directory):
+  exports = []
+
+  def file_fn(file_path):
+    nonlocal exports
+    exports += process_file(file_path)
+
   timer = TraceTimer()
   timer.start()
-  helpers.for_each_file(directory, process_file)
+  helpers.for_each_file(directory, file_fn)
   timer.stop()
   logger.debug("Operation took %s seconds", timer.elapsed)
-
-  tf = tempfile.mkstemp()[1]
-  with open(tf, "w", encoding="utf8") as f:
-    f.write(json.dumps(sorted(map(str, exps))))
-    print(tf)
+  return exports
 
 def process_file(file_path):
-  global exps
   logger.debug("Collecting export data from file %s", file_path)
   walker = LineWalker(file_path)
   ns_collector = NamespaceCollector()
@@ -83,5 +80,4 @@ def process_file(file_path):
   export_tf = ExportCollector(ns_collector, file_path)
   walker.add_transformer(export_tf)
   walker.walk()
-  exps += export_tf.exports
   return export_tf.exports

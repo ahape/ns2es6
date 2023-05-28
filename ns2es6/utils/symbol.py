@@ -1,6 +1,10 @@
+import os, sys, re
+
 class Symbol:
   def __init__(self, symbol, ns, file):
     self.symbol = symbol
+    if ns is None:
+      raise TypeError("'ns' is None")
     self.ns = ns
     self.file = file
 
@@ -20,8 +24,4 @@ class Symbol:
 
   @property
   def address(self):
-    try:
       return self.ns + "." + self.symbol
-    except Exception as ex:
-      print(self.symbol, self.file)
-      raise ex
