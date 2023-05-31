@@ -40,9 +40,6 @@ def is_legit_match(match):
     "//" not in before and
     re_count(c_open_rx, before) <= re_count(c_close_rx, before))
 
-def ok_to_replace(word, addr):
-  return addr != word and len(word.split(".")) > 1
-
 class ExportReferenceReplacer(Transformer):
   def __init__(self, match_rx, ns_collector, exports, file_path):
     super().__init__(match_rx)
@@ -58,8 +55,7 @@ class ExportReferenceReplacer(Transformer):
   def word_has_potential(self, word):
     if word.startswith("."):
       return None
-    potentials = self.lookup(word)
-    if potentials:
+    if potentials := self.lookup(word):
       word = tuple(word.split("."))
       namespace = tuple(self.current_ns.split("."))
       for potential in potentials:
@@ -69,7 +65,6 @@ class ExportReferenceReplacer(Transformer):
             return potential
           namespace = tuple(list(namespace)[:-1])
     return None
-
 
   def analyze(self, text):
     for match in self.match_rx.finditer(text):

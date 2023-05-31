@@ -27,6 +27,8 @@ class ImportReplacer(Transformer):
     self.import_map = import_map
 
   def analyze(self, text):
+    if text.lstrip().startswith("//"):
+      return text
     if self.match_rx and self.match_rx.search(text):
       for capture in list(set(self.match_rx.findall(text))):
         try:
