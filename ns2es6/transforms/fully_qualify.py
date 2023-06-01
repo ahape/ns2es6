@@ -40,11 +40,10 @@ def is_legit_match(match):
     re_count(c_open_rx, before) <= re_count(c_close_rx, before))
 
 class ExportReferenceReplacer(Transformer):
-  def __init__(self, match_rx, ns_collector, exports, file_path):
+  def __init__(self, match_rx, ns_collector, exports):
     super().__init__(match_rx)
     self.exports = exports
     self.lookup = create_lookup(exports)
-    self.current_file = file_path
     self.ns_collector = ns_collector
 
   @property
@@ -54,7 +53,7 @@ class ExportReferenceReplacer(Transformer):
   def word_has_potential(self, word):
     if word.startswith("."):
       return None
-    best_choice = None
+    best_choice = { "parents": 100, "value": None }
     if potentials := self.lookup(word):
       word = tuple(word.split("."))
       for potential in potentials:
@@ -63,11 +62,12 @@ class ExportReferenceReplacer(Transformer):
         parents = 1
         while namespace:
           if pot == namespace + word:
-            if not best_choice or parents < best_choice["parents"]:
-              best_choice = { "parents": parents, "value": potential }
+            if parents < best_choice["parents"]:
+              best_choice["parents"] = parents
+              best_choice["value"] = potential
           parents += 1
           namespace = tuple(list(namespace)[:-1]) # (granny, papa, son) -> (granny, papa)
-    return best_choice["value"] if best_choice else None
+    return best_choice["value"]
 
   def analyze(self, text):
     for match in self.match_rx.finditer(text):
@@ -79,13 +79,9 @@ class ExportReferenceReplacer(Transformer):
             text = re.sub(fr"(?<![.])\b({word})\b(?=[^.:?])", full, text)
     return text
 
-def create_matcher(exports):
-  symbols = list(set(map(lambda x: x.symbol, exports)))
-  return r"\b(" + "|".join(symbols) + r")\b"
-
 @trace("fully qualify")
 def run(directory, exports):
-  symbols_rx = create_matcher(exports)
+  symbols_rx = helpers.create_export_matcher(exports)
   helpers.for_each_file(directory,
     lambda x: update_file(x, exports, symbols_rx))
 
@@ -96,6 +92,5 @@ def update_file(file_path, exports, symbols_rx):
   walker.add_transformer(ExportReferenceReplacer(
     symbols_rx,
     ns_collector,
-    exports,
-    file_path))
+    exports))
   walker.walk()

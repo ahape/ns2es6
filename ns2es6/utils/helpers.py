@@ -1,5 +1,9 @@
 import os, sys
 
+def create_export_matcher(exports):
+  symbols = list(set(map(lambda x: x.symbol, exports)))
+  return r"\b(" + "|".join(symbols) + r")\b"
+
 def should_exclude_file(file_path):
   return "node_modules" in file_path or \
       not file_path.endswith(".ts") or \

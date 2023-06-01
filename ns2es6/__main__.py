@@ -2,7 +2,8 @@ import os, sys, argparse, logging
 from ns2es6.transforms import (sanitize,
                                collect_exports,
                                replace_imports,
-                               fully_qualify)
+                               fully_qualify,
+                               replace_qualified_with_import)
 from ns2es6.utils.logger import logger
 
 def parse_args():
@@ -27,6 +28,7 @@ def program(args):
   exports = collect_exports.run(args.directory)
   replace_imports.run(args.directory)
   fully_qualify.run(args.directory, exports)
+  replace_qualified_with_import.run(args.directory, exports)
   sanitize.run(args.directory, True)
 
 def apply_pre_patches(args):
