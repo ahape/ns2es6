@@ -1,0 +1,110 @@
+diff --git a/ts/C2G/ViewModels/c2gvoiceanalytics.ts b/ts/C2G/ViewModels/c2gvoiceanalytics.ts
+index 8f374c9..1274d15 100644
+--- a/ts/C2G/ViewModels/c2gvoiceanalytics.ts
++++ b/ts/C2G/ViewModels/c2gvoiceanalytics.ts
+@@ -256,7 +256,7 @@ namespace Brightmetrics.C2G.ViewModels {
+     }
+ 
+     // tslint:disable:max-classes-per-file
+-    class TagsVM {
++    export class TagsVM {
+         public ruleSets: TagsVM.RuleSet[];
+ 
+         constructor(props: TagsVM.IProps) {
+@@ -297,7 +297,7 @@ namespace Brightmetrics.C2G.ViewModels {
+         }
+     }
+ 
+-    namespace TagsVM {
++    export namespace TagsVM {
+ 
+         export interface IProps {
+             compiled: IAnalyticsDataGrouping[];
+diff --git a/ts/Dashboard/ViewModels/page.ts b/ts/Dashboard/ViewModels/page.ts
+index 954ea15..401ad77 100644
+--- a/ts/Dashboard/ViewModels/page.ts
++++ b/ts/Dashboard/ViewModels/page.ts
+@@ -88,8 +88,8 @@ namespace Brightmetrics.Dashboard.ViewModels {
+     }
+ 
+     function initTheme() {
+-        Brightmetrics.theme.subscribe((theme) => {
+-            if (theme === Brightmetrics.Enums.Theme.Dark) {
++        Brightmetrics.theme.subscribe((_theme) => {
++            if (_theme === Brightmetrics.Enums.Theme.Dark) {
+                 configureDarkTheme();
+             } else {
+                 configureDefaultTheme();
+diff --git a/ts/MyAccount/ViewModels/page.ts b/ts/MyAccount/ViewModels/page.ts
+index 8408511..7fca7fa 100644
+--- a/ts/MyAccount/ViewModels/page.ts
++++ b/ts/MyAccount/ViewModels/page.ts
+@@ -6,13 +6,13 @@ namespace Brightmetrics.MyAccount.ViewModels {
+     import BIVs = Brightmetrics.Insights.ViewModels;
+ 
+     enum TabName {
+-        MyAccount = "My Account",
++        MyAccountTab = "My Account",
+     }
+ 
+     interface ITab { name: string; }
+ 
+     const tabs: ITab[] = [
+-        { name: TabName.MyAccount }
++        { name: TabName.MyAccountTab }
+     ];
+ 
+     export class Page extends BVs.PageBase {
+@@ -53,7 +53,7 @@ namespace Brightmetrics.MyAccount.ViewModels {
+ 
+             this.main = ko.computed(() => {
+                 switch (this.activeTabName()) {
+-                    case TabName.MyAccount:
++                    case TabName.MyAccountTab:
+                         return {
+                             data: this.myAccount,
+                             name: "my-account-view-template",
+diff --git a/ts/Reports/ViewModels/report-field-editor.ts b/ts/Reports/ViewModels/report-field-editor.ts
+index ecd0f02..76b84dd 100644
+--- a/ts/Reports/ViewModels/report-field-editor.ts
++++ b/ts/Reports/ViewModels/report-field-editor.ts
+@@ -292,7 +292,7 @@ namespace Brightmetrics.Reports.ViewModels {
+         removeThreshold(toRemove: Brightmetrics.Reports.Interfaces.DTOs.IReportThreshold): void;
+     }
+ 
+-    namespace Widget {
++    export namespace Widget {
+         export const Id = {
+             AvailableCommonDimensions: "COMMON DIMENSIONS",
+             AvailableDimensions: "AVAILABLE DIMENSIONS",
+@@ -411,7 +411,7 @@ namespace Brightmetrics.Reports.ViewModels {
+         }
+     }
+ 
+-    namespace Widget.Item {
++    export namespace Widget.Item {
+         export type Props = Widget.Props & {
+             hasFilter: KnockoutComputed<boolean>;
+             helper: IFieldHelperExtended;
+diff --git a/ts/utils.ts b/ts/utils.ts
+index 0772f3a..a4810fb 100644
+--- a/ts/utils.ts
++++ b/ts/utils.ts
+@@ -7855,7 +7855,7 @@ days of reporting. To upgrade, please contact`);
+         /**
+          * Important to call this before `ko.applyBindings`.
+          */
+-        export function listenToDOMEvents(events: string[], warnAfter?: number) {
++        export function listenToDOMEvents(_events: string[], warnAfter?: number) {
+             domEventTool = new DOMEventTracker();
+             frameTool = new FrameAnalyzer((exceededDuration) => {
+                 logError(
+@@ -7870,7 +7870,7 @@ days of reporting. To upgrade, please contact`);
+                     bugsnagGroupingHash);
+             });
+ 
+-            domEventTool.init(events);
++            domEventTool.init(_events);
+             frameTool.init();
+         }
+ 

@@ -16,8 +16,7 @@ def create_lookup(exports):
   def lookup_fn(val):
     if val in memo:
       return memo[val]
-    found = [addr for addr in arr if addr.endswith(val)]
-    if found:
+    if found := [addr for addr in arr if addr.endswith(val)]:
       ret = memo[val] = found
       return ret
     return None
@@ -55,16 +54,20 @@ class ExportReferenceReplacer(Transformer):
   def word_has_potential(self, word):
     if word.startswith("."):
       return None
+    best_choice = None
     if potentials := self.lookup(word):
       word = tuple(word.split("."))
-      namespace = tuple(self.current_ns.split("."))
       for potential in potentials:
+        namespace = tuple(self.current_ns.split("."))
         pot = tuple(potential.split("."))
+        parents = 1
         while namespace:
           if pot == namespace + word:
-            return potential
-          namespace = tuple(list(namespace)[:-1])
-    return None
+            if not best_choice or parents < best_choice["parents"]:
+              best_choice = { "parents": parents, "value": potential }
+          parents += 1
+          namespace = tuple(list(namespace)[:-1]) # (granny, papa, son) -> (granny, papa)
+    return best_choice["value"] if best_choice else None
 
   def analyze(self, text):
     for match in self.match_rx.finditer(text):
@@ -73,7 +76,7 @@ class ExportReferenceReplacer(Transformer):
         words = extract_words(text)
         for word in words:
           if symbol in word and (full := self.word_has_potential(word)) and word in full:
-            text = re.sub(fr"\b({word})\b(?>![.])", full, text)
+            text = re.sub(fr"(?<![.])\b({word})\b(?=[^.:?])", full, text)
     return text
 
 def create_matcher(exports):
