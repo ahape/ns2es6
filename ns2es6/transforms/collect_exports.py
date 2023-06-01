@@ -51,7 +51,7 @@ class ExportCollector(Transformer):
     self.ns_collector = ns_collector
 
   def handle_match(self, capture, match):
-    # xTODO: Make these proper objects
+    # TODO: Make these proper objects
     current_ns = self.ns_collector.current
     # If the export is a namespace _itself_, avoid dup
     if current_ns and current_ns.endswith(f".{capture}"):
