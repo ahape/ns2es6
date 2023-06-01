@@ -1,8 +1,8 @@
 diff --git a/ts/Admin/DataCustomization/Interfaces/igrouprowprops.ts b/ts/Admin/DataCustomization/Interfaces/igrouprowprops.ts
-index b14c221..36f9c70 100644
+index 2c2697a..9eb7e2a 100644
 --- a/ts/Admin/DataCustomization/Interfaces/igrouprowprops.ts
 +++ b/ts/Admin/DataCustomization/Interfaces/igrouprowprops.ts
-@@ -4,6 +4,6 @@
+@@ -4,6 +4,6 @@ namespace Brightmetrics.Admin.DataCustomization.Interfaces {
          customItem: Types.CustomItem;
          name: string;
          editCustomItem: () => void;
@@ -11,10 +11,10 @@ index b14c221..36f9c70 100644
      }
  }
 diff --git a/ts/Admin/DataCustomization/Interfaces/iungroupeddata.ts b/ts/Admin/DataCustomization/Interfaces/iungroupeddata.ts
-index cfcd982..9623635 100644
+index 3c04dd9..9870aec 100644
 --- a/ts/Admin/DataCustomization/Interfaces/iungroupeddata.ts
 +++ b/ts/Admin/DataCustomization/Interfaces/iungroupeddata.ts
-@@ -7,7 +7,7 @@
+@@ -7,7 +7,7 @@ namespace Brightmetrics.Admin.DataCustomization.Interfaces {
          customItem: Types.CustomItem;
          customItemIndex: number;
          editCustomItem: () => void;
@@ -24,10 +24,10 @@ index cfcd982..9623635 100644
      }
  }
 diff --git a/ts/Admin/DataCustomization/ViewModels/ccfeditorview.ts b/ts/Admin/DataCustomization/ViewModels/ccfeditorview.ts
-index 04182a4..83bef15 100644
+index a5928e0..23ee73d 100644
 --- a/ts/Admin/DataCustomization/ViewModels/ccfeditorview.ts
 +++ b/ts/Admin/DataCustomization/ViewModels/ccfeditorview.ts
-@@ -14,8 +14,8 @@
+@@ -14,8 +14,8 @@ namespace Brightmetrics.Admin.DataCustomization.ViewModels {
          valueIndex?: number;
          dsi: BIs.IDataSourceInstance;
          onBack(): void;
@@ -39,10 +39,10 @@ index 04182a4..83bef15 100644
  
      export class CCFEditorView extends Brightmetrics.ViewModel implements Interfaces.IView {
 diff --git a/ts/Admin/DataCustomization/ViewModels/cddeditorview.ts b/ts/Admin/DataCustomization/ViewModels/cddeditorview.ts
-index 6c2bbcf..52a2bb7 100644
+index f38c83a..20cfc9a 100644
 --- a/ts/Admin/DataCustomization/ViewModels/cddeditorview.ts
 +++ b/ts/Admin/DataCustomization/ViewModels/cddeditorview.ts
-@@ -104,8 +104,8 @@
+@@ -104,8 +104,8 @@ namespace Brightmetrics.Admin.DataCustomization.ViewModels {
          dsg: BIs.IDataSourceGroup;
          dsi: BIs.IDataSourceInstance;
          onBack(): void;
@@ -54,10 +54,10 @@ index 6c2bbcf..52a2bb7 100644
  
      export class CDDEditorView extends Brightmetrics.ViewModel implements Interfaces.IView {
 diff --git a/ts/Admin/DataCustomization/ViewModels/pageview.ts b/ts/Admin/DataCustomization/ViewModels/pageview.ts
-index 7086cdd..33684aa 100644
+index f4860af..50459d9 100644
 --- a/ts/Admin/DataCustomization/ViewModels/pageview.ts
 +++ b/ts/Admin/DataCustomization/ViewModels/pageview.ts
-@@ -68,7 +68,7 @@
+@@ -68,7 +68,7 @@ namespace Brightmetrics.Admin.DataCustomization.ViewModels {
              return data;
          }
  
@@ -66,7 +66,7 @@ index 7086cdd..33684aa 100644
              const ajax = Utils.ajaxRequest(
                  `/DataSourceInstance/${this._dsiForItem.Id}/CustomCalculatedFields`,
                  ccf);
-@@ -100,7 +100,7 @@
+@@ -100,7 +100,7 @@ namespace Brightmetrics.Admin.DataCustomization.ViewModels {
              return ajax;
          }
  
@@ -75,7 +75,7 @@ index 7086cdd..33684aa 100644
              const ajax = Utils.ajaxRequest(
                  `/DataSourceInstance/${this._dsiForItem.Id}/CustomDetailDimensions`,
                  cdd);
-@@ -152,7 +152,7 @@
+@@ -152,7 +152,7 @@ namespace Brightmetrics.Admin.DataCustomization.ViewModels {
              cdd: BIs.ICustomDetailDimension,
              cddIndex: number,
              dsi: BIs.IDataSourceInstance)
@@ -84,7 +84,7 @@ index 7086cdd..33684aa 100644
          {
              const buttonLabel = "DELETE";
              const isLoading = ko.observable(false);
-@@ -221,7 +221,7 @@
+@@ -221,7 +221,7 @@ namespace Brightmetrics.Admin.DataCustomization.ViewModels {
          private _deleteCCF(
              dsi: BIs.IDataSourceInstance,
              ccf: BIs.ICustomCalculatedField)
@@ -116,7 +116,7 @@ index 1608bc1..4c6d88e 100644
  
              if (data.billingInfo) {
 diff --git a/ts/Admin/ViewModels/dashboardtickersetting.ts b/ts/Admin/ViewModels/dashboardtickersetting.ts
-index 144bb2f..6a18e80 100644
+index 8f39bbd..e9c03cd 100644
 --- a/ts/Admin/ViewModels/dashboardtickersetting.ts
 +++ b/ts/Admin/ViewModels/dashboardtickersetting.ts
 @@ -18,7 +18,7 @@ namespace Brightmetrics.Admin.ViewModels {
@@ -147,10 +147,10 @@ index 144bb2f..6a18e80 100644
  
              this.events.onCancelClick = () => {
 diff --git a/ts/Admin/VoiceAnalytics/ViewModels/addrulesetdialog.ts b/ts/Admin/VoiceAnalytics/ViewModels/addrulesetdialog.ts
-index 26d898a..2128885 100644
+index a987233..44c1625 100644
 --- a/ts/Admin/VoiceAnalytics/ViewModels/addrulesetdialog.ts
 +++ b/ts/Admin/VoiceAnalytics/ViewModels/addrulesetdialog.ts
-@@ -2,7 +2,7 @@
+@@ -2,7 +2,7 @@ namespace Brightmetrics.Admin.VoiceAnalytics.ViewModels {
      import VAIs = Brightmetrics.VoiceAnalytics.Interfaces;
  
      interface IAddRuleSetDialogProps {
@@ -333,10 +333,10 @@ index 545325f..b338292 100644
              const request = new RuleSetTagRequest(tagCategoryId);
              request.value = tag;
 diff --git a/ts/Admin/VoiceAnalytics/ViewModels/pageview.ts b/ts/Admin/VoiceAnalytics/ViewModels/pageview.ts
-index 17d4745..8c61e8c 100644
+index 7708661..d1e23e1 100644
 --- a/ts/Admin/VoiceAnalytics/ViewModels/pageview.ts
 +++ b/ts/Admin/VoiceAnalytics/ViewModels/pageview.ts
-@@ -22,7 +22,7 @@
+@@ -22,7 +22,7 @@ namespace Brightmetrics.Admin.VoiceAnalytics.ViewModels {
              super();
          }
  
@@ -345,7 +345,7 @@ index 17d4745..8c61e8c 100644
              return Utils.ajaxRequest(`/VoiceAnalytics/${defCompanyId}/Profiles`,
                   { profile: JSON.stringify(profile) })
                  .then((response: { profile: VAIs.IProfile }) => {
-@@ -33,7 +33,7 @@
+@@ -33,7 +33,7 @@ namespace Brightmetrics.Admin.VoiceAnalytics.ViewModels {
          }
  
          private _updateProfile(profile: VAIs.IProfile, tagCategoryChanges: Record<string, any>)
@@ -354,7 +354,7 @@ index 17d4745..8c61e8c 100644
              const payload: Record<string, any> = { profile: JSON.stringify(profile) };
  
              _.keys(tagCategoryChanges).forEach((key) => {
-@@ -51,7 +51,7 @@
+@@ -51,7 +51,7 @@ namespace Brightmetrics.Admin.VoiceAnalytics.ViewModels {
                  });
          }
  
@@ -363,7 +363,7 @@ index 17d4745..8c61e8c 100644
              return Utils.ajaxRequest(`/VoiceAnalytics/${defCompanyId}/Profiles/${profileId}`, {
                  _realMethod: "DELETE",
              }).then((response: { success: boolean; }) => {
-@@ -83,7 +83,7 @@
+@@ -83,7 +83,7 @@ namespace Brightmetrics.Admin.VoiceAnalytics.ViewModels {
              return null;
          }
  
@@ -372,7 +372,7 @@ index 17d4745..8c61e8c 100644
              // NOTE: ruleSet passed in as arg has temporary ID.
              // ruleSet returned from the request has *actual* ID
              delete (ruleSet as any).ruleSetId;
-@@ -99,7 +99,7 @@
+@@ -99,7 +99,7 @@ namespace Brightmetrics.Admin.VoiceAnalytics.ViewModels {
                  }, () => this._handleAddRuleSetRequestFail(ruleSet));
          }
  
@@ -381,7 +381,7 @@ index 17d4745..8c61e8c 100644
              const defd = $.Deferred<unknown>();
              const _ = new AddRuleSetDialog({
                  duplicate: ruleSet,
-@@ -113,7 +113,7 @@
+@@ -113,7 +113,7 @@ namespace Brightmetrics.Admin.VoiceAnalytics.ViewModels {
              return defd.promise();
          }
  
@@ -390,7 +390,7 @@ index 17d4745..8c61e8c 100644
              const defd = $.Deferred<unknown>();
              const _ = new AddRuleSetDialog({
                  onAdd: (rs) => {
-@@ -126,7 +126,7 @@
+@@ -126,7 +126,7 @@ namespace Brightmetrics.Admin.VoiceAnalytics.ViewModels {
              return defd.promise();
          }
  
@@ -399,7 +399,7 @@ index 17d4745..8c61e8c 100644
              const defd = $.Deferred<unknown>();
              Utils.basicConfirm2({
                  content: `Are you sure you want to delete the tag category ${tagCategory.name}?`,
-@@ -145,7 +145,7 @@
+@@ -145,7 +145,7 @@ namespace Brightmetrics.Admin.VoiceAnalytics.ViewModels {
              return defd.promise();
          }
  
@@ -408,7 +408,7 @@ index 17d4745..8c61e8c 100644
              const defd = $.Deferred<unknown>();
              const _ = new AddTagCategoryDialog({
                  onAction: (tc) => {
-@@ -159,7 +159,7 @@
+@@ -159,7 +159,7 @@ namespace Brightmetrics.Admin.VoiceAnalytics.ViewModels {
  
          private _editTagCategoryDialog = (
              tagCategory: VAIs.ITagCategory,
@@ -417,7 +417,7 @@ index 17d4745..8c61e8c 100644
  
              const defd = $.Deferred<VAIs.ITagCategory>();
              const _ = new EditTagCategoryDialog({
-@@ -174,7 +174,7 @@
+@@ -174,7 +174,7 @@ namespace Brightmetrics.Admin.VoiceAnalytics.ViewModels {
              return defd.promise();
          };
  
@@ -426,7 +426,7 @@ index 17d4745..8c61e8c 100644
              const defd = $.Deferred<unknown>();
              Utils.basicConfirm2({
                  content: `Are you sure you want to delete the Rule Set ${ruleSet.name}?`,
-@@ -194,7 +194,7 @@
+@@ -194,7 +194,7 @@ namespace Brightmetrics.Admin.VoiceAnalytics.ViewModels {
          }
  
          private _addRuleSet = (ruleSet: VAIs.IRuleSet, skipEditing: boolean = false)
@@ -435,7 +435,7 @@ index 17d4745..8c61e8c 100644
          {
              return this._sendAddRuleSetRequest(ruleSet).then((responseRuleSet) => {
                  if (responseRuleSet) {
-@@ -299,7 +299,7 @@
+@@ -299,7 +299,7 @@ namespace Brightmetrics.Admin.VoiceAnalytics.ViewModels {
          };
  
          private _sendAddRuleRequest = (ruleSet: VAIs.IRuleSet, type: "allOf" | "anyOf" | "noneOf")
@@ -444,7 +444,7 @@ index 17d4745..8c61e8c 100644
              return Utils.ajaxRequest(`/VoiceAnalytics/${defCompanyId}/RuleSets/${ruleSet.ruleSetId}/Rule`,
                   { type })
                  .then((response: { success: boolean; rule: VAIs.IRule }) => {
-@@ -354,7 +354,7 @@
+@@ -354,7 +354,7 @@ namespace Brightmetrics.Admin.VoiceAnalytics.ViewModels {
                  ["error"]);
          }
  
@@ -453,7 +453,7 @@ index 17d4745..8c61e8c 100644
              return Utils.ajaxRequest(`/VoiceAnalytics/${defCompanyId}/RuleSets/${ruleSet.ruleSetId}`, {
                  _realMethod: "DELETE"
              }).then((response) => {
-@@ -366,7 +366,7 @@
+@@ -366,7 +366,7 @@ namespace Brightmetrics.Admin.VoiceAnalytics.ViewModels {
              }, () => this._handleDeleteRuleSetRequestFail(ruleSet));
          }
  
@@ -463,7 +463,7 @@ index 17d4745..8c61e8c 100644
                  `/VoiceAnalytics/${defCompanyId}/TagCategories/${tagCategory.id}`, {
                  _realMethod: "DELETE"
 diff --git a/ts/Admin/VoiceAnalytics/ViewModels/ruleset.ts b/ts/Admin/VoiceAnalytics/ViewModels/ruleset.ts
-index b5c2423..a8327f0 100644
+index 45de789..d9da17a 100644
 --- a/ts/Admin/VoiceAnalytics/ViewModels/ruleset.ts
 +++ b/ts/Admin/VoiceAnalytics/ViewModels/ruleset.ts
 @@ -7,9 +7,9 @@ namespace Brightmetrics.Admin.VoiceAnalytics.ViewModels {
@@ -542,10 +542,10 @@ index 1945c73..90fc1a1 100644
          pillLabel: KnockoutComputed<string>;
      }
 diff --git a/ts/AudioAlerts/Classes/alerter.ts b/ts/AudioAlerts/Classes/alerter.ts
-index fef4e09..ac6c645 100644
+index 096c2ac..d436d5d 100644
 --- a/ts/AudioAlerts/Classes/alerter.ts
 +++ b/ts/AudioAlerts/Classes/alerter.ts
-@@ -111,7 +111,7 @@
+@@ -111,7 +111,7 @@ namespace Brightmetrics.AudioAlerts.Classes {
           * apply the audio alert animation, so we swallow the exception and
           * resolve the promise anyway after a 2 second timeout.
           */
@@ -554,7 +554,7 @@ index fef4e09..ac6c645 100644
              const defd = $.Deferred();
              const fakePlaybackTimeout = 2000;
  
-@@ -145,7 +145,7 @@
+@@ -145,7 +145,7 @@ namespace Brightmetrics.AudioAlerts.Classes {
  
                      const playPromise = audioElement.play();
  
@@ -563,7 +563,7 @@ index fef4e09..ac6c645 100644
                      if (playPromise) {
                          playPromise.catch((err) => {
                              // UserAgent might be blocking sound content.
-@@ -172,7 +172,7 @@
+@@ -172,7 +172,7 @@ namespace Brightmetrics.AudioAlerts.Classes {
              return defd.promise();
          }
  
@@ -573,7 +573,7 @@ index fef4e09..ac6c645 100644
  
              return this._getAudioPlayPromise();
 diff --git a/ts/C2G/ViewModels/c2g.ts b/ts/C2G/ViewModels/c2g.ts
-index d5dffb3..65e4ec7 100644
+index 5252297..9fecbda 100644
 --- a/ts/C2G/ViewModels/c2g.ts
 +++ b/ts/C2G/ViewModels/c2g.ts
 @@ -754,7 +754,7 @@ namespace Brightmetrics.C2G.ViewModels {
@@ -586,7 +586,7 @@ index d5dffb3..65e4ec7 100644
                              // Make sure our categories are sorted such that
                              // groups appear before agents.
 diff --git a/ts/Dashboard/CreateDashboardWizard/createdashboarddialog.ts b/ts/Dashboard/CreateDashboardWizard/createdashboarddialog.ts
-index 49b2611..02e8375 100644
+index 9c45694..98f4ab5 100644
 --- a/ts/Dashboard/CreateDashboardWizard/createdashboarddialog.ts
 +++ b/ts/Dashboard/CreateDashboardWizard/createdashboarddialog.ts
 @@ -17,7 +17,7 @@ namespace Brightmetrics.Dashboard.CreateDashboardWizard.ViewModels {
@@ -599,10 +599,10 @@ index 49b2611..02e8375 100644
  
      // #region SUMMARY DIALOG
 diff --git a/ts/Dashboard/Interfaces/itabactions.ts b/ts/Dashboard/Interfaces/itabactions.ts
-index 42adf84..cc47e85 100644
+index 0a680ec..56b5b99 100644
 --- a/ts/Dashboard/Interfaces/itabactions.ts
 +++ b/ts/Dashboard/Interfaces/itabactions.ts
-@@ -3,16 +3,16 @@
+@@ -3,16 +3,16 @@ namespace Brightmetrics.Dashboard.Interfaces {
          addState(pastStateReason: Enums.PastStateReason, pastStateInfo?: string): void;
          beginChartOptions(): void;
          abortPreChartOptions(): void;
@@ -623,7 +623,7 @@ index 42adf84..cc47e85 100644
      }
  
      interface INewPartnerTabResponse {
-@@ -21,8 +21,8 @@
+@@ -21,8 +21,8 @@ namespace Brightmetrics.Dashboard.Interfaces {
      }
  
      export interface IPartnerTabActions extends ITabActionsBase {
@@ -635,10 +635,10 @@ index 42adf84..cc47e85 100644
          openCustomerMgmtDialog(): void;
      }
 diff --git a/ts/Dashboard/Realtime/agentinfo.ts b/ts/Dashboard/Realtime/agentinfo.ts
-index ec6a631..4ce4617 100644
+index 86a3dba..8482c12 100644
 --- a/ts/Dashboard/Realtime/agentinfo.ts
 +++ b/ts/Dashboard/Realtime/agentinfo.ts
-@@ -48,7 +48,7 @@
+@@ -48,7 +48,7 @@ namespace Brightmetrics.Dashboard.Realtime {
              return Date.parse(this.timestamp + "Z") < (Date.now() - (3 * 60 * 1000));
          }
  
@@ -648,7 +648,7 @@ index ec6a631..4ce4617 100644
              this.nextTry = Date.now() + Math.round(10000 * Math.pow(1.8, Math.min(10, this.timesRequested)));
              this.startingRealtime(true);
 diff --git a/ts/Dashboard/Realtime/ccgs.ts b/ts/Dashboard/Realtime/ccgs.ts
-index 883ce4a..7ed32e3 100644
+index bdcb8d7..afc63f4 100644
 --- a/ts/Dashboard/Realtime/ccgs.ts
 +++ b/ts/Dashboard/Realtime/ccgs.ts
 @@ -737,7 +737,7 @@ namespace Brightmetrics.Dashboard.Realtime {
@@ -724,7 +724,7 @@ index 883ce4a..7ed32e3 100644
  
                      if (_.size(groupNames) > 0) {
 diff --git a/ts/Dashboard/Realtime/micc-realtime-demo-proxy.ts b/ts/Dashboard/Realtime/micc-realtime-demo-proxy.ts
-index d6b556c..95ee76d 100644
+index f5dfa33..ac02991 100644
 --- a/ts/Dashboard/Realtime/micc-realtime-demo-proxy.ts
 +++ b/ts/Dashboard/Realtime/micc-realtime-demo-proxy.ts
 @@ -1349,7 +1349,7 @@ namespace Brightmetrics.Dashboard.Realtime {
@@ -737,7 +737,7 @@ index d6b556c..95ee76d 100644
      }
  }
 diff --git a/ts/Dashboard/Realtime/purecloud-realtime-demo-proxy.ts b/ts/Dashboard/Realtime/purecloud-realtime-demo-proxy.ts
-index cfc11ac..981894d 100644
+index 61f7e61..99f5e67 100644
 --- a/ts/Dashboard/Realtime/purecloud-realtime-demo-proxy.ts
 +++ b/ts/Dashboard/Realtime/purecloud-realtime-demo-proxy.ts
 @@ -1934,7 +1934,7 @@ namespace Brightmetrics.Dashboard.Realtime {
@@ -750,10 +750,10 @@ index cfc11ac..981894d 100644
      }
  }
 diff --git a/ts/Dashboard/Realtime/realtime-demo-hub.ts b/ts/Dashboard/Realtime/realtime-demo-hub.ts
-index f80242c..562601b 100644
+index 3da8ce9..6fea397 100644
 --- a/ts/Dashboard/Realtime/realtime-demo-hub.ts
 +++ b/ts/Dashboard/Realtime/realtime-demo-hub.ts
-@@ -41,7 +41,7 @@
+@@ -41,7 +41,7 @@ namespace Brightmetrics.Dashboard.Realtime {
                  }
                  deferred.resolve();
              }, 500);
@@ -763,7 +763,7 @@ index f80242c..562601b 100644
          public createHubProxy(hubName: string): SignalR.Hub.Proxy {
              const proxy = this.demoType === "pure" ? new PureCloudDemoProxy() :
 diff --git a/ts/Dashboard/Realtime/realtime-demo-proxy.ts b/ts/Dashboard/Realtime/realtime-demo-proxy.ts
-index ba40928..b108517 100644
+index 8f1039e..7bc55d7 100644
 --- a/ts/Dashboard/Realtime/realtime-demo-proxy.ts
 +++ b/ts/Dashboard/Realtime/realtime-demo-proxy.ts
 @@ -1357,7 +1357,7 @@ namespace Brightmetrics.Dashboard.Realtime {
@@ -776,7 +776,7 @@ index ba40928..b108517 100644
      }
  }
 diff --git a/ts/Dashboard/Realtime/realtimehub.ts b/ts/Dashboard/Realtime/realtimehub.ts
-index 81973e0..5a7d398 100644
+index dc0fc61..2e267d7 100644
 --- a/ts/Dashboard/Realtime/realtimehub.ts
 +++ b/ts/Dashboard/Realtime/realtimehub.ts
 @@ -66,7 +66,7 @@ namespace Brightmetrics.Dashboard.Realtime {
@@ -861,7 +861,7 @@ index 81973e0..5a7d398 100644
                  });
              }
 diff --git a/ts/Dashboard/ViewModels/alertsettingsdialog.ts b/ts/Dashboard/ViewModels/alertsettingsdialog.ts
-index 8e23f75..2e4fc80 100644
+index 86a036f..3e10458 100644
 --- a/ts/Dashboard/ViewModels/alertsettingsdialog.ts
 +++ b/ts/Dashboard/ViewModels/alertsettingsdialog.ts
 @@ -73,7 +73,7 @@ namespace Brightmetrics.Dashboard.ViewModels {
@@ -905,7 +905,7 @@ index c46ec92..228dd70 100644
  <br />
  Please ${getContactSupportText()} for more information
 diff --git a/ts/Dashboard/ViewModels/chartoptionsdialog.ts b/ts/Dashboard/ViewModels/chartoptionsdialog.ts
-index cc93f24..9e6e7d4 100644
+index f6338b7..c84ca03 100644
 --- a/ts/Dashboard/ViewModels/chartoptionsdialog.ts
 +++ b/ts/Dashboard/ViewModels/chartoptionsdialog.ts
 @@ -249,13 +249,13 @@ Count) can be charted together.`),
@@ -967,7 +967,7 @@ index cc93f24..9e6e7d4 100644
                              this._removeInvalidAlerts();
  
 diff --git a/ts/Dashboard/ViewModels/copychartdialog.ts b/ts/Dashboard/ViewModels/copychartdialog.ts
-index 1b36d88..18a6900 100644
+index 91a0a15..33bc5f2 100644
 --- a/ts/Dashboard/ViewModels/copychartdialog.ts
 +++ b/ts/Dashboard/ViewModels/copychartdialog.ts
 @@ -15,7 +15,7 @@ namespace Brightmetrics.Dashboard.ViewModels {
@@ -980,7 +980,7 @@ index 1b36d88..18a6900 100644
  
      export class CopyChartDialog extends BVs.DialogViewModel {
 diff --git a/ts/Dashboard/ViewModels/customcolumngroupsdialog.ts b/ts/Dashboard/ViewModels/customcolumngroupsdialog.ts
-index ee93da8..3ba82f2 100644
+index e0f8269..0ffa13d 100644
 --- a/ts/Dashboard/ViewModels/customcolumngroupsdialog.ts
 +++ b/ts/Dashboard/ViewModels/customcolumngroupsdialog.ts
 @@ -60,7 +60,7 @@ namespace Brightmetrics.Dashboard.ViewModels {
@@ -1002,10 +1002,10 @@ index ee93da8..3ba82f2 100644
  
              const msDialog: MultipleSelect.ViewModels.MultipleSelectDialog =
 diff --git a/ts/Dashboard/ViewModels/dashboard.ts b/ts/Dashboard/ViewModels/dashboard.ts
-index 8ec3611..c5e797a 100644
+index e43596e..b683be2 100644
 --- a/ts/Dashboard/ViewModels/dashboard.ts
 +++ b/ts/Dashboard/ViewModels/dashboard.ts
-@@ -48,7 +48,7 @@
+@@ -48,7 +48,7 @@ namespace Brightmetrics.Dashboard.ViewModels {
          tabActions: Interfaces.ITabActionsBase;
          pdtProps?: IPartnerDashboardTemplateProps;
          isCancelButtonEnabled?: KnockoutComputed<boolean>;
@@ -1014,7 +1014,7 @@ index 8ec3611..c5e797a 100644
          createChartBoxFromClassic(otherBoxes: IFlowgridBox[], chart: DTOs.IChart): Classes.ChartBox;
          onRedo(callback: (
              from: Interfaces.IDashboardTab,
-@@ -85,7 +85,7 @@
+@@ -85,7 +85,7 @@ namespace Brightmetrics.Dashboard.ViewModels {
          private _dataRefreshTimer: number;
          private _createChartBoxFromClassic: (otherBoxes: IFlowgridBox[], chart: DTOs.IChart) => Classes.ChartBox;
          private canEdit: boolean;
@@ -1023,7 +1023,7 @@ index 8ec3611..c5e797a 100644
          private _allTabs: KnockoutComputed<Interfaces.IDashboardTab[]>;
  
          // #region PARTNER TEMPLATES ONLY
-@@ -160,7 +160,7 @@
+@@ -160,7 +160,7 @@ namespace Brightmetrics.Dashboard.ViewModels {
              }).open();
          }
  
@@ -1032,7 +1032,7 @@ index 8ec3611..c5e797a 100644
              const tab = this.toJSON();
  
              chart = ko.toJS(chart); // deep clone
-@@ -334,7 +334,7 @@
+@@ -334,7 +334,7 @@ namespace Brightmetrics.Dashboard.ViewModels {
                              this.hasLinkedDashboards(false);
                          }
                      }
@@ -1041,7 +1041,7 @@ index 8ec3611..c5e797a 100644
                      this.hasLinkedDashboards(false);
                  });
              return this.hasLinkedDashboards();
-@@ -346,12 +346,12 @@
+@@ -346,12 +346,12 @@ namespace Brightmetrics.Dashboard.ViewModels {
                      if (response.success) {
                          this.processUsersPerms(response.users.length);
                      }
@@ -1056,7 +1056,7 @@ index 8ec3611..c5e797a 100644
              return Utils.ajaxRequest(`/Companies/${defCompanyId}/DashboardTabs/${this._ref.id}?target=acl`);
          }
  
-@@ -376,11 +376,11 @@
+@@ -376,11 +376,11 @@ namespace Brightmetrics.Dashboard.ViewModels {
              this._deleteConfirmationDialog.open();
          }
  
@@ -1070,7 +1070,7 @@ index 8ec3611..c5e797a 100644
                  this.isLoading(true);
  
                  return this._tabActions.save()
-@@ -434,7 +434,7 @@
+@@ -434,7 +434,7 @@ namespace Brightmetrics.Dashboard.ViewModels {
              });
          }
  
@@ -1079,7 +1079,7 @@ index 8ec3611..c5e797a 100644
              let tabName = "";
  
              if (this._hasSomeRealtimeCharts()) {
-@@ -891,7 +891,7 @@
+@@ -891,7 +891,7 @@ namespace Brightmetrics.Dashboard.ViewModels {
                      const playPromise = audioElement.play();
  
                      if (playPromise) {
@@ -1089,10 +1089,10 @@ index 8ec3611..c5e797a 100644
                          });
                      }
 diff --git a/ts/Dashboard/ViewModels/page.ts b/ts/Dashboard/ViewModels/page.ts
-index 8754b5e..63e8d82 100644
+index 83b7701..954ea15 100644
 --- a/ts/Dashboard/ViewModels/page.ts
 +++ b/ts/Dashboard/ViewModels/page.ts
-@@ -531,7 +531,7 @@
+@@ -531,7 +531,7 @@ namespace Brightmetrics.Dashboard.ViewModels {
              }
          }
  
@@ -1101,7 +1101,7 @@ index 8754b5e..63e8d82 100644
              const tab = this._getTabViewModelSnapshot()!;
  
              if (!this.isRadianceTab()) {
-@@ -559,7 +559,7 @@
+@@ -559,7 +559,7 @@ namespace Brightmetrics.Dashboard.ViewModels {
                  });
          }
  
@@ -1110,7 +1110,7 @@ index 8754b5e..63e8d82 100644
              const tab = JSON.parse(this._lastSavedActiveTabState()) as Interfaces.IDashboardTab;
  
              return this._updateActiveTab(tab);
-@@ -647,16 +647,16 @@
+@@ -647,16 +647,16 @@ namespace Brightmetrics.Dashboard.ViewModels {
              return "";
          }
  
@@ -1130,7 +1130,7 @@ index 8754b5e..63e8d82 100644
              // If we are in the process of reloading this tab with one modified
              // by another user, then ignore `hasPendingChanges` because we don't
              // need a second dialog to come up for confirmation.
-@@ -690,7 +690,7 @@
+@@ -690,7 +690,7 @@ namespace Brightmetrics.Dashboard.ViewModels {
              this._lastSavedActiveTabState(JSON.stringify(tab));
          }
  
@@ -1139,7 +1139,7 @@ index 8754b5e..63e8d82 100644
              this.tabs.replace(this._getActiveTab()!, tab);
  
              this._updateTabViewModel();
-@@ -698,13 +698,13 @@
+@@ -698,13 +698,13 @@ namespace Brightmetrics.Dashboard.ViewModels {
              return Constants.resolvedDeferred;
          }
  
@@ -1155,7 +1155,7 @@ index 8754b5e..63e8d82 100644
              // Here we need to do all of the preliminary work of
              // checking / handling this state transition
  
-@@ -740,7 +740,7 @@
+@@ -740,7 +740,7 @@ namespace Brightmetrics.Dashboard.ViewModels {
              }
          }
  
@@ -1164,7 +1164,7 @@ index 8754b5e..63e8d82 100644
              if (toEdit && this.isPublicLinkView) {
                  throw new Error("Cannot switch to edit mode while viewing a public dashboard");
              }
-@@ -799,7 +799,7 @@
+@@ -799,7 +799,7 @@ namespace Brightmetrics.Dashboard.ViewModels {
          }
  
          private _addChartToOtherTab(chart: DTOs.IChart, destinationTabId: string)
@@ -1173,7 +1173,7 @@ index 8754b5e..63e8d82 100644
          {
              const toTab = _.find(this.tabs(), (t) => t.id === destinationTabId)!;
              const dsiId = Utils.DSI.parseId(chart.items[0].itemid || "");
-@@ -838,7 +838,7 @@
+@@ -838,7 +838,7 @@ namespace Brightmetrics.Dashboard.ViewModels {
              return Constants.rejectedDeferred;
          }
  
@@ -1182,7 +1182,7 @@ index 8754b5e..63e8d82 100644
              isProcessingAdd = true;
  
              this.tabs.push(newTab);
-@@ -860,7 +860,7 @@
+@@ -860,7 +860,7 @@ namespace Brightmetrics.Dashboard.ViewModels {
                  .then(() => this._setActiveTabEditMode(true));
          }
  
@@ -1191,7 +1191,7 @@ index 8754b5e..63e8d82 100644
              const activeTabIndex = this.activeTabIndex();
              let nextTabIndex = activeTabIndex;
              const tabs = this.tabs();
-@@ -884,7 +884,7 @@
+@@ -884,7 +884,7 @@ namespace Brightmetrics.Dashboard.ViewModels {
              });
          }
  
@@ -1200,7 +1200,7 @@ index 8754b5e..63e8d82 100644
              return Utils.ajaxRequest(`/Companies/${defCompanyId}/DashboardTabs/${this._getActiveTabId()}/TabLinks`)
                  .then(
                      (response: { data?: string[] }) => _.size(response.data!) || 0,
-@@ -963,7 +963,7 @@
+@@ -963,7 +963,7 @@ namespace Brightmetrics.Dashboard.ViewModels {
          }
  
          private _showDashboardHasBeenModifiedDialog(updated: Interfaces.IDashboardTab)
@@ -1210,7 +1210,7 @@ index 8754b5e..63e8d82 100644
              return Utils.basicConfirm2({
                  buttonLabels: ["RELOAD"],
 diff --git a/ts/Dashboard/timelinechartrenderer.ts b/ts/Dashboard/timelinechartrenderer.ts
-index fb67a45..f5b9c27 100644
+index 0800fa4..965e686 100644
 --- a/ts/Dashboard/timelinechartrenderer.ts
 +++ b/ts/Dashboard/timelinechartrenderer.ts
 @@ -1362,7 +1362,7 @@ Please wait until the call is complete to view the cradle-to-grave details of th
@@ -1239,7 +1239,7 @@ index 4d1c481..9304610 100644
  
          /* tslint:disable:no-shadowed-variable */
 diff --git a/ts/DataSources/ViewModels/datasourcesview.ts b/ts/DataSources/ViewModels/datasourcesview.ts
-index 3130b02..7a6c843 100644
+index 04ef269..34d87de 100644
 --- a/ts/DataSources/ViewModels/datasourcesview.ts
 +++ b/ts/DataSources/ViewModels/datasourcesview.ts
 @@ -369,7 +369,7 @@ namespace Brightmetrics.DataSources.ViewModels {
@@ -1252,10 +1252,10 @@ index 3130b02..7a6c843 100644
  
          public initialize(props: IDataSourcesView) {
 diff --git a/ts/DataSources/ViewModels/editsubscriptiondialog.ts b/ts/DataSources/ViewModels/editsubscriptiondialog.ts
-index c1e27c0..8a53ab2 100644
+index b8437fd..102168b 100644
 --- a/ts/DataSources/ViewModels/editsubscriptiondialog.ts
 +++ b/ts/DataSources/ViewModels/editsubscriptiondialog.ts
-@@ -90,7 +90,7 @@
+@@ -90,7 +90,7 @@ namespace Brightmetrics.DataSources.ViewModels {
              return SubscriptionType.MonthToMonth;
          }
  
@@ -1264,7 +1264,7 @@ index c1e27c0..8a53ab2 100644
          {
              return Utils.ajaxRequest(`/DataConnectionGroups/${this.dataConnectionGroupId}`, {
                  previewOnly: true,
-@@ -98,7 +98,7 @@
+@@ -98,7 +98,7 @@ namespace Brightmetrics.DataSources.ViewModels {
              });
          }
  
@@ -1287,11 +1287,11 @@ index 58d27dc..9848113 100644
  
          public createEventHandlers(props: IPaymentInfoDialogProps) {
 diff --git a/ts/Insights/Scorecards/ViewModels/saveasdialog.ts b/ts/Insights/Scorecards/ViewModels/saveasdialog.ts
-index 0d7b1c2..065aed3 100644
+index 3977093..5df9b8d 100644
 --- a/ts/Insights/Scorecards/ViewModels/saveasdialog.ts
 +++ b/ts/Insights/Scorecards/ViewModels/saveasdialog.ts
 @@ -1,7 +1,7 @@
- ﻿namespace Brightmetrics.Insights.Scorecards.ViewModels {
+ namespace Brightmetrics.Insights.Scorecards.ViewModels {
      interface ISaveAsDialogProps {
          scorecard: Interfaces.IScorecard;
 -        doSaveAs: (sc: Interfaces.IScorecard) => Promise<unknown>;
@@ -1299,22 +1299,22 @@ index 0d7b1c2..065aed3 100644
      }
  
      export class SaveAsDialog extends Brightmetrics.ViewModels.DialogViewModel {
-@@ -71,8 +71,8 @@
+@@ -71,8 +71,8 @@ namespace Brightmetrics.Insights.Scorecards.ViewModels {
                      delete scorecard.schedules;
  
                      props.doSaveAs(scorecard)
 -                        .then(() => this.destroy())
 -                        .catch(() => {
-+                        .then(() => this.destroy(), 
++                        .then(() => this.destroy(),
 +                        () => {
                              Utils.notifyUser(
                                  "Failed to create new Scorecard. Please refresh the page and try again.",
                                  ["error"]);
 diff --git a/ts/Insights/Scorecards/ViewModels/scorecardtopbar.ts b/ts/Insights/Scorecards/ViewModels/scorecardtopbar.ts
-index ed64974..9a2580d 100644
+index 1884bb2..bee0952 100644
 --- a/ts/Insights/Scorecards/ViewModels/scorecardtopbar.ts
 +++ b/ts/Insights/Scorecards/ViewModels/scorecardtopbar.ts
-@@ -17,9 +17,9 @@
+@@ -17,9 +17,9 @@ namespace Brightmetrics.Insights.Scorecards.ViewModels {
          isScorecardLoadingData: KnockoutComputed<boolean>;
          onBack: () => void;
          onCancel: () => void;
@@ -1327,7 +1327,7 @@ index ed64974..9a2580d 100644
          getSnapshot: () => Interfaces.IScorecard;
          editPermissions: (scorecard: Interfaces.IScorecard) => void;
          onSaveSchedule: (scorecard: Interfaces.IScorecardSchedule, id: string) => void;
-@@ -187,8 +187,9 @@
+@@ -187,8 +187,9 @@ namespace Brightmetrics.Insights.Scorecards.ViewModels {
                          this.isLoading(true);
  
                          props.save(props.getSnapshot())
@@ -1340,7 +1340,7 @@ index ed64974..9a2580d 100644
                      } else {
                          // Go back to VIEW mode.
 diff --git a/ts/Insights/Scorecards/ViewModels/scorecardview.ts b/ts/Insights/Scorecards/ViewModels/scorecardview.ts
-index a68e8e2..ce3b0a2 100644
+index 1a64aa6..3773d61 100644
 --- a/ts/Insights/Scorecards/ViewModels/scorecardview.ts
 +++ b/ts/Insights/Scorecards/ViewModels/scorecardview.ts
 @@ -152,7 +152,7 @@ namespace Brightmetrics.Insights.Scorecards.ViewModels {
@@ -1379,7 +1379,7 @@ index a68e8e2..ce3b0a2 100644
                  _.forEach(this._columns, (c) => {
                      if (c.data) {
 diff --git a/ts/Insights/ViewModels/innergroup.ts b/ts/Insights/ViewModels/innergroup.ts
-index 5d67102..1cd78cd 100644
+index ba59686..a8eb2e0 100644
 --- a/ts/Insights/ViewModels/innergroup.ts
 +++ b/ts/Insights/ViewModels/innergroup.ts
 @@ -11,7 +11,7 @@ namespace Brightmetrics.Insights.ViewModels {
@@ -1392,7 +1392,7 @@ index 5d67102..1cd78cd 100644
  
      export class InnerGroup extends ViewModel {
 diff --git a/ts/Insights/ViewModels/outergroup.ts b/ts/Insights/ViewModels/outergroup.ts
-index eb313cf..1521d08 100644
+index 21c24b6..3873c09 100644
 --- a/ts/Insights/ViewModels/outergroup.ts
 +++ b/ts/Insights/ViewModels/outergroup.ts
 @@ -45,7 +45,7 @@ namespace Brightmetrics.Insights.ViewModels {
@@ -1405,7 +1405,7 @@ index eb313cf..1521d08 100644
  
      export class OuterGroup extends ViewModel {
 diff --git a/ts/Insights/ViewModels/schedule.ts b/ts/Insights/ViewModels/schedule.ts
-index 856ba0a..7e1bb59 100644
+index 97c29a9..fa173e3 100644
 --- a/ts/Insights/ViewModels/schedule.ts
 +++ b/ts/Insights/ViewModels/schedule.ts
 @@ -10,7 +10,7 @@ namespace Brightmetrics.Insights.ViewModels {
@@ -1418,7 +1418,7 @@ index 856ba0a..7e1bb59 100644
  
      export class Schedule extends ViewModel {
 diff --git a/ts/Insights/ViewModels/scheduledialog.ts b/ts/Insights/ViewModels/scheduledialog.ts
-index 6b93c9a..fbacdf1 100644
+index fdbdde0..2c32c45 100644
 --- a/ts/Insights/ViewModels/scheduledialog.ts
 +++ b/ts/Insights/ViewModels/scheduledialog.ts
 @@ -29,7 +29,7 @@ namespace Brightmetrics.Insights.ViewModels {
@@ -1449,7 +1449,7 @@ index 6b93c9a..fbacdf1 100644
  
              if (this.isEdit) {
 diff --git a/ts/Insights/ViewModels/sendnowdialog.ts b/ts/Insights/ViewModels/sendnowdialog.ts
-index 0eb4902..5d7eb53 100644
+index 96827a2..200daa9 100644
 --- a/ts/Insights/ViewModels/sendnowdialog.ts
 +++ b/ts/Insights/ViewModels/sendnowdialog.ts
 @@ -5,7 +5,7 @@ namespace Brightmetrics.Insights.ViewModels {
@@ -1471,7 +1471,7 @@ index 0eb4902..5d7eb53 100644
                  ...props.schedule,
                  destinations: this.destinations(),
 diff --git a/ts/Insights/ViewModels/staffforecastingview.ts b/ts/Insights/ViewModels/staffforecastingview.ts
-index f864682..8d5735a 100644
+index 5f3ee41..2378d85 100644
 --- a/ts/Insights/ViewModels/staffforecastingview.ts
 +++ b/ts/Insights/ViewModels/staffforecastingview.ts
 @@ -37,7 +37,7 @@ namespace Brightmetrics.Insights.ViewModels {
@@ -1484,11 +1484,11 @@ index f864682..8d5735a 100644
                  ...schedule,
                  command: "test-forecast-report-run",
 diff --git a/ts/MultipleSelect/Interfaces/imultipleselectdialogprops.ts b/ts/MultipleSelect/Interfaces/imultipleselectdialogprops.ts
-index 4b0d7c2..6cfc9c5 100644
+index 16f2e42..ef6921d 100644
 --- a/ts/MultipleSelect/Interfaces/imultipleselectdialogprops.ts
 +++ b/ts/MultipleSelect/Interfaces/imultipleselectdialogprops.ts
 @@ -1,7 +1,7 @@
- ﻿namespace Brightmetrics.MultipleSelect.Interfaces {
+ namespace Brightmetrics.MultipleSelect.Interfaces {
      export interface IMultipleSelectDialogProps<T = string | number> extends IMultipleSelectProps<T> {
          nameForItem: string;
 -        beforeDestroy?: () => Promise<void>;
@@ -1497,10 +1497,10 @@ index 4b0d7c2..6cfc9c5 100644
          isChildDialog?: boolean;
          onClose?: () => void;
 diff --git a/ts/MultipleSelect/Interfaces/imultipleselectprops.ts b/ts/MultipleSelect/Interfaces/imultipleselectprops.ts
-index e73de78..b65a757 100644
+index 63aeed7..4fe7129 100644
 --- a/ts/MultipleSelect/Interfaces/imultipleselectprops.ts
 +++ b/ts/MultipleSelect/Interfaces/imultipleselectprops.ts
-@@ -6,7 +6,7 @@
+@@ -6,7 +6,7 @@ namespace Brightmetrics.MultipleSelect.Interfaces {
           * - Compacting (filtering out bad values).
           * - Handling any errors beforehand.
           */
@@ -1510,7 +1510,7 @@ index e73de78..b65a757 100644
          onUpdate: (data: IMultipleSelectJSON<T>) => void;
          // Optionals:
 diff --git a/ts/MultipleSelect/ViewModels/list.ts b/ts/MultipleSelect/ViewModels/list.ts
-index cdd32ca..09f3567 100644
+index d4ad585..5496bbf 100644
 --- a/ts/MultipleSelect/ViewModels/list.ts
 +++ b/ts/MultipleSelect/ViewModels/list.ts
 @@ -8,7 +8,7 @@ namespace Brightmetrics.MultipleSelect.ViewModels {
@@ -1532,7 +1532,7 @@ index cdd32ca..09f3567 100644
          public itemRequestIsFinished: KnockoutObservable<boolean>;
          /** Used as a helper for SHIFT+CLICK functionality. */
 diff --git a/ts/MultipleSelect/ViewModels/multipleselectdialog.ts b/ts/MultipleSelect/ViewModels/multipleselectdialog.ts
-index 7f1c8c7..7837bbe 100644
+index c657521..30f79c9 100644
 --- a/ts/MultipleSelect/ViewModels/multipleselectdialog.ts
 +++ b/ts/MultipleSelect/ViewModels/multipleselectdialog.ts
 @@ -13,7 +13,7 @@ namespace Brightmetrics.MultipleSelect.ViewModels {
@@ -1545,10 +1545,10 @@ index 7f1c8c7..7837bbe 100644
          public dialogName: string;
          public fadeOutOnClose: boolean;
 diff --git a/ts/MyAccount/ViewModels/apiaccess.ts b/ts/MyAccount/ViewModels/apiaccess.ts
-index e5e8b19..1d07a1c 100644
+index 20f08c5..330b0b8 100644
 --- a/ts/MyAccount/ViewModels/apiaccess.ts
 +++ b/ts/MyAccount/ViewModels/apiaccess.ts
-@@ -6,7 +6,7 @@
+@@ -6,7 +6,7 @@ namespace Brightmetrics.MyAccount.ViewModels {
      const defaultApiRateLimitResetPeriod = "24-hour";
      declare const grecaptcha: {
          // ready(callback: () => void): void;
@@ -1557,7 +1557,7 @@ index e5e8b19..1d07a1c 100644
          render(elementId: string, options: {
              sitekey: string;
              callback: (token: string) => void;
-@@ -38,7 +38,7 @@
+@@ -38,7 +38,7 @@ namespace Brightmetrics.MyAccount.ViewModels {
          public rateLimitResetPeriod: KnockoutObservable<string>;
          public apiCallsRemaining: KnockoutComputed<number>;
  
@@ -1566,7 +1566,7 @@ index e5e8b19..1d07a1c 100644
              const defd = $.Deferred<string>();
  
              Utils.ajaxRequest("/Users/me?apiKey=1")
-@@ -54,7 +54,7 @@
+@@ -54,7 +54,7 @@ namespace Brightmetrics.MyAccount.ViewModels {
              return defd.promise();
          }
  
@@ -1575,7 +1575,7 @@ index e5e8b19..1d07a1c 100644
              const defd = $.Deferred<{ limit: number, period: string }>();
              const defaults = {
                  period: defaultApiRateLimitResetPeriod,
-@@ -73,7 +73,7 @@
+@@ -73,7 +73,7 @@ namespace Brightmetrics.MyAccount.ViewModels {
              return defd.promise();
          }
  
@@ -1584,7 +1584,7 @@ index e5e8b19..1d07a1c 100644
              const defd = $.Deferred<number>();
  
              Utils.ajaxRequest(`/Companies/${defCompanyId}?resource=api-usage`)
-@@ -88,7 +88,7 @@
+@@ -88,7 +88,7 @@ namespace Brightmetrics.MyAccount.ViewModels {
              return defd.promise();
          }
  
@@ -1621,10 +1621,10 @@ index e5e8b19..1d07a1c 100644
                  "?resource=reset-api-usage" +
                  "&apiVersion=" + version +
 diff --git a/ts/Registration/ViewModels/registration.ts b/ts/Registration/ViewModels/registration.ts
-index 6954512..5d58d65 100644
+index 3142c79..53c7ff4 100644
 --- a/ts/Registration/ViewModels/registration.ts
 +++ b/ts/Registration/ViewModels/registration.ts
-@@ -215,7 +215,7 @@
+@@ -215,7 +215,7 @@ namespace Brightmetrics.Registration.ViewModels {
              super.createEventHandlers();
  
              this.events.onRegister = () => {
@@ -1633,7 +1633,7 @@ index 6954512..5d58d65 100644
                  this.detailDialog = new RegisterDialog();
  
                  if (this.isValid()) {
-@@ -332,7 +332,7 @@
+@@ -332,7 +332,7 @@ namespace Brightmetrics.Registration.ViewModels {
  
                              return null;
                          }
@@ -1642,7 +1642,7 @@ index 6954512..5d58d65 100644
                          let errorMessage = $.trim(failure?.responseJSON?.errormsg ?? "");
                          if (errorMessage) {
                              if (errorMessage.slice(-1)[0] !== ".") {
-@@ -453,7 +453,7 @@
+@@ -453,7 +453,7 @@ namespace Brightmetrics.Registration.ViewModels {
              return Utils.ajaxRequest("/Companies/" + companyId + "/DataSourceInstances", postData, opts);
          }
  
@@ -1651,7 +1651,7 @@ index 6954512..5d58d65 100644
              const postData = {
                  agentName: shoreTelAgentId
              };
-@@ -465,7 +465,7 @@
+@@ -465,7 +465,7 @@ namespace Brightmetrics.Registration.ViewModels {
              return Utils.ajaxRequest("/Companies/" + companyId + "/Agents", postData, opts);
          }
  
@@ -1660,7 +1660,7 @@ index 6954512..5d58d65 100644
              const postData: any = this.toCompanyBackendObject();
  
              const opts = {
-@@ -475,7 +475,7 @@
+@@ -475,7 +475,7 @@ namespace Brightmetrics.Registration.ViewModels {
              return Utils.ajaxRequest("/Companies", postData, opts);
          }
  
@@ -1670,7 +1670,7 @@ index 6954512..5d58d65 100644
  
              return Utils.ajaxRequest("/Users", postData);
 diff --git a/ts/Reports/ViewModels/allreports.ts b/ts/Reports/ViewModels/allreports.ts
-index 1ef3c08..525cb0c 100644
+index 4be437b..c8a251c 100644
 --- a/ts/Reports/ViewModels/allreports.ts
 +++ b/ts/Reports/ViewModels/allreports.ts
 @@ -87,7 +87,7 @@ namespace Brightmetrics.Reports.ViewModels {
@@ -1710,7 +1710,7 @@ index 1ef3c08..525cb0c 100644
          updateActiveTabIndex(index: number): void;
          updateLayoutType(updated: BREs.ReportLayoutType): void;
 diff --git a/ts/Reports/ViewModels/editor.ts b/ts/Reports/ViewModels/editor.ts
-index f808d83..7eca7f7 100644
+index 25644f8..f64aac8 100644
 --- a/ts/Reports/ViewModels/editor.ts
 +++ b/ts/Reports/ViewModels/editor.ts
 @@ -28,7 +28,7 @@ namespace Brightmetrics.Reports.ViewModels {
@@ -1723,7 +1723,7 @@ index f808d83..7eca7f7 100644
          openReportInNewPage(exportableReport: BRIs.IReportTemplateExport): void;
          revertReportToOriginalState(): void;
 diff --git a/ts/Reports/ViewModels/filter.ts b/ts/Reports/ViewModels/filter.ts
-index 852addd..313af29 100644
+index 97d00d7..5d1d1a9 100644
 --- a/ts/Reports/ViewModels/filter.ts
 +++ b/ts/Reports/ViewModels/filter.ts
 @@ -60,7 +60,7 @@ namespace Brightmetrics.Reports.ViewModels {
@@ -1745,7 +1745,7 @@ index 852addd..313af29 100644
                  let multipleSelectDialog: MultipleSelect.ViewModels.MultipleSelectDialog;
  
 diff --git a/ts/Reports/ViewModels/filterwidgets.ts b/ts/Reports/ViewModels/filterwidgets.ts
-index ba1a381..b2f1cc0 100644
+index 1e2db8c..ae05de5 100644
 --- a/ts/Reports/ViewModels/filterwidgets.ts
 +++ b/ts/Reports/ViewModels/filterwidgets.ts
 @@ -160,7 +160,7 @@ namespace Brightmetrics.Reports.ViewModels {
@@ -1869,7 +1869,7 @@ index 8095ff6..7cca9e4 100644
              if (this.isPartnerTemplates) {
                  req = this._removeTemplateReportAjax(report);
 diff --git a/ts/Reports/ViewModels/parameterpopover.ts b/ts/Reports/ViewModels/parameterpopover.ts
-index 5c68757..c3821df 100644
+index 15b0481..b267592 100644
 --- a/ts/Reports/ViewModels/parameterpopover.ts
 +++ b/ts/Reports/ViewModels/parameterpopover.ts
 @@ -16,7 +16,7 @@ namespace Brightmetrics.Reports.ViewModels {
@@ -1882,7 +1882,7 @@ index 5c68757..c3821df 100644
  
      export class ParameterPopover extends Brightmetrics.ViewModel {
 diff --git a/ts/Reports/ViewModels/report.ts b/ts/Reports/ViewModels/report.ts
-index baec711..04de969 100644
+index 4aab0e7..704d630 100644
 --- a/ts/Reports/ViewModels/report.ts
 +++ b/ts/Reports/ViewModels/report.ts
 @@ -1561,7 +1561,7 @@ namespace Brightmetrics.Reports.ViewModels {
@@ -1927,7 +1927,7 @@ index baec711..04de969 100644
                      if (isManualRun || currentRequestId === this.updateId) {
                          this.afterRun();
 diff --git a/ts/Reports/ViewModels/reporteditortopbar.ts b/ts/Reports/ViewModels/reporteditortopbar.ts
-index 3028f9a..80ea367 100644
+index 3b55323..c7abfd0 100644
 --- a/ts/Reports/ViewModels/reporteditortopbar.ts
 +++ b/ts/Reports/ViewModels/reporteditortopbar.ts
 @@ -72,7 +72,7 @@ namespace Brightmetrics.Reports.ViewModels {
@@ -1958,7 +1958,7 @@ index 3028f9a..80ea367 100644
              const templateToSend = props.getTemplateSnapshot();
              const endpoint = this.isPartnerTemplates ?
 diff --git a/ts/Reports/ViewModels/saveasdialog.ts b/ts/Reports/ViewModels/saveasdialog.ts
-index a72d153..82b59aa 100644
+index 70d3b96..f4f6662 100644
 --- a/ts/Reports/ViewModels/saveasdialog.ts
 +++ b/ts/Reports/ViewModels/saveasdialog.ts
 @@ -25,7 +25,7 @@ namespace Brightmetrics.Reports.ViewModels {
@@ -1971,7 +1971,7 @@ index a72d153..82b59aa 100644
      }
  
 diff --git a/ts/TextFilter/ViewModels/List.ts b/ts/TextFilter/ViewModels/List.ts
-index a0ca7ae..44d542f 100644
+index 1fa74ac..99c6af2 100644
 --- a/ts/TextFilter/ViewModels/List.ts
 +++ b/ts/TextFilter/ViewModels/List.ts
 @@ -10,7 +10,7 @@ namespace Brightmetrics.TextFilter.ViewModels {
@@ -1993,7 +1993,7 @@ index a0ca7ae..44d542f 100644
          public itemRequestIsFinished: KnockoutObservable<boolean>;
          /** Used as a helper for SHIFT+CLICK functionality. */
 diff --git a/ts/TextFilter/ViewModels/textfilterdialog.ts b/ts/TextFilter/ViewModels/textfilterdialog.ts
-index 56be725..a5317e2 100644
+index 176ee15..7249169 100644
 --- a/ts/TextFilter/ViewModels/textfilterdialog.ts
 +++ b/ts/TextFilter/ViewModels/textfilterdialog.ts
 @@ -28,7 +28,7 @@ namespace Brightmetrics.TextFilter.ViewModels {
@@ -2006,10 +2006,10 @@ index 56be725..a5317e2 100644
          onUpdate: (data: ITextFilterJSON<T>) => void;
          // Optionals:
 diff --git a/ts/VARPortal/CustomerSetup/ViewModels/examplestep1.ts b/ts/VARPortal/CustomerSetup/ViewModels/examplestep1.ts
-index 75ae3e9..8c762cb 100644
+index 277b1ec..f4a50b0 100644
 --- a/ts/VARPortal/CustomerSetup/ViewModels/examplestep1.ts
 +++ b/ts/VARPortal/CustomerSetup/ViewModels/examplestep1.ts
-@@ -10,7 +10,7 @@
+@@ -10,7 +10,7 @@ namespace Brightmetrics.VARPortal.CustomerSetup.ViewModels {
              super(props);
          }
  
@@ -2019,10 +2019,10 @@ index 75ae3e9..8c762cb 100644
              setTimeout(() => {
                  defd.resolve({
 diff --git a/ts/VARPortal/CustomerSetup/ViewModels/examplestep2.ts b/ts/VARPortal/CustomerSetup/ViewModels/examplestep2.ts
-index 5c0a112..ef095fb 100644
+index c37e441..298ba37 100644
 --- a/ts/VARPortal/CustomerSetup/ViewModels/examplestep2.ts
 +++ b/ts/VARPortal/CustomerSetup/ViewModels/examplestep2.ts
-@@ -10,7 +10,7 @@
+@@ -10,7 +10,7 @@ namespace Brightmetrics.VARPortal.CustomerSetup.ViewModels {
              super(props);
          }
  
@@ -2032,7 +2032,7 @@ index 5c0a112..ef095fb 100644
              setTimeout(() => {
                  defd.resolve({
 diff --git a/ts/VARPortal/PartnerDashboard/ViewModels/alldashboard.ts b/ts/VARPortal/PartnerDashboard/ViewModels/alldashboard.ts
-index 7a2bcd0..769b9ff 100644
+index 8499446..5b1749c 100644
 --- a/ts/VARPortal/PartnerDashboard/ViewModels/alldashboard.ts
 +++ b/ts/VARPortal/PartnerDashboard/ViewModels/alldashboard.ts
 @@ -122,7 +122,7 @@ namespace Brightmetrics.VARPortal.PartnerDashboard.ViewModels {
@@ -2099,7 +2099,7 @@ index 7a2bcd0..769b9ff 100644
              const id = template.TemplateId;
  
 diff --git a/ts/VARPortal/PartnerDashboard/ViewModels/dashbooardpartnersaveasdialog.ts b/ts/VARPortal/PartnerDashboard/ViewModels/dashbooardpartnersaveasdialog.ts
-index 62f3d8a..fd8c5e3 100644
+index 1762932..b599843 100644
 --- a/ts/VARPortal/PartnerDashboard/ViewModels/dashbooardpartnersaveasdialog.ts
 +++ b/ts/VARPortal/PartnerDashboard/ViewModels/dashbooardpartnersaveasdialog.ts
 @@ -8,7 +8,7 @@ namespace Brightmetrics.VARPortal.PartnerDashboard.ViewModels {
@@ -2112,7 +2112,7 @@ index 62f3d8a..fd8c5e3 100644
      }
  
 diff --git a/ts/VARPortal/ViewModels/ManageCompaniesView.ts b/ts/VARPortal/ViewModels/ManageCompaniesView.ts
-index d7c1083..b13b735 100644
+index d8ab933..ef7de20 100644
 --- a/ts/VARPortal/ViewModels/ManageCompaniesView.ts
 +++ b/ts/VARPortal/ViewModels/ManageCompaniesView.ts
 @@ -917,7 +917,7 @@ namespace Brightmetrics.VARPortal.ViewModels {
@@ -2125,7 +2125,7 @@ index d7c1083..b13b735 100644
          public password: KnockoutObservable<string>;
          public isValid: KnockoutComputed<boolean>;
 diff --git a/ts/ViewModels/appsearch.ts b/ts/ViewModels/appsearch.ts
-index b8e6c00..fa9807a 100644
+index 6d2750a..b71d4e7 100644
 --- a/ts/ViewModels/appsearch.ts
 +++ b/ts/ViewModels/appsearch.ts
 @@ -469,7 +469,7 @@ namespace Brightmetrics.ViewModels {
@@ -2165,7 +2165,7 @@ index b8e6c00..fa9807a 100644
                              // Begin fading in the App Search once the mag glass
                              // has animated half way to it's destination.
 diff --git a/ts/ViewModels/deleteconfirmationdialog.ts b/ts/ViewModels/deleteconfirmationdialog.ts
-index 9b774dd..8cf4840 100644
+index deebb31..9fe3c64 100644
 --- a/ts/ViewModels/deleteconfirmationdialog.ts
 +++ b/ts/ViewModels/deleteconfirmationdialog.ts
 @@ -69,7 +69,7 @@ namespace Brightmetrics.ViewModels {
@@ -2243,7 +2243,7 @@ index 9b774dd..8cf4840 100644
              if (this.context === "dashboard") {
                  restEndpoint = `/Companies/${defCompanyId}/DashboardTabs/${this.id}/Schedules/${schedule.Id}`;
 diff --git a/ts/ViewModels/dialog.ts b/ts/ViewModels/dialog.ts
-index 1788052..0f652ca 100644
+index 568bd62..dcd41c4 100644
 --- a/ts/ViewModels/dialog.ts
 +++ b/ts/ViewModels/dialog.ts
 @@ -116,7 +116,7 @@ namespace Brightmetrics.ViewModels {
@@ -2292,7 +2292,7 @@ index 1788052..0f652ca 100644
  
              if (this.isOpen()) {
 diff --git a/ts/ViewModels/emaildialog.ts b/ts/ViewModels/emaildialog.ts
-index 82c8970..00e21d6 100644
+index 9106819..3ffc760 100644
 --- a/ts/ViewModels/emaildialog.ts
 +++ b/ts/ViewModels/emaildialog.ts
 @@ -100,14 +100,14 @@ namespace Brightmetrics.ViewModels {
@@ -2331,7 +2331,7 @@ index 82c8970..00e21d6 100644
  
                  if (this.isSchedule) {
 diff --git a/ts/ViewModels/emailoptionsdialog.ts b/ts/ViewModels/emailoptionsdialog.ts
-index eac9a05..72b0ec6 100644
+index 5abddd3..464278f 100644
 --- a/ts/ViewModels/emailoptionsdialog.ts
 +++ b/ts/ViewModels/emailoptionsdialog.ts
 @@ -398,7 +398,7 @@ namespace Brightmetrics.ViewModels {
@@ -2362,7 +2362,7 @@ index eac9a05..72b0ec6 100644
  
              if (this.dataPerspective === BEs.DataPerspective.Dashboard) {
 diff --git a/ts/ViewModels/permissionsdialog.ts b/ts/ViewModels/permissionsdialog.ts
-index da4c26d..5d0c28d 100644
+index de72955..3eef50c 100644
 --- a/ts/ViewModels/permissionsdialog.ts
 +++ b/ts/ViewModels/permissionsdialog.ts
 @@ -158,7 +158,7 @@ namespace Brightmetrics.ViewModels {
@@ -2444,7 +2444,7 @@ index da4c26d..5d0c28d 100644
  
          public createHeaderCptd(field: string) {
 diff --git a/ts/ViewModels/scheduleentry.ts b/ts/ViewModels/scheduleentry.ts
-index 5e24952..e1012da 100644
+index 0a3960c..a234a7b 100644
 --- a/ts/ViewModels/scheduleentry.ts
 +++ b/ts/ViewModels/scheduleentry.ts
 @@ -28,7 +28,7 @@ namespace Brightmetrics.ViewModels {
@@ -2457,7 +2457,7 @@ index 5e24952..e1012da 100644
          onEdit: (s: BCs.ScheduleEntry) => void;
          onSendNow: (s: BCs.ScheduleEntry) => void;
 diff --git a/ts/ViewModels/sendnowdialog.ts b/ts/ViewModels/sendnowdialog.ts
-index a2d9189..a6c42ac 100644
+index c29cac1..19b80bc 100644
 --- a/ts/ViewModels/sendnowdialog.ts
 +++ b/ts/ViewModels/sendnowdialog.ts
 @@ -10,7 +10,7 @@ namespace Brightmetrics.ViewModels {
@@ -2470,7 +2470,7 @@ index a2d9189..a6c42ac 100644
  
      const destinationError_empty = "MUST ENTER AT LEAST ONE DESTINATION";
 diff --git a/ts/ViewModels/transferownershipdialog.ts b/ts/ViewModels/transferownershipdialog.ts
-index 249a8ef..263a850 100644
+index 6efc5aa..8111360 100644
 --- a/ts/ViewModels/transferownershipdialog.ts
 +++ b/ts/ViewModels/transferownershipdialog.ts
 @@ -34,7 +34,7 @@ namespace Brightmetrics.ViewModels {
@@ -2510,7 +2510,7 @@ index 249a8ef..263a850 100644
              this.isLoadingUsers(true);
              this.errorText = Utils.stringUnraw(`
 diff --git a/ts/basicdialog.ts b/ts/basicdialog.ts
-index 64db523..1ab7867 100644
+index 7e58e23..70b04d7 100644
 --- a/ts/basicdialog.ts
 +++ b/ts/basicdialog.ts
 @@ -4,7 +4,7 @@ namespace Brightmetrics {
@@ -2523,7 +2523,7 @@ index 64db523..1ab7867 100644
          public buttons: string[];
  
 diff --git a/ts/basicdialog2.ts b/ts/basicdialog2.ts
-index 9ce580b..20aa43a 100644
+index 2dada50..da940cd 100644
 --- a/ts/basicdialog2.ts
 +++ b/ts/basicdialog2.ts
 @@ -14,7 +14,7 @@ namespace Brightmetrics {
