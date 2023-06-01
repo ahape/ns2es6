@@ -1,5 +1,5 @@
 diff --git a/ts/Reports/Classes/report.ts b/ts/Reports/Classes/report.ts
-index 9c7c7f4..9bed714 100644
+index 0a51ba5..f180926 100644
 --- a/ts/Reports/Classes/report.ts
 +++ b/ts/Reports/Classes/report.ts
 @@ -1,15 +1,15 @@
@@ -128,7 +128,7 @@ index 9c7c7f4..9bed714 100644
              return report;
          }
 diff --git a/ts/Reports/ViewModels/allreports.ts b/ts/Reports/ViewModels/allreports.ts
-index 1ef3c08..e66e76f 100644
+index c8a251c..adb6392 100644
 --- a/ts/Reports/ViewModels/allreports.ts
 +++ b/ts/Reports/ViewModels/allreports.ts
 @@ -4,39 +4,31 @@
@@ -190,11 +190,11 @@ index 1ef3c08..e66e76f 100644
 -        selectedReport: KnockoutObservable<BRCs.Report>;
 +        selectedReport: KnockoutObservable<Brightmetrics.Reports.Classes.Report>;
          isVARTemplatesPage: boolean;
--        removeReport(report: BRCs.Report): Promise<unknown>;
+-        removeReport(report: BRCs.Report): JQuery.Thenable<unknown>;
 -        handleReportClick(report: BRCs.Report): void;
 -        updateReport(report: BRCs.Report): void;
 -        updateReportSchedules(reportId: string, schedules: BIs.IReportSchedule[]): void;
-+        removeReport(report: Brightmetrics.Reports.Classes.Report): Promise<unknown>;
++        removeReport(report: Brightmetrics.Reports.Classes.Report): JQuery.Thenable<unknown>;
 +        handleReportClick(report: Brightmetrics.Reports.Classes.Report): void;
 +        updateReport(report: Brightmetrics.Reports.Classes.Report): void;
 +        updateReportSchedules(reportId: string, schedules: Brightmetrics.Interfaces.IReportSchedule[]): void;
@@ -219,11 +219,11 @@ index 1ef3c08..e66e76f 100644
 +        report: Brightmetrics.Reports.Classes.Report;
 +        selectedReport: KnockoutObservable<Brightmetrics.Reports.Classes.Report>;
          isVARTemplatesPage: boolean;
--        removeReport(report: BRCs.Report): Promise<unknown>;
+-        removeReport(report: BRCs.Report): JQuery.Thenable<unknown>;
 -        handleReportClick(report: BRCs.Report): void;
 -        updateReport(report: BRCs.Report): void;
 -        updateReportSchedules(reportId: string, schedules: BIs.IReportSchedule[]): void;
-+        removeReport(report: Brightmetrics.Reports.Classes.Report): Promise<unknown>;
++        removeReport(report: Brightmetrics.Reports.Classes.Report): JQuery.Thenable<unknown>;
 +        handleReportClick(report: Brightmetrics.Reports.Classes.Report): void;
 +        updateReport(report: Brightmetrics.Reports.Classes.Report): void;
 +        updateReportSchedules(reportId: string, schedules: Brightmetrics.Interfaces.IReportSchedule[]): void;
@@ -343,10 +343,10 @@ index 1ef3c08..e66e76f 100644
 +        selectedReport: KnockoutObservable<Brightmetrics.Reports.Classes.Report>;
          isVARTemplatesPage: boolean;
 -        createReport(dsi: BIs.IDataSourceInstance, reportType: BREs.ReportType): void;
--        removeReport(report: BRCs.Report): Promise<unknown>;
+-        removeReport(report: BRCs.Report): JQuery.Thenable<unknown>;
 -        handleReportClick(report: BRCs.Report): void;
 +        createReport(dsi: Brightmetrics.Interfaces.IDataSourceInstance, reportType: Brightmetrics.Reports.Enums.ReportType): void;
-+        removeReport(report: Brightmetrics.Reports.Classes.Report): Promise<unknown>;
++        removeReport(report: Brightmetrics.Reports.Classes.Report): JQuery.Thenable<unknown>;
 +        handleReportClick(report: Brightmetrics.Reports.Classes.Report): void;
          updateActiveTabIndex(index: number): void;
 -        updateLayoutType(updated: BREs.ReportLayoutType): void;
@@ -469,7 +469,7 @@ index 1ef3c08..e66e76f 100644
                      },
                  });
 diff --git a/ts/Reports/ViewModels/createreport.ts b/ts/Reports/ViewModels/createreport.ts
-index 4ba6f79..47d79b5 100644
+index c0207fb..7646616 100644
 --- a/ts/Reports/ViewModels/createreport.ts
 +++ b/ts/Reports/ViewModels/createreport.ts
 @@ -3,18 +3,15 @@
@@ -571,7 +571,7 @@ index 4ba6f79..47d79b5 100644
                  this.destroy();
              };
 diff --git a/ts/Reports/ViewModels/detailquerydialog.ts b/ts/Reports/ViewModels/detailquerydialog.ts
-index 2141634..97a68d8 100644
+index 9e7b4dd..125fc90 100644
 --- a/ts/Reports/ViewModels/detailquerydialog.ts
 +++ b/ts/Reports/ViewModels/detailquerydialog.ts
 @@ -1,13 +1,10 @@
@@ -599,7 +599,7 @@ index 2141634..97a68d8 100644
  
          public initSubscriptions() {
 diff --git a/ts/Reports/ViewModels/editdimensionthresholddialog.ts b/ts/Reports/ViewModels/editdimensionthresholddialog.ts
-index 05cc0e0..3415816 100644
+index ea8359b..4c81c4b 100644
 --- a/ts/Reports/ViewModels/editdimensionthresholddialog.ts
 +++ b/ts/Reports/ViewModels/editdimensionthresholddialog.ts
 @@ -4,11 +4,6 @@
@@ -685,7 +685,7 @@ index 05cc0e0..3415816 100644
                  ...defaultsForDimensionThreshold,
                  baseIndex: Utils.toBaseIndex(this._fieldHelper.index),
 diff --git a/ts/Reports/ViewModels/editor.ts b/ts/Reports/ViewModels/editor.ts
-index f808d83..85d3e68 100644
+index f64aac8..3c21400 100644
 --- a/ts/Reports/ViewModels/editor.ts
 +++ b/ts/Reports/ViewModels/editor.ts
 @@ -3,15 +3,15 @@
@@ -716,13 +716,13 @@ index f808d83..85d3e68 100644
 -        addReport(report: BRCs.Report): void;
 -        updateReport(report: BRCs.Report): void;
 -        deleteReport(report: BRCs.Report): void;
--        removeReport(report: BRCs.Report): Promise<unknown>;
+-        removeReport(report: BRCs.Report): JQuery.Thenable<unknown>;
 -        goToReport(report: BRCs.Report): void;
 -        openReportInNewPage(exportableReport: BRIs.IReportTemplateExport): void;
 +        addReport(report: Brightmetrics.Reports.Classes.Report): void;
 +        updateReport(report: Brightmetrics.Reports.Classes.Report): void;
 +        deleteReport(report: Brightmetrics.Reports.Classes.Report): void;
-+        removeReport(report: Brightmetrics.Reports.Classes.Report): Promise<unknown>;
++        removeReport(report: Brightmetrics.Reports.Classes.Report): JQuery.Thenable<unknown>;
 +        goToReport(report: Brightmetrics.Reports.Classes.Report): void;
 +        openReportInNewPage(exportableReport: Brightmetrics.Reports.Interfaces.IReportTemplateExport): void;
          revertReportToOriginalState(): void;
@@ -1015,7 +1015,7 @@ index d8ecd17..bb772e1 100644
  
          public createEventHandlers(props: IDataSelectionDialogProps) {
 diff --git a/ts/Reports/ViewModels/editthresholddialog.ts b/ts/Reports/ViewModels/editthresholddialog.ts
-index cc8e1f4..f4bc75d 100644
+index 166fb76..2732a2b 100644
 --- a/ts/Reports/ViewModels/editthresholddialog.ts
 +++ b/ts/Reports/ViewModels/editthresholddialog.ts
 @@ -4,29 +4,24 @@
@@ -1090,7 +1090,7 @@ index cc8e1f4..f4bc75d 100644
                  alert: this.alertTrimmed() ? this.alertAsNumber() : null,
                  alertColor: this.alertColor(),
 diff --git a/ts/Reports/ViewModels/filter.ts b/ts/Reports/ViewModels/filter.ts
-index 852addd..add82d8 100644
+index 5d1d1a9..71e0257 100644
 --- a/ts/Reports/ViewModels/filter.ts
 +++ b/ts/Reports/ViewModels/filter.ts
 @@ -17,7 +17,7 @@ namespace Brightmetrics.Reports.ViewModels {
@@ -1140,7 +1140,7 @@ index 852addd..add82d8 100644
          multipleSelectOptions?: Partial<MultipleSelect.Interfaces.IMultipleSelectDialogProps<string>>;
 -        setFilterOption?(filterOption: BREs.FilterOption): void;
 +        setFilterOption?(filterOption: Brightmetrics.Reports.Enums.FilterOption): void;
-         customListFetcher?(dimensionIndex: number): Promise<Array<IKoOption<string>>>;
+         customListFetcher?(dimensionIndex: number): JQuery.Thenable<Array<IKoOption<string>>>;
      }
  
 @@ -69,14 +69,14 @@ namespace Brightmetrics.Reports.ViewModels {
@@ -1381,7 +1381,7 @@ index 852addd..add82d8 100644
              this.events.onMultipleValuesClick = () => {
 -                let emailDialog: BVs.EmailDialog | undefined = void (0);
 +                let emailDialog: Brightmetrics.ViewModels.EmailDialog | undefined = void (0);
-                 let beforeDestroy: (() => Promise<void>) | undefined = void (0);
+                 let beforeDestroy: (() => JQuery.Thenable<void>) | undefined = void (0);
                  let listFetcherReady: KnockoutObservable<boolean> | undefined = void (0);
                  let multipleSelectDialog: MultipleSelect.ViewModels.MultipleSelectDialog;
 @@ -646,44 +646,44 @@ namespace Brightmetrics.Reports.ViewModels {
@@ -1492,7 +1492,7 @@ index 852addd..add82d8 100644
      }
  }
 diff --git a/ts/Reports/ViewModels/filterpill.ts b/ts/Reports/ViewModels/filterpill.ts
-index b519bf2..5f66aec 100644
+index ccd9c8c..ec5e556 100644
 --- a/ts/Reports/ViewModels/filterpill.ts
 +++ b/ts/Reports/ViewModels/filterpill.ts
 @@ -6,13 +6,6 @@
@@ -1599,7 +1599,7 @@ index b519bf2..5f66aec 100644
  
              this.events.onLabelClick = () => {
 diff --git a/ts/Reports/ViewModels/filterwidgets.ts b/ts/Reports/ViewModels/filterwidgets.ts
-index ba1a381..fe01b48 100644
+index ae05de5..92c09e2 100644
 --- a/ts/Reports/ViewModels/filterwidgets.ts
 +++ b/ts/Reports/ViewModels/filterwidgets.ts
 @@ -12,8 +12,8 @@ namespace Brightmetrics.Reports.ViewModels {
@@ -1961,7 +1961,7 @@ index ba1a381..fe01b48 100644
  
                  return index === fieldHelper.index;
 diff --git a/ts/Reports/ViewModels/page.ts b/ts/Reports/ViewModels/page.ts
-index 8095ff6..c1140f5 100644
+index 7cca9e4..9784400 100644
 --- a/ts/Reports/ViewModels/page.ts
 +++ b/ts/Reports/ViewModels/page.ts
 @@ -1,22 +1,7 @@
@@ -2222,7 +2222,7 @@ index 8095ff6..c1140f5 100644
          // TODO: Should we utilize the combined Delete Confirmation Dialog?  (Reports & Dashboards)
 -        private _removeReportPromptThenAjax(report: BRCs.Report, reportHasOtherUsers?: boolean)
 +        private _removeReportPromptThenAjax(report: Brightmetrics.Reports.Classes.Report, reportHasOtherUsers?: boolean)
-             : Promise<unknown> {
+             : JQuery.Thenable<unknown> {
  
              const rejectedPromise = $.Deferred().reject();
 @@ -418,7 +403,7 @@ Please try again`),
@@ -2233,13 +2233,13 @@ index 8095ff6..c1140f5 100644
 +            if (report.accessLevel === Brightmetrics.Reports.Enums.AccessLevel.Admin) {
                  if (reportHasOtherUsers) {
                      req = this._removeReportOrAccessPrompt(reportName, reqInFlight).then((label) => {
-                         let _req: Promise<unknown> = rejectedPromise;
+                         let _req: JQuery.Thenable<unknown> = rejectedPromise;
 @@ -510,7 +495,7 @@ access, or do you want to remove this report for everyone?`),
           * Deletes `report` object from backend.
           * @param report
           */
--        private _removeReportAjax(report: BRCs.Report): Promise<unknown> {
-+        private _removeReportAjax(report: Brightmetrics.Reports.Classes.Report): Promise<unknown> {
+-        private _removeReportAjax(report: BRCs.Report): JQuery.Thenable<unknown> {
++        private _removeReportAjax(report: Brightmetrics.Reports.Classes.Report): JQuery.Thenable<unknown> {
              return Utils.ajaxRequest("/UserReportTemplates/" + report.id, {
                  _realMethod: "DELETE",
              });
@@ -2247,8 +2247,8 @@ index 8095ff6..c1140f5 100644
           * Deletes `report template` object from backend.
           * @param report
           */
--        private _removeTemplateReportAjax(report: BRCs.Report): Promise<unknown> {
-+        private _removeTemplateReportAjax(report: Brightmetrics.Reports.Classes.Report): Promise<unknown> {
+-        private _removeTemplateReportAjax(report: BRCs.Report): JQuery.Thenable<unknown> {
++        private _removeTemplateReportAjax(report: Brightmetrics.Reports.Classes.Report): JQuery.Thenable<unknown> {
              return Utils.ajaxRequest("/Companies/" + defCompanyId + "/ReportTemplates/" + report.id, {
                  _realMethod: "DELETE",
              });
@@ -2256,8 +2256,8 @@ index 8095ff6..c1140f5 100644
           * Removes the current user's access to `report`.
           * @param report
           */
--        private _removeReportAccessAjax(report: BRCs.Report): Promise<unknown> {
-+        private _removeReportAccessAjax(report: Brightmetrics.Reports.Classes.Report): Promise<unknown> {
+-        private _removeReportAccessAjax(report: BRCs.Report): JQuery.Thenable<unknown> {
++        private _removeReportAccessAjax(report: Brightmetrics.Reports.Classes.Report): JQuery.Thenable<unknown> {
              return Utils.ajaxRequest(`/UserReportTemplates/${report.id}?context=remove_self`, {
                  userId: userInfo.UserId
              });
@@ -2265,9 +2265,9 @@ index 8095ff6..c1140f5 100644
           *
           * @param report
           */
--        private _removeReport(report: BRCs.Report): Promise<unknown> {
-+        private _removeReport(report: Brightmetrics.Reports.Classes.Report): Promise<unknown> {
-             let req: Promise<unknown>;
+-        private _removeReport(report: BRCs.Report): JQuery.Thenable<unknown> {
++        private _removeReport(report: Brightmetrics.Reports.Classes.Report): JQuery.Thenable<unknown> {
+             let req: JQuery.Thenable<unknown>;
  
              if (this.isPartnerTemplates) {
                  req = this._removeTemplateReportAjax(report);
@@ -2488,7 +2488,7 @@ index 8095ff6..c1140f5 100644
              let main;
              switch (pageContentView) {
 diff --git a/ts/Reports/ViewModels/parameter.ts b/ts/Reports/ViewModels/parameter.ts
-index 2304d00..0dc8551 100644
+index 276cf6d..4cae9e9 100644
 --- a/ts/Reports/ViewModels/parameter.ts
 +++ b/ts/Reports/ViewModels/parameter.ts
 @@ -8,17 +8,17 @@ namespace Brightmetrics.Reports.ViewModels {
@@ -2605,7 +2605,7 @@ index 2304d00..0dc8551 100644
                  return {
                      data: this._getFilter(filterOption),
 diff --git a/ts/Reports/ViewModels/parameterdialog.ts b/ts/Reports/ViewModels/parameterdialog.ts
-index 41268a7..bf2341c 100644
+index 72bd0c7..5d47df9 100644
 --- a/ts/Reports/ViewModels/parameterdialog.ts
 +++ b/ts/Reports/ViewModels/parameterdialog.ts
 @@ -2,17 +2,17 @@
@@ -2656,7 +2656,7 @@ index 41268a7..bf2341c 100644
  
                  if (props.onOkay !== void (0)) {
 diff --git a/ts/Reports/ViewModels/parameterpopover.ts b/ts/Reports/ViewModels/parameterpopover.ts
-index 5c68757..f70a6dc 100644
+index b267592..db425d2 100644
 --- a/ts/Reports/ViewModels/parameterpopover.ts
 +++ b/ts/Reports/ViewModels/parameterpopover.ts
 @@ -8,11 +8,11 @@ namespace Brightmetrics.Reports.ViewModels {
@@ -2801,7 +2801,7 @@ index 5c68757..f70a6dc 100644
  
              this.isOpen(true);
 diff --git a/ts/Reports/ViewModels/report-field-editor.ts b/ts/Reports/ViewModels/report-field-editor.ts
-index 8b97297..896ba9e 100644
+index 4fed9ec..ecd0f02 100644
 --- a/ts/Reports/ViewModels/report-field-editor.ts
 +++ b/ts/Reports/ViewModels/report-field-editor.ts
 @@ -193,7 +193,7 @@ namespace Brightmetrics.Reports.ViewModels {
@@ -3130,7 +3130,7 @@ index 8b97297..896ba9e 100644
              return filter ? (filter as any)._isNonActionable : false;
          }
 diff --git a/ts/Reports/ViewModels/report.ts b/ts/Reports/ViewModels/report.ts
-index baec711..374eb22 100644
+index 704d630..9e71860 100644
 --- a/ts/Reports/ViewModels/report.ts
 +++ b/ts/Reports/ViewModels/report.ts
 @@ -765,7 +765,7 @@ namespace Brightmetrics.Reports.ViewModels {
@@ -3272,7 +3272,7 @@ index baec711..374eb22 100644
  
 -        private _handleDetailQuery<T = BIs.IReportSummaryDataResponse | BIs.IReportDetailDataResponse>(
 +        private _handleDetailQuery<T = Brightmetrics.Interfaces.IReportSummaryDataResponse | Brightmetrics.Interfaces.IReportDetailDataResponse>(
-             request: Promise<{ commandId: string; detaggType?: string }>): Promise<T> {
+             request: JQuery.Thenable<{ commandId: string; detaggType?: string }>): JQuery.Thenable<T> {
              const defd = $.Deferred<T, string>();
  
 @@ -1614,7 +1614,7 @@ namespace Brightmetrics.Reports.ViewModels {
@@ -3281,7 +3281,7 @@ index baec711..374eb22 100644
  
 -        private _handleSummaryOrOtfaResponse<T = BIs.IReportSummaryDataResponse | BIs.IReportDetailDataResponse>(
 +        private _handleSummaryOrOtfaResponse<T = Brightmetrics.Interfaces.IReportSummaryDataResponse | Brightmetrics.Interfaces.IReportDetailDataResponse>(
-             request: Promise<T>): Promise<T> {
+             request: JQuery.Thenable<T>): JQuery.Thenable<T> {
              return request.then((response) => {
                  const commandId = (response as any).commandId as string;
 @@ -1630,8 +1630,8 @@ namespace Brightmetrics.Reports.ViewModels {
@@ -3289,9 +3289,9 @@ index baec711..374eb22 100644
          }
  
 -        public send(dsi: BIs.IDataSourceInstance, template: BRIDs.IReportTemplate)
--            : Promise<BIs.IReportSummaryDataResponse | BIs.IReportDetailDataResponse> {
+-            : JQuery.Thenable<BIs.IReportSummaryDataResponse | BIs.IReportDetailDataResponse> {
 +        public send(dsi: Brightmetrics.Interfaces.IDataSourceInstance, template: Brightmetrics.Reports.Interfaces.DTOs.IReportTemplate)
-+            : Promise<Brightmetrics.Interfaces.IReportSummaryDataResponse | Brightmetrics.Interfaces.IReportDetailDataResponse> {
++            : JQuery.Thenable<Brightmetrics.Interfaces.IReportSummaryDataResponse | Brightmetrics.Interfaces.IReportDetailDataResponse> {
              this._canDoOtfa = Utils.canDoOtfa(dsi);
              this._isDetailQuery = template.reportType === Enums.ReportType.Detail;
  
@@ -3588,7 +3588,7 @@ index baec711..374eb22 100644
                  topX: this.topX(),
                  values: this.values().map((v) => ({ valueIndex: v.index, label: v.label, scale: v.field!.Scale })),
 diff --git a/ts/Reports/ViewModels/reporteditortopbar.ts b/ts/Reports/ViewModels/reporteditortopbar.ts
-index 3028f9a..6a95373 100644
+index c7abfd0..caa6199 100644
 --- a/ts/Reports/ViewModels/reporteditortopbar.ts
 +++ b/ts/Reports/ViewModels/reporteditortopbar.ts
 @@ -1,17 +1,10 @@
@@ -3649,12 +3649,12 @@ index 3028f9a..6a95373 100644
 -        getTemplateSnapshot(): BRIDs.IReportTemplate;
 -        addReport(report: BRCs.Report): void;
 -        updateReport(report: BRCs.Report): void;
--        removeReport(report: BRCs.Report): Promise<unknown>;
+-        removeReport(report: BRCs.Report): JQuery.Thenable<unknown>;
 -        goToReport(report: BRCs.Report): void;
 +        getTemplateSnapshot(): Brightmetrics.Reports.Interfaces.DTOs.IReportTemplate;
 +        addReport(report: Brightmetrics.Reports.Classes.Report): void;
 +        updateReport(report: Brightmetrics.Reports.Classes.Report): void;
-+        removeReport(report: Brightmetrics.Reports.Classes.Report): Promise<unknown>;
++        removeReport(report: Brightmetrics.Reports.Classes.Report): JQuery.Thenable<unknown>;
 +        goToReport(report: Brightmetrics.Reports.Classes.Report): void;
          cancelPendingChanges(soft?: boolean): void;
          updateReportName(updateName: string): void;
@@ -3897,7 +3897,7 @@ index 3028f9a..6a95373 100644
  
              this.printPreviewTooltip = ko.computed(() => {
 diff --git a/ts/Reports/ViewModels/saveasdialog.ts b/ts/Reports/ViewModels/saveasdialog.ts
-index a72d153..1befc0f 100644
+index f4f6662..10c729c 100644
 --- a/ts/Reports/ViewModels/saveasdialog.ts
 +++ b/ts/Reports/ViewModels/saveasdialog.ts
 @@ -4,9 +4,6 @@
