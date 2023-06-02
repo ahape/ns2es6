@@ -35,7 +35,7 @@ def is_legit_match(match):
   return (
     not before.endswith("this.") and
     not after.startswith(":") and
-    "export " not in before and
+    (" extends " in before if " export class " in before else " export " not in before) and
     "//" not in before and
     re_count(c_open_rx, before) <= re_count(c_close_rx, before))
 
