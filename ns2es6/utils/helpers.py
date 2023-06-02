@@ -1,8 +1,8 @@
-import os, sys
+import os, sys, re
 
-def create_export_matcher(exports):
-  symbols = list(set(map(lambda x: x.symbol, exports)))
-  return r"\b(" + "|".join(symbols) + r")\b"
+def create_or_matcher(values):
+  values = list(set(map(re.escape, values)))
+  return r"\b(" + "|".join(values) + r")\b"
 
 def should_exclude_file(file_path):
   return "node_modules" in file_path or \

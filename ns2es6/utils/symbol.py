@@ -25,3 +25,7 @@ class Symbol:
   @property
   def address(self):
       return self.ns + "." + self.symbol
+
+  @property
+  def alias(self):
+    return "".join([word[0] for word in self.ns.split(".")]) + "s_" + self.symbol

@@ -81,7 +81,7 @@ class ExportReferenceReplacer(Transformer):
 
 @trace("fully qualify")
 def run(directory, exports):
-  symbols_rx = helpers.create_export_matcher(exports)
+  symbols_rx = helpers.create_or_matcher([*map(lambda x: x.symbol, exports)])
   helpers.for_each_file(directory,
     lambda x: update_file(x, exports, symbols_rx))
 

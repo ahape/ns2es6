@@ -35,6 +35,66 @@ index 954ea15..401ad77 100644
                  configureDarkTheme();
              } else {
                  configureDefaultTheme();
+diff --git a/ts/DashboardDetail/ViewModels/exportdialog.ts b/ts/DashboardDetail/ViewModels/exportdialog.ts
+index 3acc088..54508f8 100644
+--- a/ts/DashboardDetail/ViewModels/exportdialog.ts
++++ b/ts/DashboardDetail/ViewModels/exportdialog.ts
+@@ -36,23 +36,23 @@ namespace Brightmetrics.DashboardDetail.ViewModels {
+                 const exportedFormat = this.exportReportFormatType();
+ 
+                 if (exportedFormat === Brightmetrics.Enums.ExportFormat.PDF) {
+-                    Utils.Preferences.set(Utils.Preferences.EPreferences.pdfStyle, this.exportPDFFormatting());
++                    Utils.Preferences.setPreference(Utils.Preferences.EPreferences.pdfStyle, this.exportPDFFormatting());
+                 } else if (exportedFormat === Brightmetrics.Enums.ExportFormat.CSV) {
+-                    Utils.Preferences.set(Utils.Preferences.EPreferences.csvStyle, this.exportCSVFormatting());
++                    Utils.Preferences.setPreference(Utils.Preferences.EPreferences.csvStyle, this.exportCSVFormatting());
+                 }
+ 
+-                Utils.Preferences.set(Utils.Preferences.EPreferences.exportReportFormat, exportedFormat);
++                Utils.Preferences.setPreference(Utils.Preferences.EPreferences.exportReportFormat, exportedFormat);
+             } else if (exportType === "chart") {
+                 const exportedFormat = this.exportFormatChartType();
+ 
+                 if (exportedFormat === Brightmetrics.Enums.ExportFormat.PDF) {
+-                    Utils.Preferences.set(Utils.Preferences.EPreferences.pdfStyle, this.exportPDFFormatting());
++                    Utils.Preferences.setPreference(Utils.Preferences.EPreferences.pdfStyle, this.exportPDFFormatting());
+                 }
+ 
+-                Utils.Preferences.set(Utils.Preferences.EPreferences.exportChartFormat, exportedFormat);
++                Utils.Preferences.setPreference(Utils.Preferences.EPreferences.exportChartFormat, exportedFormat);
+             }
+ 
+-            Utils.Preferences.set(Utils.Preferences.EPreferences.exportType, exportType);
++            Utils.Preferences.setPreference(Utils.Preferences.EPreferences.exportType, exportType);
+         }
+ 
+         public initialize(props: IExportDialogProp) {
+@@ -64,20 +64,20 @@ namespace Brightmetrics.DashboardDetail.ViewModels {
+                 this.exportType = ko.observable("report");
+             } else {
+                 this.exportType = ko.observable(
+-                    Utils.Preferences.get(Utils.Preferences.EPreferences.exportType)
++                    Utils.Preferences.getPreference(Utils.Preferences.EPreferences.exportType)
+                 );
+             }
+             this.exportReportFormatType = ko.observable(
+-                Utils.Preferences.get(Utils.Preferences.EPreferences.exportReportFormat)
++                Utils.Preferences.getPreference(Utils.Preferences.EPreferences.exportReportFormat)
+             );
+             this.exportFormatChartType = ko.observable(
+-                Utils.Preferences.get(Utils.Preferences.EPreferences.exportChartFormat)
++                Utils.Preferences.getPreference(Utils.Preferences.EPreferences.exportChartFormat)
+             );
+             this.exportPDFFormatting = ko.observable(
+-                Utils.Preferences.get(Utils.Preferences.EPreferences.pdfStyle)
++                Utils.Preferences.getPreference(Utils.Preferences.EPreferences.pdfStyle)
+             );
+             this.exportCSVFormatting = ko.observable(
+-                Utils.Preferences.get(Utils.Preferences.EPreferences.csvStyle)
++                Utils.Preferences.getPreference(Utils.Preferences.EPreferences.csvStyle)
+             );
+ 
+             if (props.exportReportFormatType) {
 diff --git a/ts/MyAccount/ViewModels/page.ts b/ts/MyAccount/ViewModels/page.ts
 index 8408511..7fca7fa 100644
 --- a/ts/MyAccount/ViewModels/page.ts
@@ -64,6 +124,46 @@ index 8408511..7fca7fa 100644
                          return {
                              data: this.myAccount,
                              name: "my-account-view-template",
+diff --git a/ts/PrintPreview/ViewModels/page.ts b/ts/PrintPreview/ViewModels/page.ts
+index a3ec309..a947e2f 100644
+--- a/ts/PrintPreview/ViewModels/page.ts
++++ b/ts/PrintPreview/ViewModels/page.ts
+@@ -96,7 +96,7 @@ namespace Brightmetrics.PrintPreview.ViewModels {
+                 };
+ 
+                 if ($this.is(".exportformatpdf")) {
+-                    const selected = Utils.Preferences.get(Utils.Preferences.EPreferences.pdfStyle);
++                    const selected = Utils.Preferences.getPreference(Utils.Preferences.EPreferences.pdfStyle);
+                     const template = _.template(Utils.stringUnraw(`
+ <div style="margin-top: 30px;">
+     <label for="jehgoq6e" style="margin-right: 25px;">
+@@ -125,7 +125,7 @@ ${selected === "Landscape" ? "checked" : ""}>
+                             if (button === "Okay") {
+                                 const orientation = $("[name='r-formatting']:checked").val();
+                                 this.exportForm.find("input[name='formatOrientation']").val(orientation!);
+-                                Utils.Preferences.set(
++                                Utils.Preferences.setPreference(
+                                     Utils.Preferences.EPreferences.pdfStyle,
+                                     orientation! as string
+                                 );
+@@ -133,7 +133,7 @@ ${selected === "Landscape" ? "checked" : ""}>
+                             }
+                         });
+                 } else if ($this.is(".exportformatcsv")) {
+-                    const selected = Utils.Preferences.get(Utils.Preferences.EPreferences.csvStyle);
++                    const selected = Utils.Preferences.getPreference(Utils.Preferences.EPreferences.csvStyle);
+                     const template = _.template(Utils.stringUnraw(`
+ <div style="margin-top: 30px;">
+     <label for="jehgoq6e" style="margin-right: 25px;">
+@@ -165,7 +165,7 @@ ${selected === "Unformatted" ? "checked" : ""}>
+                                 const dataFormatting = $("[name='r-formatting']:checked").val();
+                                 this.exportForm.find("input[name='unformatted']")
+                                     .val(dataFormatting === "Unformatted" ? "true" : "false");
+-                                Utils.Preferences.set(
++                                Utils.Preferences.setPreference(
+                                     Utils.Preferences.EPreferences.csvStyle,
+                                     dataFormatting! as string
+                                 );
 diff --git a/ts/Reports/ViewModels/report-field-editor.ts b/ts/Reports/ViewModels/report-field-editor.ts
 index ecd0f02..76b84dd 100644
 --- a/ts/Reports/ViewModels/report-field-editor.ts
@@ -86,10 +186,49 @@ index ecd0f02..76b84dd 100644
          export type Props = Widget.Props & {
              hasFilter: KnockoutComputed<boolean>;
              helper: IFieldHelperExtended;
+diff --git a/ts/Reports/ViewModels/report.ts b/ts/Reports/ViewModels/report.ts
+index 9e71860..877dbae 100644
+--- a/ts/Reports/ViewModels/report.ts
++++ b/ts/Reports/ViewModels/report.ts
+@@ -2176,7 +2176,7 @@ tr >
+             this._ignoreTriggers = false;
+             this._sortIndexesAreOutOfSync = false;
+             this.autoRefreshEnabled = ko.observable(
+-                Utils.Preferences.get(Utils.Preferences.EPreferences.summaryAutoRunEnabled) === "true"
++                Utils.Preferences.getPreference(Utils.Preferences.EPreferences.summaryAutoRunEnabled) === "true"
+             );
+ 
+             this.runReport_rateLimited = rateLimit(() => {
+@@ -2568,7 +2568,7 @@ The following filters are invalid:
+             this.events.toggleAutoRefresh = () => {
+                 const autoRefreshEnabled = !this.autoRefreshEnabled();
+                 this.autoRefreshEnabled(autoRefreshEnabled);
+-                Utils.Preferences.set(
++                Utils.Preferences.setPreference(
+                     Utils.Preferences.EPreferences.summaryAutoRunEnabled,
+                     autoRefreshEnabled.toString()
+                 );
 diff --git a/ts/utils.ts b/ts/utils.ts
-index 0772f3a..a4810fb 100644
+index 0772f3a..19fa744 100644
 --- a/ts/utils.ts
 +++ b/ts/utils.ts
+@@ -6475,14 +6475,14 @@ the fly and as a result, your ${entity} may take longer to load.
+             }
+         }
+ 
+-        export function get(preference: EPreferences): string {
++        export function getPreference(preference: EPreferences): string {
+             const defaultValue = getDefaultValues(preference);
+             const savedValue = localStorage.getItem(getKey(preference));
+ 
+             return savedValue === null ? defaultValue : savedValue;
+         }
+ 
+-        export function set(preference: EPreferences, value: string) {
++        export function setPreference(preference: EPreferences, value: string) {
+             localStorage.setItem(getKey(preference), value);
+         }
+     }
 @@ -7855,7 +7855,7 @@ days of reporting. To upgrade, please contact`);
          /**
           * Important to call this before `ko.applyBindings`.
