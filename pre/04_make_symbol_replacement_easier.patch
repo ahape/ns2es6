@@ -1,3 +1,40 @@
+diff --git a/ts/AudioAlerts/Classes/alerter.ts b/ts/AudioAlerts/Classes/alerter.ts
+index d436d5d..f9d6b6c 100644
+--- a/ts/AudioAlerts/Classes/alerter.ts
++++ b/ts/AudioAlerts/Classes/alerter.ts
+@@ -51,21 +51,21 @@ namespace Brightmetrics.AudioAlerts.Classes {
+             // Add the CSS rule that defines the animation.
+             this._addCSSRuleToStyleSheet(
+                 `
+-@${vendorPrefix}keyframes animation-${alertObject.alertIdForElement}`, `
+-{
+-    from { ${alertObject.styleProperty}: ${startValue}; }
+-    to { ${alertObject.styleProperty}: ${alertObject.styleValue}; }
+-}`);
++  @${vendorPrefix}keyframes animation-${alertObject.alertIdForElement}`, `
++  {
++      from { ${alertObject.styleProperty}: ${startValue}; }
++      to { ${alertObject.styleProperty}: ${alertObject.styleValue}; }
++  }`);
+ 
+             // Add the CSS rule that implements the animation.
+             this._addCSSRuleToStyleSheet(
+                 `
+-._audio-alert-${alertObject.alertIdForElement}`, `
+-{
+-    animation-name: animation-${alertObject.alertIdForElement};
+-    animation-duration: 1s;
+-    animation-iteration-count: 10;
+-}`);
++  ._audio-alert-${alertObject.alertIdForElement}`, `
++  {
++      animation-name: animation-${alertObject.alertIdForElement};
++      animation-duration: 1s;
++      animation-iteration-count: 10;
++  }`);
+         }
+ 
+         private _removeAlertFromStylesheet(alertObject: Interfaces.IAlertObject) {
 diff --git a/ts/C2G/ViewModels/c2gvoiceanalytics.ts b/ts/C2G/ViewModels/c2gvoiceanalytics.ts
 index 8f374c9..1274d15 100644
 --- a/ts/C2G/ViewModels/c2gvoiceanalytics.ts
@@ -125,7 +162,7 @@ index 8408511..7fca7fa 100644
                              data: this.myAccount,
                              name: "my-account-view-template",
 diff --git a/ts/PrintPreview/ViewModels/page.ts b/ts/PrintPreview/ViewModels/page.ts
-index a3ec309..a947e2f 100644
+index a3ec309..d2c0025 100644
 --- a/ts/PrintPreview/ViewModels/page.ts
 +++ b/ts/PrintPreview/ViewModels/page.ts
 @@ -96,7 +96,7 @@ namespace Brightmetrics.PrintPreview.ViewModels {
@@ -164,6 +201,15 @@ index a3ec309..a947e2f 100644
                                      Utils.Preferences.EPreferences.csvStyle,
                                      dataFormatting! as string
                                  );
+@@ -293,7 +293,7 @@ ${selected === "Unformatted" ? "checked" : ""}>
+             this.editor.report.tableColumnSortPath = this.defaultColumnSortPath;
+             // this.tableColumnSortIndex(0);
+             // this.tableColumnSortPath();
+-}
++        }
+ 
+         public initChildViewModels() {
+             // If the report has been loaded in the preview page just use the same data to recreate the report.
 diff --git a/ts/Reports/ViewModels/report-field-editor.ts b/ts/Reports/ViewModels/report-field-editor.ts
 index ecd0f02..76b84dd 100644
 --- a/ts/Reports/ViewModels/report-field-editor.ts
@@ -208,6 +254,17 @@ index 9e71860..877dbae 100644
                      Utils.Preferences.EPreferences.summaryAutoRunEnabled,
                      autoRefreshEnabled.toString()
                  );
+diff --git a/ts/ViewModels/dialog.ts b/ts/ViewModels/dialog.ts
+index dcd41c4..f215fd0 100644
+--- a/ts/ViewModels/dialog.ts
++++ b/ts/ViewModels/dialog.ts
+@@ -446,6 +446,4 @@ namespace Brightmetrics.ViewModels {
+             }
+         }
+     }
+-
+-    export const DialogVM = DialogViewModel;
+ }
 diff --git a/ts/utils.ts b/ts/utils.ts
 index 0772f3a..19fa744 100644
 --- a/ts/utils.ts

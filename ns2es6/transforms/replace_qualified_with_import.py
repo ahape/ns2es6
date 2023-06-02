@@ -48,10 +48,10 @@ def add_imports_to_file(file_path, imports):
       items = []
       for symbol in symbols:
         symbol_name = symbol.symbol
-        if symbol_name in symbols_needing_alias:
+        if symbol in symbols_needing_alias:
           symbol_name += " as " + symbol.alias
         items.append(symbol_name)
-      contents = f'import {{ { ", ".join(items) } }} from "{rel_path}";\n' + contents
+      contents = f'import {{ { ", ".join(items) } }} from "{rel_path[:-3]}";\n' + contents
   with open(file_path, "w", encoding="utf8") as file:
     file.write(contents)
 

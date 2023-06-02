@@ -22,6 +22,7 @@ def set_logger_level(args):
 def program(args):
   os.chdir(f"{args.directory}")
   if args.clean:
+    os.system("git clean -fd")
     os.system("git reset --hard start")
 
   apply_pre_patches()
@@ -30,6 +31,9 @@ def program(args):
   fully_qualify.run(args.directory, exports)
   replace_qualified_with_import.run(args.directory, exports)
   sanitize.run(args.directory, True)
+  # TODO: Clean up
+  with open(os.path.join(args.directory, "ts", "global.d.ts"), "w", encoding="utf8") as f:
+    f.write("declare const _: _.UnderscoreStatic;");
 
 def apply_pre_patches():
   # TODO Eventually need to set a "git tag"

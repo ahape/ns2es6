@@ -47,6 +47,6 @@ def update_file(file_path, commit_changes=False):
   walker = LineWalker(file_path, commit_changes)
   walker.add_transformer(Transformer(r"\/\/\/\s*\<reference ", "<DELETE>"))
   walker.add_transformer(Transformer(r"\bjshint\b", "<DELETE>"))
-  #walker.add_transformer(NamespaceRemover())
+  walker.add_transformer(NamespaceRemover())
   walker.add_transformer(Unindenter())
   walker.walk()
