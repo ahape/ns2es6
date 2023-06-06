@@ -2,8 +2,11 @@
 import os, tempfile, json
 from ns2es6.transforms import (sanitize,
                                collect_exports,
-                               replace_imports)
+                               replace_imports,
+                               fully_qualify)
 from ns2es6.utils.line_walker import LineWalker
+from ns2es6.utils.symbol import Symbol
+import ns2es6.utils.helpers as helpers
 
 def read_file(file_path):
   with open(file_path, "r", encoding="utf8") as f:
@@ -50,8 +53,22 @@ def test_replace_imports(file_count):
     replace_imports.update_file(subject_file, assertion_file)
     assert_files_are_same("replace_imports", expectation_file, assertion_file)
 
+def test_fully_qualify(file_count):
+  for i in range(1, file_count + 1):
+    subject_file = f"tests/fully_qualify_{str(i).zfill(2)}.ts"
+    expectation_file = f"tests/expectations/fully_qualify_{str(i).zfill(2)}.ts"
+    exports = []
+    with open(f"tests/fully_qualify_{str(i).zfill(2)}.json") as f:
+      exports = json.loads(f.read())
+    exports = [Symbol(x["symbol"], x["ns"], x["file"]) for x in exports]
+    symbols_rx = helpers.create_or_matcher([*map(lambda x: x.symbol, exports)])
+    assertion_file = tempfile.mkstemp()[1]
+    fully_qualify.update_file(subject_file, symbols_rx, exports, assertion_file)
+    assert_files_are_same("fully qualify", expectation_file, assertion_file)
+
 #test_sanitize(1)
 test_collect_exports(6)
 test_replace_imports(3)
+test_fully_qualify(1)
 
 print("All tests passed!")

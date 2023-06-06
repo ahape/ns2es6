@@ -85,8 +85,8 @@ def run(directory, exports):
   helpers.for_each_file(directory,
     lambda x: update_file(x, exports, symbols_rx))
 
-def update_file(file_path, exports, symbols_rx):
-  walker = LineWalker(file_path, True)
+def update_file(file_path, exports, symbols_rx, commit_changes=False):
+  walker = LineWalker(file_path, commit_changes)
   ns_collector = NamespaceCollector()
   walker.add_transformer(ns_collector)
   walker.add_transformer(ExportReferenceReplacer(
