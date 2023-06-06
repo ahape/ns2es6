@@ -18,17 +18,14 @@ class LineWalker:
       for line in file.readlines():
         self.analyze_line(line)
 
-    if self.has_changed:
-      res = "".join(self.out_lines)
+    res = "".join(self.out_lines)
 
-      if self.commit_changes:
-        path = self.file_path
-        if isinstance(self.commit_changes, str):
-          path = self.commit_changes
-        with open(path, "w", encoding="utf8") as file:
-          file.write(res)
-    else:
-      logger.debug("No changes found")
+    if self.commit_changes:
+      path = self.file_path
+      if isinstance(self.commit_changes, str):
+        path = self.commit_changes
+      with open(path, "w", encoding="utf8") as file:
+        file.write(res)
 
   def analyze_line(self, line):
     self.line = line

@@ -77,7 +77,7 @@ class ExportReferenceReplacer(Transformer):
         for word in words:
           if symbol in word and (full := self.word_has_potential(word)) and word in full:
             text = re.sub(fr"(?<![.])\b({word})\b(?=[^.:?])", full, text)
-    return text
+    return super().analyze(text)
 
 @trace("fully qualify")
 def run(directory, exports):

@@ -55,15 +55,16 @@ def test_replace_imports(file_count):
 
 def test_fully_qualify(file_count):
   for i in range(1, file_count + 1):
-    subject_file = f"tests/fully_qualify_{str(i).zfill(2)}.ts"
-    expectation_file = f"tests/expectations/fully_qualify_{str(i).zfill(2)}.ts"
+    num = str(i).zfill(2)
+    subject_file = f"tests/fully_qualify_{num}.ts"
+    expectation_file = f"tests/expectations/fully_qualify_{num}.ts"
     exports = []
-    with open(f"tests/fully_qualify_{str(i).zfill(2)}.json") as f:
+    with open(f"tests/fully_qualify_{num}.json", "r", encoding="utf8") as f:
       exports = json.loads(f.read())
     exports = [Symbol(x["symbol"], x["ns"], x["file"]) for x in exports]
     symbols_rx = helpers.create_or_matcher([*map(lambda x: x.symbol, exports)])
     assertion_file = tempfile.mkstemp()[1]
-    fully_qualify.update_file(subject_file, symbols_rx, exports, assertion_file)
+    fully_qualify.update_file(subject_file, exports, symbols_rx, assertion_file)
     assert_files_are_same("fully qualify", expectation_file, assertion_file)
 
 #test_sanitize(1)
