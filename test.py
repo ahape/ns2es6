@@ -6,7 +6,7 @@ from ns2es6.transforms import (sanitize,
                                fully_qualify)
 from ns2es6.utils.line_walker import LineWalker
 from ns2es6.utils.symbol import Symbol
-import ns2es6.utils.helpers as helpers
+from ns2es6.utils import helpers
 
 def read_file(file_path):
   with open(file_path, "r", encoding="utf8") as f:

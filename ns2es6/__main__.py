@@ -33,7 +33,7 @@ def program(args):
   sanitize.run(args.directory, True)
   # TODO: Clean up
   with open(os.path.join(args.directory, "ts", "global.d.ts"), "w", encoding="utf8") as f:
-    f.write("declare const _: _.UnderscoreStatic;");
+    f.write("declare const _: _.UnderscoreStatic;")
 
 def apply_pre_patches():
   # TODO Eventually need to set a "git tag"
