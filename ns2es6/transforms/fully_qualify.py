@@ -22,8 +22,17 @@ def create_lookup(exports):
     return None
   return lookup_fn
 
-def extract_words(text):
-  return word_splitter_rx.split(text)
+def extract_whole_word(match):
+  text = match.string.rstrip()
+  start, end = match.start(), match.end()
+  tok = text[start]
+  while re.match(r"[.a-zA-Z0-9_$]", tok):
+    start -= 1
+    if start < 0:
+      break
+    tok = text[start]
+  start += 1
+  return start, text[start:end], end
 
 def re_count(pattern, text):
   return len(re.findall(pattern, text))
@@ -33,8 +42,6 @@ def is_legit_match(match):
   start, end = match.start(), match.end()
   before, after = text[:start], text[end:]
   return (
-    not before.endswith("this.") and
-    not after.startswith(":") and
     (" extends " in before if " export class " in before else " export " not in before) and
     "//" not in before and
     re_count(c_open_rx, before) <= re_count(c_close_rx, before))
@@ -51,8 +58,6 @@ class ExportReferenceReplacer(Transformer):
     return self.ns_collector.current
 
   def word_has_potential(self, word):
-    if word.startswith("."):
-      return None
     best_choice = { "parents": 100, "value": None }
     if potentials := self.lookup(word):
       word = tuple(word.split("."))
@@ -66,17 +71,15 @@ class ExportReferenceReplacer(Transformer):
               best_choice["parents"] = parents
               best_choice["value"] = potential
           parents += 1
-          namespace = tuple(list(namespace)[:-1]) # (granny, papa, son) -> (granny, papa)
+          namespace = tuple(list(namespace)[:-1]) # Pop
     return best_choice["value"]
 
   def analyze(self, text):
     for match in self.match_rx.finditer(text):
       if match and is_legit_match(match):
-        symbol = match[1]
-        words = extract_words(text)
-        for word in words:
-          if symbol in word and (full := self.word_has_potential(word)) and word in full:
-            text = re.sub(fr"(?<![.])\b({word})\b(?=[^.:?])", full, text)
+        slice_start, word, slice_end = extract_whole_word(match)
+        if qualified := self.word_has_potential(word):
+          text = text[:slice_start] + qualified + text[slice_end:]
     return super().analyze(text)
 
 @trace("fully qualify")
