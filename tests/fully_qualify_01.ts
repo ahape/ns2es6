@@ -1,4 +1,4 @@
-namespace Foo.Bar {
+namespace Foo.Bar.X {
   const $1: Baz = "asdf";
   const $2 = this.Baz;
   const $3 = (Baz: Baz): Baz => "asdf" as Baz;

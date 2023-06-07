@@ -40,8 +40,9 @@ def apply_pre_patches():
   for root, _, files in os.walk("/Users/alanhape/Projects/ns2es6/pre"):
     for patch_file in sorted(files):
       full_path = os.path.join(root, patch_file)
+      logger.info(f"Applying patch {patch_file}")
       os.system(f"git apply --whitespace=fix {full_path}")
-      os.system(f'git commit -am "{patch_file}"')
+      os.system(f'git commit --quiet -am "{patch_file}"')
 
 def undo_git_changes():
   # TODO should undo until the "git tag" we set if anything fails

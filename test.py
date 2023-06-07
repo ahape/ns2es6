@@ -70,6 +70,6 @@ def test_fully_qualify(file_count):
 #test_sanitize(1)
 test_collect_exports(6)
 test_replace_imports(3)
-test_fully_qualify(1)
+test_fully_qualify(2)
 
 print("All tests passed!")

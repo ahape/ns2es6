@@ -1,0 +1,12 @@
+[
+  {
+    "ns": "Foo",
+    "symbol": "Baz",
+    "file": "n/a"
+  },
+  {
+    "ns": "Foo.Bar",
+    "symbol": "Baz",
+    "file": "n/a"
+  }
+]

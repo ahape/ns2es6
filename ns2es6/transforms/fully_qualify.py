@@ -25,6 +25,15 @@ def create_lookup(exports):
 def re_count(pattern, text):
   return len(re.findall(pattern, text))
 
+def outer_ns(s):
+  parts = s.split(".")
+  if len(parts) > 1:
+    return ".".join(parts[:-1])
+  return s
+
+def ns_tup(s):
+  return tuple(s.split("."))
+
 def is_base_if_ref(before):
   if re.search(r"\bclass\s+", before):
     b4 = before.rstrip()
@@ -52,21 +61,21 @@ class ExportReferenceReplacer(Transformer):
   def current_ns(self):
     return self.ns_collector.current
 
-  def word_has_potential(self, word):
+  def word_has_potential(self, name):
     best_choice = { "parents": 100, "value": None }
-    if potentials := self.lookup(word):
-      word = tuple(word.split("."))
+    if potentials := self.lookup(name):
+      name = ns_tup(name)
       for potential in potentials:
-        namespace = tuple(self.current_ns.split("."))
-        pot = tuple(potential.split("."))
+        namespace = ns_tup(self.current_ns)
+        test = ns_tup(potential)
         parents = 1
         while namespace:
-          if pot == namespace + word:
+          if test == namespace + name:
             if parents < best_choice["parents"]:
               best_choice["parents"] = parents
               best_choice["value"] = potential
           parents += 1
-          namespace = tuple(list(namespace)[:-1]) # Pop
+          namespace = namespace[:-1]
     return best_choice["value"]
 
   def analyze(self, text):
@@ -85,8 +94,9 @@ class ExportReferenceReplacer(Transformer):
             before = left[:last_boundary_index]
             match_and_maybe_ns = left[last_boundary_index:e]
             if qualified := self.word_has_potential(match_and_maybe_ns):
-              sb += before
-              sb += qualified
+              if outer_ns(qualified) != self.current_ns:
+                sb += before
+                sb += qualified
         left = left[e:]
       else:
         break
