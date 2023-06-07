@@ -6,6 +6,15 @@ namespace Foo.Bar {
   const _1 = this.fn<Foo.Bar.Baz>()
   const _2 = this.fn<Bazz>()
   const _3 = this.fn<Baz.Quux>()
+  export class Clz extends Foo.Bar.Baz {
+    // ...
+  }
+  export class Clz implements Foo.Bar.Baz {
+    // ...
+  }
+  export class Baz {
+    // ...
+  }
   // Baz baz baz
   /* Baz baz baz */
 }
