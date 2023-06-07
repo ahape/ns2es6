@@ -59,10 +59,10 @@ def add_imports_to_file(file_path, imports):
 def run(directory, exports):
   symbols_rx = helpers.create_or_matcher([*map(lambda x: x.address, exports)])
   helpers.for_each_file(directory,
-    lambda f: update_file(f, exports, symbols_rx))
+    lambda f: update_file(f, exports, symbols_rx, True))
 
-def update_file(file_path, exports, symbols_rx):
-  walker = LineWalker(file_path, True)
+def update_file(file_path, exports, symbols_rx, commit_changes=False):
+  walker = LineWalker(file_path, commit_changes)
   ns_collector = NamespaceCollector()
   walker.add_transformer(ns_collector)
   q_replacer = QualifiedReplacer(symbols_rx, ns_collector, exports)

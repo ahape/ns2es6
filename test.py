@@ -3,7 +3,8 @@ import os, tempfile, json
 from ns2es6.transforms import (sanitize,
                                collect_exports,
                                replace_imports,
-                               fully_qualify)
+                               fully_qualify,
+                               replace_qualified_with_import)
 from ns2es6.utils.line_walker import LineWalker
 from ns2es6.utils.symbol import Symbol
 from ns2es6.utils import helpers
@@ -67,9 +68,30 @@ def test_fully_qualify(file_count):
     fully_qualify.update_file(subject_file, exports, symbols_rx, assertion_file)
     assert_files_are_same("fully qualify", expectation_file, assertion_file)
 
+def test_replace_qualified(file_count):
+  for i in range(1, file_count + 1):
+    num = str(i).zfill(2)
+    subject_file = f"tests/replace_qualified_{num}.ts"
+    expectation_file = f"tests/expectations/replace_qualified_{num}.ts"
+    exports = []
+    with open(f"tests/replace_qualified_{num}.json", "r", encoding="utf8") as f:
+      exports = json.loads(f.read())
+    exports = [Symbol(x["symbol"], x["ns"], x["file"]) for x in exports]
+    symbols_rx = helpers.create_or_matcher([*map(lambda x: x.symbol, exports)])
+    tmp_file = tempfile.mkstemp()[1]
+    if not os.path.exists(tmp_file):
+      os.makedirs(tmp_file, exist_ok=True)
+    assertion_dir = os.path.join(tmp_file, "foo/bar")
+    if not os.path.exists(assertion_dir):
+      os.makedirs(assertion_dir, exist_ok=True)
+    assertion_file = os.path.join(assertion_dir, "x")
+    replace_qualified_with_import.update_file(subject_file, exports, symbols_rx, assertion_file)
+    assert_files_are_same("replace qualified", expectation_file, assertion_file)
+
 #test_sanitize(1)
 test_collect_exports(6)
 test_replace_imports(3)
 test_fully_qualify(2)
+test_replace_qualified(1)
 
 print("All tests passed!")
