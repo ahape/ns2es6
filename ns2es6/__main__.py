@@ -19,11 +19,14 @@ def set_logger_level(args):
   else:
     logger.setLevel(logging.INFO)
 
+def clean():
+  os.system("git clean -fd")
+  os.system("git reset --hard start")
+
 def program(args):
   os.chdir(args.directory)
   if args.clean:
-    os.system("git clean -fd")
-    os.system("git reset --hard start")
+    clean()
   apply_pre_patches()
   exports = collect_exports.run(args.directory)
   replace_imports.run(args.directory)
@@ -32,10 +35,9 @@ def program(args):
   replace_qualified_with_import.run(args.directory, exports)
   sanitize.run(args.directory, True)
   add_globals(args.directory)
-  # TODO: Clean up
 
 def apply_pre_patches():
-  # TODO Eventually need to set a "git tag"
+  # TODO Eventually need to auto-set a "git tag" (and remove on clean())
   for root, _, files in os.walk("/Users/alanhape/Projects/ns2es6/pre"):
     for patch_file in sorted(files):
       full_path = os.path.join(root, patch_file)
@@ -53,14 +55,17 @@ def add_globals(directory):
     lines.append("}")
     f.write("\n".join(lines))
 
-def undo_git_changes():
-  # TODO should undo until the "git tag" we set if anything fails
-  pass
+def undo_git_changes(directory):
+  clean()
 
 def main():
   args = parse_args()
   set_logger_level(args)
-  program(args)
+  try:
+    program(args)
+  except:
+    undo_git_changes(args.directory)
+    raise
 
 if __name__ == "__main__":
   main()
