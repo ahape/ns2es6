@@ -35,9 +35,10 @@ def ns_tup(s):
   return tuple(s.split("."))
 
 def is_base_if_ref(before):
-  if re.search(r"\bclass\s+", before):
+  if re.search(r"\b(class|interface)\s+", before):
     b4 = before.rstrip()
-    return b4.endswith("extends") or b4.endswith("implements")
+    return (b4.endswith("extends") or
+            b4.endswith("implements"))
   return True
 
 def is_legit_match(match, before, after):
@@ -49,18 +50,19 @@ def is_legit_match(match, before, after):
     # If there's a mention of "class" then make sure *this* is not the class
     # name but rather something being extended
     is_base_if_ref(before) and
+    # Bad: Baz: ...
     # Bad: var foo { quux: 1, Baz: ... }
     # Bad: var foo { Baz: ... }
-    # Bad: Baz: ...
     not ((not before.strip() or
           before.rstrip().endswith(",") or
           before.rstrip().endswith("{"))
           and after.lstrip().startswith(":")) and
-    # Bad: type Baz = ...
+    # Bad: type Baz % ...
     not (re.search("(" + helpers.keywords + ")$", before.rstrip()) and
          (after.lstrip().startswith("=") or
           after.lstrip().startswith("(") or
           after.lstrip().startswith("<") or
+          after.lstrip().startswith(":") or
           after.lstrip().startswith("{"))) and
     # Bad: foo(Baz?: ...)
     # Bad: foo(Baz: ...)
@@ -117,7 +119,6 @@ class ExportReferenceReplacer(Transformer):
             _before = left[:last_boundary_index]
             match_and_maybe_ns = left[last_boundary_index:e]
             if qualified := self.word_has_potential(match_and_maybe_ns):
-              #if outer_ns(qualified) != self.current_ns:
               sb += _before
               sb += qualified
               continue

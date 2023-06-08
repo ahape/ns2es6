@@ -31,9 +31,8 @@ def program(args):
   #open("/tmp/addresses.json", "w").write(json.dumps([str(x) for x in exports]))
   replace_qualified_with_import.run(args.directory, exports)
   sanitize.run(args.directory, True)
+  add_globals(args.directory)
   # TODO: Clean up
-  with open(os.path.join(args.directory, "ts", "global.d.ts"), "w", encoding="utf8") as f:
-    f.write("declare const _: _.UnderscoreStatic;")
 
 def apply_pre_patches():
   # TODO Eventually need to set a "git tag"
@@ -43,6 +42,16 @@ def apply_pre_patches():
       logger.info(f"Applying patch {patch_file}")
       os.system(f"git apply --whitespace=fix {full_path}")
       os.system(f'git commit --quiet -am "{patch_file}"')
+
+def add_globals(directory):
+  with open(os.path.join(directory, "ts", "global.d.ts"), "w", encoding="utf8") as f:
+    lines = []
+    lines.append("import { IDataSourceGroup } from 'Interfaces/idatasourcegroup';")
+    lines.append("declare global {")
+    lines.append("  declare const _: _.UnderscoreStatic;")
+    lines.append("  declare const dataConnectionGroups: IDataSourceGroup[];")
+    lines.append("}")
+    f.write("\n".join(lines))
 
 def undo_git_changes():
   # TODO should undo until the "git tag" we set if anything fails

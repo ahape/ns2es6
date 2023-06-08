@@ -1,3 +1,17 @@
+diff --git a/ts/Admin/DataCustomization/ViewModels/ccfcalculationview.ts b/ts/Admin/DataCustomization/ViewModels/ccfcalculationview.ts
+index f040c8d..2be2c2b 100644
+--- a/ts/Admin/DataCustomization/ViewModels/ccfcalculationview.ts
++++ b/ts/Admin/DataCustomization/ViewModels/ccfcalculationview.ts
+@@ -40,8 +40,7 @@ namespace Brightmetrics.Admin.DataCustomization.ViewModels {
+         parameter?: BRIs.DTOs.IParameterDimension;
+     }
+ 
+-    interface ICustomMultipleSelectDialogProps extends
+-        MultipleSelect.Interfaces.IMultipleSelectDialogProps<string>
++    interface ICustomMultipleSelectDialogProps extends MultipleSelect.Interfaces.IMultipleSelectDialogProps<string>
+     {
+         customLabel: KnockoutObservable<string>;
+         computedLabel: KnockoutObservable<string>;
 diff --git a/ts/AudioAlerts/Classes/alerter.ts b/ts/AudioAlerts/Classes/alerter.ts
 index d436d5d..f9d6b6c 100644
 --- a/ts/AudioAlerts/Classes/alerter.ts

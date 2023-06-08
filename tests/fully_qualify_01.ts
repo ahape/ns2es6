@@ -12,6 +12,12 @@ namespace Foo.Bar.X {
   export class Clz implements Baz {
     // ...
   }
+  export interface Clz extends Baz {
+    // ...
+  }
+  interface Clz extends Baz<string> {
+    // ...
+  }
   export class Baz {
     // ...
   }
@@ -22,17 +28,16 @@ namespace Foo.Bar.X {
     switch (character) {
       case Bar.Baz.Plus:
       case Bar.Baz.Minus:
-      case Bar.Baz.Divide:
-      case Bar.Baz.Multiply:
         return true;
       default:
-        return false;
+        return Foo.Bar.Baz;
     }
   }
   function Baz() { }
   function Baz<T>() { }
   namespace Baz { }
   type Baz = { }
+  type Baz: Quux = { }
   Baz { } // Even though this is illegal
   var foo = { Baz: "foo" };
   // Baz baz baz
