@@ -1,4 +1,4 @@
-import { Baz } from "../baz"
+import { Baz } from "./baz";
 namespace Foo.Bar.X {
   const $1: Baz = "asdf";
   const $2 = this.Baz;

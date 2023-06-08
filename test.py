@@ -76,18 +76,20 @@ def test_replace_qualified(file_count):
     exports = []
     with open(f"tests/replace_qualified_{num}.json", "r", encoding="utf8") as f:
       exports = json.loads(f.read())
-    exports = [Symbol(x["symbol"], x["ns"], x["file"]) for x in exports]
-    symbols_rx = helpers.create_or_matcher([*map(lambda x: x.symbol, exports)])
-    tmp_file = tempfile.mkstemp()[1]
-    if not os.path.exists(tmp_file):
-      os.makedirs(tmp_file, exist_ok=True)
-    assertion_dir = os.path.join(tmp_file, "foo/bar")
+    assertion_dir = os.path.join(tempfile.gettempdir(), "foo/bar")
     if not os.path.exists(assertion_dir):
       os.makedirs(assertion_dir, exist_ok=True)
-    assertion_file = os.path.join(assertion_dir, "x")
-    replace_qualified_with_import.update_file(subject_file, exports, symbols_rx, assertion_file)
+    assertion_file = os.path.join(assertion_dir, "x.ts")
+    moved_subject_file = os.path.join(assertion_dir, "baz.ts")
+    subject_contents = ""
+    with open(subject_file, "r", encoding="utf8") as f:
+      subject_contents = f.read()
+    with open(assertion_file, "w", encoding="utf8") as f:
+      f.write(subject_contents)
+    exports = [Symbol(x["symbol"], x["ns"], moved_subject_file) for x in exports]
+    symbols_rx = helpers.create_or_matcher([*map(lambda x: x.address, exports)])
+    replace_qualified_with_import.update_file(assertion_file, exports, symbols_rx, True)
     assert_files_are_same("replace qualified", expectation_file, assertion_file)
-
 #test_sanitize(1)
 test_collect_exports(6)
 test_replace_imports(3)
