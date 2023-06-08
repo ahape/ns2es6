@@ -1,4 +1,4 @@
-import os, sys, argparse, logging
+import os, sys, argparse, logging, json
 from ns2es6.transforms import (sanitize,
                                collect_exports,
                                replace_imports,
@@ -20,15 +20,15 @@ def set_logger_level(args):
     logger.setLevel(logging.INFO)
 
 def program(args):
-  os.chdir(f"{args.directory}")
+  os.chdir(args.directory)
   if args.clean:
     os.system("git clean -fd")
     os.system("git reset --hard start")
-
   apply_pre_patches()
   exports = collect_exports.run(args.directory)
   replace_imports.run(args.directory)
   fully_qualify.run(args.directory, exports)
+  #open("/tmp/addresses.json", "w").write(json.dumps([str(x) for x in exports]))
   replace_qualified_with_import.run(args.directory, exports)
   sanitize.run(args.directory, True)
   # TODO: Clean up

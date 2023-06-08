@@ -6,19 +6,6 @@ from ns2es6.utils.trace_timer import trace
 from ns2es6.utils.symbol import Symbol
 from ns2es6.utils import helpers
 
-_keywords = "|".join([
-  "class",
-  "namespace",
-  "function",
-  "type",
-  "interface",
-  "enum",
-  "const",
-  "let",
-  "abstract",
-  "var",
-])
-
 class NamespaceCollector(Transformer):
   def __init__(self):
     super().__init__(r"^\s*(?:export\s+){0,1}namespace\s+(\S+)[ {]")
@@ -45,7 +32,7 @@ class NamespaceCollector(Transformer):
 
 class ExportCollector(Transformer):
   def __init__(self, ns_collector, file_path):
-    super().__init__(fr"^\s*export\s+(?:(?:{_keywords})\s+)+(\w+)\b")
+    super().__init__(fr"^\s*export\s+(?:(?:{helpers.keywords})\s+)+(\w+)\b")
     self.exports = set()
     self.file_path = file_path
     self.ns_collector = ns_collector

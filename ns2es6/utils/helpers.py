@@ -1,5 +1,18 @@
 import os, sys, re
 
+keywords = "|".join([
+  "class",
+  "namespace",
+  "function",
+  "type",
+  "interface",
+  "enum",
+  "const",
+  "let",
+  "abstract",
+  "var",
+])
+
 def create_or_matcher(values):
   values = list(set(map(re.escape, values)))
   return r"\b(" + "|".join(values) + r")\b"

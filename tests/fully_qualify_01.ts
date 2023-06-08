@@ -5,7 +5,7 @@ namespace Foo.Bar.X {
   const $4 = (Baz?: number): void => { "asdf" }
   const _1 = this.fn<Baz>()
   const _2 = this.fn<Bazz>()
-  const _3 = this.fn<Baz.Quux>()
+  const _3 = this.fn<Quux.Baz.Quux>()
   export class Clz extends Baz {
     // ...
   }
@@ -15,6 +15,26 @@ namespace Foo.Bar.X {
   export class Baz {
     // ...
   }
+  function foo(message: string) {
+    throw new Error(Bar.Baz(message));
+  }
+  function foo(character: string) {
+    switch (character) {
+      case Bar.Baz.Plus:
+      case Bar.Baz.Minus:
+      case Bar.Baz.Divide:
+      case Bar.Baz.Multiply:
+        return true;
+      default:
+        return false;
+    }
+  }
+  function Baz() { }
+  function Baz<T>() { }
+  namespace Baz { }
+  type Baz = { }
+  Baz { } // Even though this is illegal
+  var foo = { Baz: "foo" };
   // Baz baz baz
   /* Baz baz baz */
 }

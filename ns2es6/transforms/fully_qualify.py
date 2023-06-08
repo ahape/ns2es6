@@ -40,7 +40,7 @@ def is_base_if_ref(before):
     return b4.endswith("extends") or b4.endswith("implements")
   return True
 
-def is_legit_match(match, before):
+def is_legit_match(match, before, after):
   return (
     # Exclude comments
     "//" not in before and
@@ -48,11 +48,30 @@ def is_legit_match(match, before):
     re_count(c_open_rx, before) <= re_count(c_close_rx, before) and
     # If there's a mention of "class" then make sure *this* is not the class
     # name but rather something being extended
-    is_base_if_ref(before))
+    is_base_if_ref(before) and
+    # Bad: var foo { quux: 1, Baz: ... }
+    # Bad: var foo { Baz: ... }
+    # Bad: Baz: ...
+    not ((not before.strip() or
+          before.rstrip().endswith(",") or
+          before.rstrip().endswith("{"))
+          and after.lstrip().startswith(":")) and
+    # Bad: type Baz = ...
+    not (re.search("(" + helpers.keywords + ")$", before.rstrip()) and
+         (after.lstrip().startswith("=") or
+          after.lstrip().startswith("(") or
+          after.lstrip().startswith("<") or
+          after.lstrip().startswith("{"))) and
+    # Bad: foo(Baz?: ...)
+    # Bad: foo(Baz: ...)
+    not (before.endswith("(") and
+         (after.startswith("?") or
+          after.startswith(":")))
+  )
 
 class ExportReferenceReplacer(Transformer):
   def __init__(self, match_rx, ns_collector, exports):
-    super().__init__(match_rx + r"(?![.?:])")
+    super().__init__(match_rx)
     self.exports = exports
     self.lookup = create_lookup(exports)
     self.ns_collector = ns_collector
@@ -81,32 +100,37 @@ class ExportReferenceReplacer(Transformer):
   def analyze(self, text):
     sb = ""
     left = text
+    after = None
     while left:
+      if after:
+        left = after
       if match := self.match_rx.search(left):
         s, e = match.start(), match.end()
         before = left[:s]
+        after = left[e:]
         last_boundary_index = -1
-        if is_legit_match(match, before):
+        if is_legit_match(match, before, after):
           for s_match in boundary_rx.finditer(before):
             last_boundary_index = s_match.start()
           if last_boundary_index > -1:
             last_boundary_index += 1
-            before = left[:last_boundary_index]
+            _before = left[:last_boundary_index]
             match_and_maybe_ns = left[last_boundary_index:e]
             if qualified := self.word_has_potential(match_and_maybe_ns):
-              if outer_ns(qualified) != self.current_ns:
-                sb += before
-                sb += qualified
-        left = left[e:]
+              #if outer_ns(qualified) != self.current_ns:
+              sb += _before
+              sb += qualified
+              continue
+        sb += before + match[1]
       else:
         break
-    return sb + left if sb else text
+    return sb + left or text
 
 @trace("fully qualify")
 def run(directory, exports):
   symbols_rx = helpers.create_or_matcher([*map(lambda x: x.symbol, exports)])
   helpers.for_each_file(directory,
-    lambda x: update_file(x, exports, symbols_rx))
+    lambda x: update_file(x, exports, symbols_rx, True))
 
 def update_file(file_path, exports, symbols_rx, commit_changes=False):
   walker = LineWalker(file_path, commit_changes)
