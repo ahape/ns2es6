@@ -42,4 +42,8 @@ namespace Foo.Bar.X {
   var foo = { Baz: "foo" };
   // Baz baz baz
   /* Baz baz baz */
+  interface IFoo extends Bar.Baz<string>
+  {
+      foo: XFoo<string>;
+  }
 }

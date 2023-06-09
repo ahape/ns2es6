@@ -146,6 +146,19 @@ index 3acc088..54508f8 100644
              );
  
              if (props.exportReportFormatType) {
+diff --git a/ts/MediaPlayer/ViewModels/audioplayer.ts b/ts/MediaPlayer/ViewModels/audioplayer.ts
+index 6041382..e804588 100644
+--- a/ts/MediaPlayer/ViewModels/audioplayer.ts
++++ b/ts/MediaPlayer/ViewModels/audioplayer.ts
+@@ -52,7 +52,7 @@ namespace Brightmetrics.MediaPlayer.ViewModels {
+ 
+         public initialize(props: Interfaces.IAudioPlayerProps) {
+             this.el = null;
+-            this.id = (Brightmetrics as any).Utils.createUniqueId();
++            this.id = Utils.createUniqueId();
+             this.url = props.url;
+             this.downloadUrl = props.downloadUrl;
+             this.recordingSystemName = props.recordingSystemName;
 diff --git a/ts/MyAccount/ViewModels/page.ts b/ts/MyAccount/ViewModels/page.ts
 index 8408511..7fca7fa 100644
 --- a/ts/MyAccount/ViewModels/page.ts

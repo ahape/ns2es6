@@ -41,7 +41,7 @@ def apply_pre_patches():
   for root, _, files in os.walk("/Users/alanhape/Projects/ns2es6/pre"):
     for patch_file in sorted(files):
       full_path = os.path.join(root, patch_file)
-      logger.info(f"Applying patch {patch_file}")
+      logger.info("Applying patch %s", patch_file)
       os.system(f"git apply --whitespace=fix {full_path}")
       os.system(f'git commit --quiet -am "{patch_file}"')
 
@@ -55,7 +55,7 @@ def add_globals(directory):
     lines.append("}")
     f.write("\n".join(lines))
 
-def undo_git_changes(directory):
+def undo_git_changes():
   clean()
 
 def main():
@@ -64,7 +64,7 @@ def main():
   try:
     program(args)
   except:
-    undo_git_changes(args.directory)
+    undo_git_changes()
     raise
 
 if __name__ == "__main__":
