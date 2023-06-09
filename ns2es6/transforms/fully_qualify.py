@@ -122,13 +122,16 @@ class ExportReferenceReplacer(Transformer):
       # Bad: Baz: ...
       # Bad: var foo { quux: 1, Baz: ... }
       # Bad: var foo { Baz: ... }
-      # Bad: Baz,
-      # Bad: { Baz,
-      # Bad: , Baz,
+      # Bad: Baz, ...
+      # Bad: { Baz, ...
+      # Bad: , Baz, ...
+      # Bad: Baz? ...
       and not ((not before.strip() or
                 before.rstrip().endswith(",") or
                 before.rstrip().endswith("{"))
                and (after.lstrip().startswith(":") or
+                    after.lstrip().startswith("?") or
+                    after.lstrip().startswith("(") or
                     after.lstrip().startswith(",")))
       # Bad: type Baz % ...
       and not (re.match(".*(" + extended_keywords + r")$", before.rstrip()) and
@@ -137,6 +140,10 @@ class ExportReferenceReplacer(Transformer):
                 after.lstrip().startswith("<") or
                 after.lstrip().startswith(":") or
                 after.lstrip().startswith("{") or
+                after.lstrip().startswith("of") or
+                after.lstrip().startswith("in") or
+                after.lstrip().startswith("instanceof") or
+                after.lstrip().startswith("typeof") or
                 after.lstrip().startswith("extends") or
                 after.lstrip().startswith("implements")))
       # Bad: foo(Baz?: ...)
