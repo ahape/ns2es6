@@ -97,12 +97,15 @@ class ExportReferenceReplacer(Transformer):
           _before = left[:last_boundary_index]
           match_and_maybe_ns = left[last_boundary_index:e]
           if qualified := self.word_has_potential(match_and_maybe_ns):
+            # if we need to get rid of what may have been a prior
+            # false-positive match
             if not _before:
               while re.match(ends_with_var_rx, sb):
                 sb = sb[:-1]
             else:
               while re.match(ends_with_var_rx, _before):
                 _before = _before[:-1]
+            # endif
             sb += _before
             sb += qualified
             continue

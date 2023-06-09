@@ -106,8 +106,7 @@ declare global {
                               "beta" |
                               "testing" |
                               "development";
-}
-    """.strip())
+}""".strip())
 
 def undo_git_changes():
   clean()
