@@ -48,8 +48,9 @@ def apply_pre_patches():
       os.system(f'git commit --quiet -am "{patch_file}"')
 
 def add_globals(directory):
-  shutil.copyfile(os.path.join(PROJ_PATH, "post/global.d.ts"),
-                  os.path.join(directory, "ts/global.d.ts"))
+  file = "global.d.ts"
+  shutil.copyfile(os.path.join(PROJ_PATH, f"post/{file}"),
+                  os.path.join(directory, f"ts/{file}"))
 
 def undo_git_changes():
   clean()

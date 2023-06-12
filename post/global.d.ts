@@ -10,6 +10,7 @@ import { INotice } from "Brightmetrics/Interfaces/inotice";
 import { DataHostRegion } from "Brightmetrics/Enums/datahostregion";
 declare global {
   declare const _: _.UnderscoreStatic;
+  declare const Highcharts: Highcharts.Static;
   declare const Brightmetrics: any;
   declare const sidebarPages: IPageDefinition[];
   declare const companyInfo: {

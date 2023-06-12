@@ -22,6 +22,10 @@ class QualifiedReplacer(Transformer):
         text = re.sub(r"\b" + re.escape(symbol.address) + r"\b", symbol.symbol, text)
     return text
 
+# TODO
+# - Need to make sure we don't collide with other names in the same file
+# - Need to make sure we don't bother adding an import for something that was
+# exported from the same file
 def add_imports_to_file(file_path, imports):
   imports_for_file = {}
   all_symbol_names, symbols_needing_alias = [], set()
