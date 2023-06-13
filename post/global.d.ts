@@ -1,13 +1,13 @@
-import { IPageDefinition } from "Brightmetrics/Interfaces/ipagedefinition";
-import { IBrightCompany } from "Brightmetrics/Interfaces/ibrightcompany";
-import { IBrightUser } from "Brightmetrics/Interfaces/ibrightuser";
-import { IAppInfo } from "Brightmetrics/Interfaces/iappinfo";
-import { IDataSourceGroup } from "Brightmetrics/Interfaces/idatasourcegroup";
-import { IDataConnectionGroupTeir } from "Brightmetrics/DataSources/Interfaces/idataconnectiongroupteir";
-import { IDashboardTab } from "Brightmetrics/Interfaces/idashboardtab";
-import { IBrightPermission } from "Brightmetrics/Interfaces/ibrightpermission";
-import { INotice } from "Brightmetrics/Interfaces/inotice";
-import { DataHostRegion } from "Brightmetrics/Enums/datahostregion";
+import { IPageDefinition } from "./Interfaces/ipagedefinition";
+import { IBrightCompany } from "./Interfaces/ibrightcompany";
+import { IBrightUser } from "./Interfaces/ibrightuser";
+import { IAppInfo } from "./Interfaces/iappinfo";
+import { IDataSourceGroup } from "./Interfaces/idatasourcegroup";
+import { IDataConnectionGroupTeir } from "./DataSources/Interfaces/idataconnectiongroupteir";
+import { IDashboardTab } from "./Dashboard/Interfaces/idashboardtab";
+import { IBrightPermission } from "./Interfaces/ibrightpermission";
+import { INotice } from "./Interfaces/inotice";
+import { DataHostRegion } from "./Enums/datahostregion";
 declare global {
   const _: _.UnderscoreStatic;
   const Highcharts: Highcharts.Static;
@@ -54,7 +54,7 @@ declare global {
       company: { [featureName: string]: string }
   };
   const releaseStage: "production" |
-                              "beta" |
-                              "testing" |
-                              "development";
+                      "beta" |
+                      "testing" |
+                      "development";
 }

@@ -46,4 +46,8 @@ namespace Foo.Bar.X {
   {
       foo: XFoo<string>;
   }
+  const foo = (Baz, xyz) => 1 + 1;
+  class C {
+    protected readonly Baz: Baz;
+  }
 }

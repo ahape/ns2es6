@@ -15,6 +15,7 @@ extended_keywords = "|".join([
   "private",
   "public",
   "protected",
+  "readonly",
 ]) + "|" + helpers.keywords
 
 def create_lookup(exports):
@@ -151,9 +152,11 @@ class ExportReferenceReplacer(Transformer):
                 after.lstrip().startswith("implements")))
       # Bad: foo(Baz?: ...)
       # Bad: foo(Baz: ...)
+      # Bad: foo(Baz, ...)
       and not (before.endswith("(") and
                (after.startswith("?") or
-                after.startswith(":")))
+                after.startswith(":") or
+                after.startswith(",")))
       # Bad: arr[x].Baz
       # Bad: foo?.Baz
       # Bad: foo!.Baz
