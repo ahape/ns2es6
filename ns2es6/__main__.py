@@ -1,5 +1,6 @@
 import os, sys, shutil, argparse, logging, json
 from ns2es6.transforms import (sanitize,
+                               create_proper_type_roots,
                                collect_exports,
                                replace_imports,
                                fully_qualify,
@@ -30,6 +31,7 @@ def program(args):
   if args.clean:
     clean()
   apply_pre_patches()
+  create_proper_type_roots.run(args.directory)
   exports = collect_exports.run(args.directory)
   replace_imports.run(args.directory)
   fully_qualify.run(args.directory, exports)
