@@ -9,51 +9,51 @@ import { IBrightPermission } from "Brightmetrics/Interfaces/ibrightpermission";
 import { INotice } from "Brightmetrics/Interfaces/inotice";
 import { DataHostRegion } from "Brightmetrics/Enums/datahostregion";
 declare global {
-  declare const _: _.UnderscoreStatic;
-  declare const Highcharts: Highcharts.Static;
-  declare const Brightmetrics: any;
-  declare const sidebarPages: IPageDefinition[];
-  declare const companyInfo: {
+  const _: _.UnderscoreStatic;
+  const Highcharts: Highcharts.Static;
+  const Brightmetrics: any;
+  const sidebarPages: IPageDefinition[];
+  const companyInfo: {
       success: boolean;
       logofile?: string;
       company: IBrightCompany;
   };
-  declare const userInfo: IBrightUser;
-  declare const appInfo: IAppInfo;
-  declare const dataConnectionGroups: IDataSourceGroup[];
-  declare const defCompanyId: number;
-  declare const myUserId: number;
-  declare const minWaitTime: number;
-  declare const sessionToken: string | undefined;
-  declare const isPublicDashboardPage: boolean | undefined;
-  declare const supportedTimeZones: Array<{ id: string, label: string }>;
-  declare const windowsZones: {
+  const userInfo: IBrightUser;
+  const appInfo: IAppInfo;
+  const dataConnectionGroups: IDataSourceGroup[];
+  const defCompanyId: number;
+  const myUserId: number;
+  const minWaitTime: number;
+  const sessionToken: string | undefined;
+  const isPublicDashboardPage: boolean | undefined;
+  const supportedTimeZones: Array<{ id: string, label: string }>;
+  const windowsZones: {
       supportedTimeZones: Array<{ id: string, label: string }>,
       tzmapping: Array<[string, Array<[string, string, boolean]>]>
   };
-  declare const dashboardTabs: IDashboardTab[] | undefined;
-  declare const whiteLabelProductName: string;
-  declare const currentDataHostRegion: DataHostRegion;
-  declare const router: IRouter;
-  declare const roleInfo: { role: { Permissions: IBrightPermission[] } };
-  declare const safeSessionStorage: Storage;
-  declare const dataDefinitionTooltips: Record<string, string>;
-  declare let userMessages: INotice[];
-  declare let companyNotices: INotice[];
-  declare const teirLevelInfo: IDataConnectionGroupTeir[];
-  declare const brightmetricsStorageUrl: string | undefined;
-  declare const bugsnagClient: {
+  const dashboardTabs: IDashboardTab[] | undefined;
+  const whiteLabelProductName: string;
+  const currentDataHostRegion: DataHostRegion;
+  const router: IRouter;
+  const roleInfo: { role: { Permissions: IBrightPermission[] } };
+  const safeSessionStorage: Storage;
+  const dataDefinitionTooltips: Record<string, string>;
+  let userMessages: INotice[];
+  let companyNotices: INotice[];
+  const teirLevelInfo: IDataConnectionGroupTeir[];
+  const brightmetricsStorageUrl: string | undefined;
+  const bugsnagClient: {
       notify: (err: any, opts: {
           beforeSend?: (report: any) => void;
           metaData?: Record<string, any>;
           severity?: string;
       }) => void
   };
-  declare const featureTreatments: {
+  const featureTreatments: {
       user: { [featureName: string]: string },
       company: { [featureName: string]: string }
   };
-  declare const releaseStage: "production" |
+  const releaseStage: "production" |
                               "beta" |
                               "testing" |
                               "development";
