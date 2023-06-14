@@ -9,6 +9,7 @@ from ns2es6.utils import helpers
 from ns2es6.transforms.collect_exports import NamespaceCollector
 
 import_template = Template('import { $vars } from "$path";\n')
+sub_import_template = Template('const { $vars } = $obj;\n')
 
 class QualifiedReplacer(Transformer):
   def __init__(self, match_rx, ns_collector, exports):
@@ -59,12 +60,21 @@ def write_imports(file_path, imports_for_file, symbols_needing_alias, undos):
       contents = contents.replace(undo.alias, undo.symbol)
     for rel_path, symbols in imports_for_file.items():
       items = []
+      sub_items = {}
       for symbol in symbols:
-        symbol_name = symbol.symbol
+        symbol_name = symbol.symbol_for_import
         if symbol in symbols_needing_alias:
-          symbol_name += " as " + symbol.alias
+          if symbol.nested:
+            sub_items[symbol_name] = sub_items.get(symbol_name, []) + [symbol.symbol]
+          else:
+            symbol_name += " as " + symbol.alias
         items.append(symbol_name)
       path_without_ext = rel_path[:-3]
+      #unshift> const { SubFoo } = Foo;
+      for imp, items in sub_items.items():
+        contents = sub_import_template.substitute(vars=", ".join(items),
+                                                  obj=imp) + contents
+      #unshift> import { Foo } from "xyz"
       contents = import_template.substitute(vars=", ".join(items),
                                             path=path_without_ext) + contents
   with open(file_path, "w", encoding="utf8") as file:

@@ -1,12 +1,13 @@
 import os, sys, re
 
 class Symbol:
-  def __init__(self, symbol, ns, file):
+  def __init__(self, symbol, ns, file, nested):
     self.symbol = symbol
     if ns is None:
       raise TypeError("'ns' is None")
     self.ns = ns
     self.file = file
+    self.nested = nested
 
   def __hash__(self):
     return hash(self.address)
@@ -29,3 +30,7 @@ class Symbol:
   @property
   def alias(self):
     return "".join([word[0] for word in self.ns.split(".")]) + "s_" + self.symbol
+
+  @property
+  def symbol_for_import(self):
+    return self.ns.split(".")[-1] if self.nested else self.symbol

@@ -40,10 +40,14 @@ class ExportCollector(Transformer):
   def handle_match(self, capture, match):
     # TODO: Make these proper objects
     current_ns = self.ns_collector.current
+    nested = False
     # If the export is a namespace _itself_, avoid dup
     if current_ns and current_ns.endswith(f".{capture}"):
       current_ns = current_ns.replace(f".{capture}", "")
-    self.exports.add(Symbol(capture, current_ns, self.file_path))
+    else:
+      nested = len(self.ns_collector.ns_stack) > 1
+    symbol = Symbol(capture, current_ns, self.file_path, nested)
+    self.exports.add(symbol)
 
 @trace("collect exports")
 def run(directory):

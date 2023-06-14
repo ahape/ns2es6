@@ -62,7 +62,7 @@ def test_fully_qualify(file_count):
     exports = []
     with open(f"tests/fully_qualify_{num}.json", "r", encoding="utf8") as f:
       exports = json.loads(f.read())
-    exports = [Symbol(x["symbol"], x["ns"], x["file"]) for x in exports]
+    exports = [Symbol(x["symbol"], x["ns"], x["file"], False) for x in exports]
     symbols_rx = helpers.create_or_matcher([*map(lambda x: x.symbol, exports)])
     assertion_file = tempfile.mkstemp()[1]
     fully_qualify.update_file(subject_file, exports, symbols_rx, assertion_file)
@@ -86,7 +86,7 @@ def test_replace_qualified(file_count):
       subject_contents = f.read()
     with open(assertion_file, "w", encoding="utf8") as f:
       f.write(subject_contents)
-    exports = [Symbol(x["symbol"], x["ns"], moved_subject_file) for x in exports]
+    exports = [Symbol(x["symbol"], x["ns"], moved_subject_file, False) for x in exports]
     symbols_rx = helpers.create_or_matcher([*map(lambda x: x.address, exports)])
     replace_qualified_with_import.update_file(assertion_file, exports, symbols_rx, True)
     assert_files_are_same("replace qualified", expectation_file, assertion_file)

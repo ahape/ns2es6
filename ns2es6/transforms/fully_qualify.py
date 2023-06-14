@@ -1,4 +1,5 @@
 import os, re
+from collections import namedtuple
 from ns2es6.utils.transformer import Transformer
 from ns2es6.utils.line_walker import LineWalker
 from ns2es6.utils.logger import logger
@@ -17,6 +18,9 @@ extended_keywords = "|".join([
   "protected",
   "readonly",
 ]) + "|" + helpers.keywords
+
+MatchResult = namedtuple("MatchResult", "sb succeeded")
+MatchState = namedtuple("MatchState", "match before after sb left")
 
 def create_lookup(exports):
   arr = [e.address for e in exports]
@@ -79,6 +83,35 @@ class ExportReferenceReplacer(Transformer):
           namespace = namespace[:-1]
     return best_choice["value"]
 
+  def analyze_match(self, state):
+    def tidy_prior_stuff():
+      """
+      if we need to get rid of what may have been a prior false-positive match
+      """
+      nonlocal sb, before
+      if not before:
+        while re.match(ends_with_var_rx, sb):
+          sb = sb[:-1]
+      else:
+        while re.match(ends_with_var_rx, before):
+          before = before[:-1]
+
+    match, before, after, sb, left = state
+    e = match.end()
+    last_boundary_index = -1
+
+    if self.is_legit_match(before, after):
+      for s_match in re.split(boundary_rx, before):
+        last_boundary_index = before.rindex(s_match)
+      before = left[:last_boundary_index]
+      match_and_maybe_ns = left[last_boundary_index:e]
+      if qualified := self.word_has_potential(match_and_maybe_ns):
+        tidy_prior_stuff()
+        sb += before
+        sb += qualified
+        return MatchResult(sb, True)
+    return MatchResult(None, False)
+
   def analyze(self, text):
     sb = ""
     left = text
@@ -87,29 +120,12 @@ class ExportReferenceReplacer(Transformer):
       if after:
         left = after
       if match := self.match_rx.search(left):
-        s, e = match.start(), match.end()
-        before = left[:s]
-        after = left[e:]
-        last_boundary_index = -1
-
-        if self.is_legit_match(before, after):
-          for s_match in re.split(boundary_rx, before):
-            last_boundary_index = before.rindex(s_match)
-          _before = left[:last_boundary_index]
-          match_and_maybe_ns = left[last_boundary_index:e]
-          if qualified := self.word_has_potential(match_and_maybe_ns):
-            # if we need to get rid of what may have been a prior
-            # false-positive match
-            if not _before:
-              while re.match(ends_with_var_rx, sb):
-                sb = sb[:-1]
-            else:
-              while re.match(ends_with_var_rx, _before):
-                _before = _before[:-1]
-            # endif
-            sb += _before
-            sb += qualified
-            continue
+        before = left[:match.start()]
+        after = left[match.end():]
+        state = MatchState(match, before, after, sb, left)
+        if (res := self.analyze_match(state)) and res.succeeded:
+          sb = res.sb
+          continue
         sb += before + match[1]
       else:
         break
