@@ -2704,24 +2704,93 @@ index eca0428..0772f3a 100644
              Brightmetrics.Enums.BrightPermissionKey.CanAdministerCompany);
  
 diff --git a/tsconfig.json b/tsconfig.json
-index bd32b72..5223c44 100644
+index bd32b72..37eb3d0 100644
 --- a/tsconfig.json
 +++ b/tsconfig.json
-@@ -4,7 +4,7 @@
+@@ -4,19 +4,17 @@
          "baseUrl": ".",
          "allowJs": true,
          "listFiles": false,
 -        "module": "amd",
+-        "noImplicitAny": true,
+-        "noImplicitReturns": true,
 +        "module": "system",
-         "noImplicitAny": true,
-         "noImplicitReturns": true,
          "outFile": "build/brightmetrics.js",
-@@ -13,7 +13,7 @@
+         "preserveConstEnums": true,
+         "forceConsistentCasingInFileNames": false,
          "sourceMap": true,
          "inlineSources": true,
          "strictNullChecks": true,
 -        "target": "es5"
-+        "target": "es2017"
++        "target": "es2017",
++        "typeRoots": ["./types"]
      },
      "include": [
-         "types/*.d.ts",
+-        "types/*.d.ts",
+         "ts/**/*.ts"
+     ]
+ }
+diff --git a/types/clusterize.d.ts b/types/clusterize.d.ts
+index cf88874..17c893c 100644
+--- a/types/clusterize.d.ts
++++ b/types/clusterize.d.ts
+@@ -1,5 +1,3 @@
+-/// <reference path="knockout-3.4.0.d.ts" />
+-
+ // Extrapolated from: https://clusterize.js.org/
+ interface IClusterizeOptions {
+     rows: string[];
+@@ -44,5 +42,3 @@ interface IClusterize {
+ interface IClusterizeOptionsExtended extends IClusterizeOptions {
+     data: KnockoutObservable<string[]>
+ }
+-
+-declare const Clusterize: IClusterize;
+diff --git a/types/jquery-signalr-2.2.0.d.ts b/types/jquery-signalr-2.2.0.d.ts
+index 0f6b13a..de6eaad 100644
+--- a/types/jquery-signalr-2.2.0.d.ts
++++ b/types/jquery-signalr-2.2.0.d.ts
+@@ -3,13 +3,8 @@
+ // Definitions by: Boris Yankov <https://github.com/borisyankov>, T. Michael Keesey <https://github.com/keesey>, Giedrius Grabauskas <https://github.com/GiedriusGrabauskas>
+ // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+ // TypeScript Version: 2.3
+-
+-
+-/// <reference path="jquery-3.3.0.d.ts" />
+-
+-
+ declare namespace SignalR {
+-    
++
+     const enum ConnectionState {
+         Connecting = 0,
+         Connected = 1,
+diff --git a/types/jquery-ui-1.12.0.d.ts b/types/jquery-ui-1.12.0.d.ts
+index e78ec1d..a69d961 100644
+--- a/types/jquery-ui-1.12.0.d.ts
++++ b/types/jquery-ui-1.12.0.d.ts
+@@ -3,9 +3,6 @@
+ // Definitions by: Boris Yankov <https://github.com/borisyankov>, John Reilly <https://github.com/johnnyreilly>
+ // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+ // TypeScript Version: 2.3
+-
+-/// <reference path="jquery-3.3.0.d.ts" />
+-
+ declare namespace JQueryUI {
+     // Accordion //////////////////////////////////////////////////
+ 
+diff --git a/types/select2-4.0.d.ts b/types/select2-4.0.d.ts
+index 212bb02..9c1d501 100644
+--- a/types/select2-4.0.d.ts
++++ b/types/select2-4.0.d.ts
+@@ -4,10 +4,6 @@
+ //                 denisname <https://github.com/denisname>
+ // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+ // TypeScript Version: 2.6
+-
+-/// <reference path="jquery-3.3.0.d.ts" />
+-/// <reference path="requirejs-2.1.0.d.ts"/>
+-
+ export as namespace Select2;
+ 
+ // --------------------------------------------------------------------------
