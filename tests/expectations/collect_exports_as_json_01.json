@@ -1,0 +1,38 @@
+[
+  {
+    "symbol": "stringTrim",
+    "ns": "Brightmetrics.Utils",
+    "file": "/Users/alanhape/Projects/ns2es6/tests/collect_exports_as_json_01.json",
+    "nested": false
+  },
+  {
+    "symbol": "foo",
+    "ns": "Brightmetrics.Utils",
+    "file": "/Users/alanhape/Projects/ns2es6/tests/collect_exports_as_json_01.json",
+    "nested": false
+  },
+  {
+    "symbol": "TimeKeeper",
+    "ns": "Brightmetrics.Utils",
+    "file": "/Users/alanhape/Projects/ns2es6/tests/collect_exports_as_json_01.json",
+    "nested": false
+  },
+  {
+    "symbol": "stop",
+    "ns": "Brightmetrics.Utils.TimeKeeper",
+    "file": "/Users/alanhape/Projects/ns2es6/tests/collect_exports_as_json_01.json",
+    "nested": true
+  },
+  {
+    "symbol": "getNew",
+    "ns": "Brightmetrics.Utils.TimeKeeper",
+    "file": "/Users/alanhape/Projects/ns2es6/tests/collect_exports_as_json_01.json",
+    "nested": true
+  },
+  {
+    "symbol": "validHostnameRx",
+    "ns": "Brightmetrics.Utils",
+    "file": "/Users/alanhape/Projects/ns2es6/tests/collect_exports_as_json_01.json",
+    "nested": false
+  }
+]

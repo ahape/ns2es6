@@ -23,6 +23,13 @@ class Symbol:
   def __str__(self):
     return self.address
 
+  def __dict__(self):
+    return {
+      "ns": self.ns,
+      #"file": self.file,
+      "nested": self.nested,
+      "symbol": self.symbol, }
+
   @property
   def address(self):
       return self.ns + "." + self.symbol

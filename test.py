@@ -46,6 +46,23 @@ def test_collect_exports(file_count, only=None):
       for i, e in enumerate(expectation):
         assert e == assertion[i], (e, assertion[i])
 
+def test_collect_exports_as_json(file_count, only=None):
+  for i in range(1, file_count + 1):
+    if not only or i == only:
+      subject_file = f"tests/collect_exports_as_json_{str(i).zfill(2)}.ts"
+      expectation_file = f"tests/expectations/collect_exports_as_json_{str(i).zfill(2)}.json"
+      assertion = list(collect_exports.process_file(subject_file))
+      assertion = sorted(assertion, key=lambda x: x.symbol)
+      expectation = read_file_as_json(expectation_file)
+      expectation = sorted(expectation, key=lambda x: x["symbol"])
+      for i, e in enumerate(expectation):
+        ass = assertion[i]
+        for k, v in e.items():
+          if k == "file":
+            continue
+          ass_v = getattr(ass, k)
+          assert v == ass_v, (k, v, ass_v)
+
 def test_replace_imports(file_count):
   for i in range(1, file_count + 1):
     subject_file = f"tests/replace_imports_{str(i).zfill(2)}.ts"
@@ -90,8 +107,10 @@ def test_replace_qualified(file_count):
     symbols_rx = helpers.create_or_matcher([*map(lambda x: x.address, exports)])
     replace_qualified_with_import.update_file(assertion_file, exports, symbols_rx, True)
     assert_files_are_same("replace qualified", expectation_file, assertion_file)
+
 #test_sanitize(1)
 test_collect_exports(6)
+test_collect_exports_as_json(1)
 test_replace_imports(3)
 test_fully_qualify(2)
 #test_replace_qualified(1)
