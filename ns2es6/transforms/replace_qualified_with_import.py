@@ -26,16 +26,20 @@ class QualifiedReplacer(Transformer):
         text = re.sub(r"\b" + re.escape(symbol.address) + r"\b", symbol.alias, text)
     return text
 
+def symbols_from_same_file(file_path, imports):
+  undos = set()
+  for symbol in imports:
+    if os.path.normpath(file_path) == os.path.normpath(symbol.file):
+      undos.add(symbol)
+  return undos
+
 def process_imports(file_path, imports):
+  imports = list(imports)
   imports_for_file = {}
   symbols_needing_alias = set()
   # Some symbol replacements were false-positives
-  undos = set()
-  for symbol in list(imports):
-    if os.path.normpath(file_path) == os.path.normpath(symbol.file):
-      undos.add(symbol)
-      continue
-
+  undos = symbols_from_same_file(file_path, imports)
+  for symbol in filter(lambda x: x not in undos, imports):
     file_path_dir = os.path.split(file_path)[0]
     symbol_dir, symbol_file = os.path.split(symbol.file)
     rel_dir = os.path.relpath(symbol_dir, file_path_dir)
@@ -67,7 +71,7 @@ def prepend_nested_import_statements(contents, nested_props):
           var          = symbol.alias,
           imported_var = symbol.symbol_for_import,
           prop         = symbol.symbol))
-  statements_txt = "\n".join(sorted(statements)) 
+  statements_txt = "\n".join(sorted(statements))
   return statements_txt + "\n" + contents
 
 def write_imports(file_path, imports_for_file, symbols_needing_alias, undos):

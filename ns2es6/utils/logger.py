@@ -1,4 +1,14 @@
 import logging
 
-logging.basicConfig()
-logger = logging.getLogger("ns2es6")
+def get_logger(name, level="info"):
+  logging.basicConfig()
+  logger = logging.getLogger(name)
+  set_level(logger, level)
+  return logger
+
+def set_level(logger, level):
+  match level.lower().strip():
+    case "debug":
+      logger.setLevel(logging.DEBUG)
+    case "info"| _:
+      logger.setLevel(logging.INFO)

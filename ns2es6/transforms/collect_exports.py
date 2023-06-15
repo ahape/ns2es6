@@ -1,7 +1,6 @@
 import os, re
 from ns2es6.utils.transformer import Transformer
 from ns2es6.utils.line_walker import LineWalker
-from ns2es6.utils.logger import logger
 from ns2es6.utils.trace_timer import trace
 from ns2es6.utils.symbol import Symbol
 from ns2es6.utils import helpers
@@ -61,7 +60,6 @@ def run(directory):
   return exports
 
 def process_file(file_path):
-  logger.debug("Collecting export data from file %s", file_path)
   walker = LineWalker(file_path)
   ns_collector = NamespaceCollector()
   walker.add_transformer(ns_collector)

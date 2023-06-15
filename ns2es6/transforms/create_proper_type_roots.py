@@ -1,7 +1,6 @@
 import os, re, shutil
 from ns2es6.utils.transformer import Transformer
 from ns2es6.utils.line_walker import LineWalker
-from ns2es6.utils.logger import logger
 from ns2es6.utils.trace_timer import trace
 from ns2es6.utils.symbol import Symbol
 from ns2es6.utils import helpers

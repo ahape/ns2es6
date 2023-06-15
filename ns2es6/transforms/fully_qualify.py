@@ -2,13 +2,16 @@ import os, re
 from collections import namedtuple
 from ns2es6.utils.transformer import Transformer
 from ns2es6.utils.line_walker import LineWalker
-from ns2es6.utils.logger import logger
 from ns2es6.utils.trace_timer import trace
 from ns2es6.utils.symbol import Symbol
 from ns2es6.utils import helpers
 from ns2es6.transforms.collect_exports import NamespaceCollector
+from ns2es6.utils.logger import get_logger
 
-c_open_rx, c_close_rx = re.escape("/*"), re.escape("*/")
+logger = get_logger(__name__)
+
+c_open_rx = re.escape("/*")
+c_close_rx = re.escape("*/")
 boundary_rx = re.compile(r"[^.a-zA-Z0-9_$]")
 ends_with_var_rx = re.compile(r".*[.a-zA-Z0-9_$]$")
 
@@ -49,6 +52,15 @@ def outer_ns(s):
 
 def ns_tup(s):
   return tuple(s.split("."))
+
+class DeclarationCollector(Transformer):
+  def __init__(self):
+    super().__init__(fr"(?:{extended_keywords})s+(\w+)")
+    self.decs = []
+
+  def handle_match(self, capture, match):
+    logger.info("Declaration: %s", match.string)
+    self.decs.append(capture)
 
 class ExportReferenceReplacer(Transformer):
   def __init__(self, match_rx, ns_collector, exports):
@@ -133,12 +145,14 @@ class ExportReferenceReplacer(Transformer):
 
   def is_legit_match(self, before, after):
     return (
-      # Exclude comments
+      # Exclude if this is after a comment
       "//" not in before
-      # Exclude what may likely be a block comment
+      # Exclude if we're within a commit block (fuzzy)
       and re_count(c_open_rx, before) <= re_count(c_close_rx, before)
-      # This is fuzzy, but no assignments unless 'match' is used as a type
+      # Exclude if this might be something getting assigned a value (fuzzy)
+      # Bad: Baz = ...
       and not (after.lstrip().startswith("= ") and ":" not in before)
+      # Exclude any combo of these before checks and after checks
       # Bad: Baz: ...
       # Bad: var foo { quux: 1, Baz: ... }
       # Bad: var foo { Baz: ... }
@@ -177,13 +191,14 @@ class ExportReferenceReplacer(Transformer):
       # Bad: foo?.Baz
       # Bad: foo!.Baz
       # Bad: fn().Baz
-      # Bad: "Baz"
+      # Bad: "Baz...
+      # Bad: ...Baz"
       and not (before.endswith("].") or
                before.endswith("!.") or
                before.endswith("?.") or
                before.endswith(").") or
-               before.endswith("\""))
-      and not after.lstrip().startswith("\"")
+               before.endswith("\"") or
+               after.lstrip().startswith("\""))
     )
 
 @trace("fully qualify")
@@ -194,10 +209,14 @@ def run(directory, exports):
 
 def update_file(file_path, exports, symbols_rx, commit_changes=False):
   walker = LineWalker(file_path, commit_changes)
+
+  dec_collector = DeclarationCollector()
+  walker.add_transformer(dec_collector)
+
   ns_collector = NamespaceCollector()
   walker.add_transformer(ns_collector)
-  walker.add_transformer(ExportReferenceReplacer(
-    symbols_rx,
-    ns_collector,
-    exports))
+
+  ref_replacer = ExportReferenceReplacer(symbols_rx, ns_collector, exports)
+  walker.add_transformer(ref_replacer)
+
   walker.walk()

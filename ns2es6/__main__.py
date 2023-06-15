@@ -1,4 +1,4 @@
-import os, sys, shutil, argparse, logging, json
+import os, sys, shutil, argparse, json
 from ns2es6.transforms import (sanitize,
                                create_proper_type_roots,
                                collect_exports,
@@ -18,9 +18,9 @@ def parse_args():
 
 def set_logger_level(args):
   if args.debug:
-    logger.setLevel(logging.DEBUG)
+    logger.set_level("debug")
   else:
-    logger.setLevel(logging.INFO)
+    logger.set_level("info"))
 
 def clean():
   os.system("git clean -fd")

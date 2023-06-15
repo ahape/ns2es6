@@ -8,6 +8,9 @@ from ns2es6.transforms import (sanitize,
 from ns2es6.utils.line_walker import LineWalker
 from ns2es6.utils.symbol import Symbol
 from ns2es6.utils import helpers
+import ns2es6.utils.logger
+
+logger.get_logger(__name__)
 
 def read_file(file_path):
   with open(file_path, "r", encoding="utf8") as f:
