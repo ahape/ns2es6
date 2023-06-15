@@ -36,7 +36,7 @@ class Symbol:
 
   @property
   def alias(self):
-    return "".join([word[0] for word in self.ns.split(".")]) + "s_" + self.symbol
+    return "".join([word[0] for word in self.ns.split(".")]) + "s_$_" + self.symbol
 
   @property
   def symbol_for_import(self):

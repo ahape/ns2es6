@@ -113,6 +113,6 @@ test_collect_exports(6)
 test_collect_exports_as_json(1)
 test_replace_imports(3)
 test_fully_qualify(2)
-#test_replace_qualified(1)
+test_replace_qualified(1)
 
 print("All tests passed!")
