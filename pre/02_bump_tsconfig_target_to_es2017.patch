@@ -2707,7 +2707,7 @@ diff --git a/tsconfig.json b/tsconfig.json
 index bd32b72..37eb3d0 100644
 --- a/tsconfig.json
 +++ b/tsconfig.json
-@@ -4,19 +4,17 @@
+@@ -4,19 +4,19 @@
          "baseUrl": ".",
          "allowJs": true,
          "listFiles": false,
@@ -2715,13 +2715,16 @@ index bd32b72..37eb3d0 100644
 -        "noImplicitAny": true,
 -        "noImplicitReturns": true,
 +        "module": "system",
++        "noImplicitAny": false,
++        "noImplicitReturns": false,
          "outFile": "build/brightmetrics.js",
          "preserveConstEnums": true,
          "forceConsistentCasingInFileNames": false,
          "sourceMap": true,
          "inlineSources": true,
-         "strictNullChecks": true,
+-        "strictNullChecks": true,
 -        "target": "es5"
++        "strictNullChecks": false,
 +        "target": "es2017",
 +        "typeRoots": ["./types"]
      },
