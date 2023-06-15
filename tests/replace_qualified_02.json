@@ -1,0 +1,14 @@
+[
+  {
+    "ns": "Foo.Bar.Baz",
+    "symbol": "Bing",
+    "file": "foo/bar/baz",
+    "nested": true
+  },
+  {
+    "ns": "Foo.Bar.Baz",
+    "symbol": "Bam",
+    "file": "foo/bar/baz",
+    "nested": true
+  }
+]

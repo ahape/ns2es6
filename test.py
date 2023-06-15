@@ -103,7 +103,11 @@ def test_replace_qualified(file_count):
       subject_contents = f.read()
     with open(assertion_file, "w", encoding="utf8") as f:
       f.write(subject_contents)
-    exports = [Symbol(x["symbol"], x["ns"], moved_subject_file, False) for x in exports]
+    exports = [Symbol(x["symbol"],
+                      x["ns"],
+                      moved_subject_file,
+                      x.get("nested", None))
+              for x in exports]
     symbols_rx = helpers.create_or_matcher([*map(lambda x: x.address, exports)])
     replace_qualified_with_import.update_file(assertion_file, exports, symbols_rx, True)
     assert_files_are_same("replace qualified", expectation_file, assertion_file)
@@ -113,6 +117,6 @@ test_collect_exports(6)
 test_collect_exports_as_json(1)
 test_replace_imports(3)
 test_fully_qualify(2)
-test_replace_qualified(1)
+test_replace_qualified(2)
 
 print("All tests passed!")

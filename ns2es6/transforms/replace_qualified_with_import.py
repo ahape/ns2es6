@@ -8,8 +8,8 @@ from ns2es6.utils.symbol import Symbol
 from ns2es6.utils import helpers
 from ns2es6.transforms.collect_exports import NamespaceCollector
 
-import_template = Template('import { $vars } from "$path";\n')
-sub_import_template = Template('const { $vars } = $obj;\n')
+import_template = Template('import { $props } from "$path";')
+sub_import_template = Template('const $var = $imported_var.$prop;')
 
 class QualifiedReplacer(Transformer):
   def __init__(self, match_rx, ns_collector, exports):
@@ -52,31 +52,49 @@ def process_imports(file_path, imports):
                 symbols_needing_alias,
                 undos)
 
+def prepend_import_statement(contents, props_set, source_path):
+  statement = import_template.substitute(
+    props=", ".join(sorted(list(props_set))),
+    path=source_path.replace(".ts", ""))
+  return statement + "\n" + contents
+
+def prepend_nested_import_statements(contents, nested_props):
+  statements = []
+  for nested_symbols in nested_props.values():
+    for symbol in sorted(nested_symbols, key=str):
+      statements.append(
+        sub_import_template.substitute(
+          var          = symbol.alias,
+          imported_var = symbol.symbol_for_import,
+          prop         = symbol.symbol))
+  return "\n".join(sorted(statements)) + f"\n{contents}"
+
 def write_imports(file_path, imports_for_file, symbols_needing_alias, undos):
   contents = ""
   with open(file_path, "r", encoding="utf8") as file:
     contents = file.read()
+    # Sometimes collisions will be found _after_ export collection, here we fix
+    # those mistakes
     for undo in undos:
       contents = contents.replace(undo.alias, undo.symbol)
     for rel_path, symbols in imports_for_file.items():
-      items = []
-      sub_items = {}
+      props = set()
+      nested_props = {}
       for symbol in symbols:
         symbol_name = symbol.symbol_for_import
         if symbol in symbols_needing_alias:
           if symbol.nested:
-            sub_items[symbol_name] = sub_items.get(symbol_name, []) + [symbol.symbol]
+            nested_props[symbol_name] = nested_props.get(symbol_name, []) + [symbol]
           else:
             symbol_name += " as " + symbol.alias
-        items.append(symbol_name)
-      path_without_ext = rel_path[:-3]
-      #unshift> const { SubFoo } = Foo;
-      for imp, items in sub_items.items():
-        contents = sub_import_template.substitute(vars=", ".join(items),
-                                                  obj=imp) + contents
-      #unshift> import { Foo } from "xyz"
-      contents = import_template.substitute(vars=", ".join(items),
-                                            path=path_without_ext) + contents
+        props.add(symbol_name)
+      #prepend> const SubFoo1 = Foo.SubFoo1;
+      #prepend> const SubFoo2 = Foo.SubFoo2;
+      #prepend> ...
+      contents = prepend_nested_import_statements(contents, nested_props)
+      #prepend> import { Foo } from "xyz"
+      contents = prepend_import_statement(contents, props, rel_path)
+
   with open(file_path, "w", encoding="utf8") as file:
     file.write(contents)
 
