@@ -1,5 +1,4 @@
 import { Baz as FBs_$_Baz } from "./baz";
-
 namespace Foo.Bar.X {
   const $1: FBs_$_Baz = "asdf";
   const $2 = this.Baz;

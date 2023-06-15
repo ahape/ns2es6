@@ -67,7 +67,8 @@ def prepend_nested_import_statements(contents, nested_props):
           var          = symbol.alias,
           imported_var = symbol.symbol_for_import,
           prop         = symbol.symbol))
-  return "\n".join(sorted(statements)) + f"\n{contents}"
+  statements_txt = "\n".join(sorted(statements)) 
+  return statements_txt + "\n" + contents
 
 def write_imports(file_path, imports_for_file, symbols_needing_alias, undos):
   contents = ""
@@ -91,7 +92,8 @@ def write_imports(file_path, imports_for_file, symbols_needing_alias, undos):
       #prepend> const SubFoo1 = Foo.SubFoo1;
       #prepend> const SubFoo2 = Foo.SubFoo2;
       #prepend> ...
-      contents = prepend_nested_import_statements(contents, nested_props)
+      if nested_props:
+        contents = prepend_nested_import_statements(contents, nested_props)
       #prepend> import { Foo } from "xyz"
       contents = prepend_import_statement(contents, props, rel_path)
 
