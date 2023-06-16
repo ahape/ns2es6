@@ -2,7 +2,7 @@ import os, re
 from string import Template
 from ns2es6.utils.transformer import Transformer
 from ns2es6.utils.line_walker import LineWalker
-from ns2es6.utils.logger import logger
+from ns2es6.utils.logger import get_logger
 from ns2es6.utils.trace_timer import trace
 from ns2es6.utils.symbol import Symbol
 from ns2es6.utils import helpers
@@ -27,19 +27,19 @@ class QualifiedReplacer(Transformer):
     return text
 
 def symbols_from_same_file(file_path, imports):
-  undos = set()
+  false_hits = set()
   for symbol in imports:
     if os.path.normpath(file_path) == os.path.normpath(symbol.file):
-      undos.add(symbol)
-  return undos
+      false_hits.add(symbol)
+  return false_hits
 
 def process_imports(file_path, imports):
   imports = list(imports)
   imports_for_file = {}
   symbols_needing_alias = set()
   # Some symbol replacements were false-positives
-  undos = symbols_from_same_file(file_path, imports)
-  for symbol in filter(lambda x: x not in undos, imports):
+  false_hits = symbols_from_same_file(file_path, imports)
+  for symbol in filter(lambda x: x not in false_hits, imports):
     file_path_dir = os.path.split(file_path)[0]
     symbol_dir, symbol_file = os.path.split(symbol.file)
     rel_dir = os.path.relpath(symbol_dir, file_path_dir)
@@ -54,7 +54,7 @@ def process_imports(file_path, imports):
   write_imports(file_path,
                 imports_for_file,
                 symbols_needing_alias,
-                undos)
+                false_hits)
 
 def prepend_import_statement(contents, props_set, source_path):
   statement = import_template.substitute(
@@ -74,13 +74,13 @@ def prepend_nested_import_statements(contents, nested_props):
   statements_txt = "\n".join(sorted(statements))
   return statements_txt + "\n" + contents
 
-def write_imports(file_path, imports_for_file, symbols_needing_alias, undos):
+def write_imports(file_path, imports_for_file, symbols_needing_alias, false_hits):
   contents = ""
   with open(file_path, "r", encoding="utf8") as file:
     contents = file.read()
     # Sometimes collisions will be found _after_ export collection, here we fix
     # those mistakes
-    for undo in undos:
+    for undo in false_hits:
       contents = contents.replace(undo.alias, undo.symbol)
     for rel_path, symbols in imports_for_file.items():
       props = set()

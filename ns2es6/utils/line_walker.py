@@ -1,5 +1,5 @@
 import re
-from ns2es6.utils.logger import logger
+from ns2es6.utils.logger import get_logger
 
 class LineWalker:
   def __init__(self, file_path, commit_changes=False):

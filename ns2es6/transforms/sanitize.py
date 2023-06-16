@@ -1,7 +1,7 @@
 import os, re
 from ns2es6.utils.transformer import Transformer
 from ns2es6.utils.line_walker import LineWalker
-from ns2es6.utils.logger import logger
+from ns2es6.utils.logger import get_logger
 from ns2es6.utils.trace_timer import trace
 from ns2es6.utils import helpers
 
@@ -43,7 +43,6 @@ def run(directory, commit_changes=False):
   helpers.for_each_file(directory, lambda f: update_file(f, commit_changes))
 
 def update_file(file_path, commit_changes=False):
-  logger.debug("Sanitizing file %s", file_path)
   walker = LineWalker(file_path, commit_changes)
   walker.add_transformer(Transformer(r"\/\/\/\s*\<reference ", "<DELETE>"))
   walker.add_transformer(Transformer(r"\bjshint\b", "<DELETE>"))

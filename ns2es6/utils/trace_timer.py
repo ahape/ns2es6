@@ -1,5 +1,7 @@
 from time import time
-from ns2es6.utils.logger import logger
+from ns2es6.utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 class TraceTimer:
   def __init__(self):

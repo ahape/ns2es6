@@ -1,7 +1,7 @@
 import os, re
 from ns2es6.utils.transformer import Transformer
 from ns2es6.utils.line_walker import LineWalker
-from ns2es6.utils.logger import logger
+from ns2es6.utils.logger import get_logger
 from ns2es6.utils.trace_timer import trace
 from ns2es6.utils import helpers
 
@@ -23,7 +23,7 @@ class ImportReplacer(Transformer):
     before = re.escape(".")
     after = re.escape(".[]()<> ;,")
     negative_lookbehind = fr"(?<![{before}])"
-    positive_lookahead = fr"(?=[{after}])" 
+    positive_lookahead = fr"(?=[{after}])"
     grouper = fr'\b({"|".join(aliases)})\b' # \b(foo|bar|baz)\b
     super().__init__(negative_lookbehind + grouper + positive_lookahead)
     self.import_map = import_map

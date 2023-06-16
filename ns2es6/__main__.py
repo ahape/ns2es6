@@ -5,9 +5,11 @@ from ns2es6.transforms import (sanitize,
                                replace_imports,
                                fully_qualify,
                                replace_qualified_with_import)
-from ns2es6.utils.logger import logger
+from ns2es6.utils.logger import get_logger, set_level
 
 PROJ_PATH = "/Users/alanhape/Projects/ns2es6"
+
+logger = get_logger(__name__)
 
 def parse_args():
   parser = argparse.ArgumentParser()
@@ -20,7 +22,7 @@ def set_logger_level(args):
   if args.debug:
     logger.set_level("debug")
   else:
-    logger.set_level("info"))
+    logger.set_level("info")
 
 def clean():
   os.system("git clean -fd")

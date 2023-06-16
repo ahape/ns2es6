@@ -7,10 +7,10 @@ from ns2es6.transforms import (sanitize,
                                replace_qualified_with_import)
 from ns2es6.utils.line_walker import LineWalker
 from ns2es6.utils.symbol import Symbol
+from ns2es6.utils.logger import get_logger
 from ns2es6.utils import helpers
-import ns2es6.utils.logger
 
-logger.get_logger(__name__)
+logger = get_logger(__name__)
 
 def read_file(file_path):
   with open(file_path, "r", encoding="utf8") as f:
@@ -26,8 +26,8 @@ def assert_files_are_same(test_name, expectation_file, assertion_file):
   try:
     assert expectation == assertion, f"diff {expectation_file} {assertion_file}"
   except AssertionError as ex:
-    print(f"Test {test_name} FAILED. Running diff to see comparison")
-    print(f"git diff --no-index {expectation_file} {assertion_file}")
+    logger.error(f"Test {test_name} FAILED. Running diff to see comparison")
+    logger.error(f"git diff --no-index {expectation_file} {assertion_file}")
     os.system(f"git diff --no-index {expectation_file} {assertion_file}")
     raise ex
 
@@ -122,4 +122,4 @@ test_replace_imports(3)
 test_fully_qualify(2)
 test_replace_qualified(2)
 
-print("All tests passed!")
+logger.info("All tests passed!")
