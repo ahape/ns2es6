@@ -13,6 +13,9 @@ logger = get_logger(__name__)
 c_open_rx = re.escape("/*")
 c_close_rx = re.escape("*/")
 boundary_rx = re.compile(r"[^.a-zA-Z0-9_$]")
+variable_rx = re.compile(r"[.a-zA-Z0-9_$]")
+param_decs_rx = re.compile(r"[.a-zA-Z0-9_$ :?.,]")
+starts_with_var_rx = re.compile(r"^[.a-zA-Z0-9_$].*")
 ends_with_var_rx = re.compile(r".*[.a-zA-Z0-9_$]$")
 
 extended_keywords = "|".join([
@@ -22,7 +25,7 @@ extended_keywords = "|".join([
   "readonly",
 ]) + "|" + helpers.keywords
 
-MatchResult = namedtuple("MatchResult", "sb succeeded")
+MatchResult = namedtuple("MatchResult", "sb succeeded after left")
 MatchState = namedtuple("MatchState", "match before after sb left")
 
 def create_lookup(exports):
@@ -54,20 +57,41 @@ def ns_tup(s):
   return tuple(s.split("."))
 
 class DeclarationCollector(Transformer):
-  def __init__(self):
-    super().__init__(fr"(?:{extended_keywords})s+(\w+)")
-    self.decs = []
+  get_explicit_decs = re.compile(fr"(?:{helpers.keywords})\s+(\w+){boundary_rx.pattern}").search
+  get_text_within_parens = re.compile(r"(?!if\s*)[\(](" +
+                                      param_decs_rx.pattern +
+                                      r"+?)[\)].*(?:\{|=>)").search
 
-  def handle_match(self, capture, match):
-    logger.info("Declaration: %s", match.string)
-    self.decs.append(capture)
+  def __init__(self):
+    super().__init__()
+    self.decs = set()
+
+  @property
+  def declarations(self):
+    return list(self.decs)
+
+  def analyze(self, text):
+    if expl := self.get_explicit_decs(text):
+      self.decs.add(expl[1])
+
+    if params := self.get_text_within_parens(text):
+      if decs := list(self.extract_decs_from_params(params[1])):
+        self.decs = self.decs.union(set(decs))
+
+  def extract_decs_from_params(self, params):
+    for name in [param.split(":")[0] for param in params.split(",")]:
+      if len(words := re.findall(r"(\w+)", name)) == 1:
+        word = words[0]
+        if not word.isdigit():
+          yield word
 
 class ExportReferenceReplacer(Transformer):
-  def __init__(self, match_rx, ns_collector, exports):
+  def __init__(self, match_rx, ns_collector, exports, declarations):
     super().__init__(match_rx)
     self.exports = exports
     self.lookup = create_lookup(exports)
     self.ns_collector = ns_collector
+    self.declarations = declarations
 
   @property
   def current_ns(self):
@@ -96,33 +120,50 @@ class ExportReferenceReplacer(Transformer):
     return best_choice["value"]
 
   def analyze_match(self, state):
-    def tidy_prior_stuff():
+    def tidy_before():
       """
       if we need to get rid of what may have been a prior false-positive match
       """
       nonlocal sb, before
+      last_ch = None
       if not before:
         while re.match(ends_with_var_rx, sb):
+          if last_ch == "." and sb[-1] == ".":
+            sb += "."
+            return
+          last_ch = sb[-1]
           sb = sb[:-1]
       else:
         while re.match(ends_with_var_rx, before):
+          if last_ch == "." and sb[-1] == ".":
+            sb += "."
+            return
+          last_ch = sb[-1]
           before = before[:-1]
 
+    def tidy_after():
+      nonlocal sb, after
+      while starts_with_var_rx.match(after):
+        sb += after[0]
+        after = after[1:]
+
     match, before, after, sb, left = state
+    value = match[1]
     e = match.end()
     last_boundary_index = -1
 
-    if self.is_legit_match(before, after):
+    if value not in self.declarations and self.is_legit_match(before, after):
       for s_match in re.split(boundary_rx, before):
         last_boundary_index = before.rindex(s_match)
       before = left[:last_boundary_index]
       match_and_maybe_ns = left[last_boundary_index:e]
       if qualified := self.word_has_potential(match_and_maybe_ns):
-        tidy_prior_stuff()
+        tidy_before()
         sb += before
         sb += qualified
-        return MatchResult(sb, True)
-    return MatchResult(None, False)
+        tidy_after()
+        return MatchResult(sb, True, after, left)
+    return MatchResult(None, False, after, left)
 
   def analyze(self, text):
     sb = ""
@@ -137,6 +178,7 @@ class ExportReferenceReplacer(Transformer):
         state = MatchState(match, before, after, sb, left)
         if (res := self.analyze_match(state)) and res.succeeded:
           sb = res.sb
+          after = res.after
           continue
         sb += before + match[1]
       else:
@@ -208,15 +250,23 @@ def run(directory, exports):
     lambda x: update_file(x, exports, symbols_rx, True))
 
 def update_file(file_path, exports, symbols_rx, commit_changes=False):
+  # First pass - collect declarations
   walker = LineWalker(file_path, commit_changes)
 
   dec_collector = DeclarationCollector()
   walker.add_transformer(dec_collector)
+  walker.walk()
+
+  # Second pass - fully qualify stuff
+  walker = LineWalker(file_path, commit_changes)
 
   ns_collector = NamespaceCollector()
   walker.add_transformer(ns_collector)
 
-  ref_replacer = ExportReferenceReplacer(symbols_rx, ns_collector, exports)
+  ref_replacer = ExportReferenceReplacer(
+      symbols_rx,
+      ns_collector,
+      exports,
+      dec_collector.declarations)
   walker.add_transformer(ref_replacer)
-
   walker.walk()

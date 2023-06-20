@@ -26,10 +26,10 @@ def assert_files_are_same(test_name, expectation_file, assertion_file):
   try:
     assert expectation == assertion, f"diff {expectation_file} {assertion_file}"
   except AssertionError as ex:
-    logger.error(f"Test {test_name} FAILED. Running diff to see comparison")
-    logger.error(f"git diff --no-index {expectation_file} {assertion_file}")
+    logger.error("Test %s FAILED. Running diff to see comparison", test_name)
+    logger.error("git diff --no-index %s %s", expectation_file, assertion_file)
     os.system(f"git diff --no-index {expectation_file} {assertion_file}")
-    raise ex
+    raise SystemExit from ex
 
 def test_sanitize(file_count):
   for i in range(1, file_count + 1):
