@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "build": "tsc -p . && node ./morph.js"
+  },
+  "devDependencies": {
+    "ts-morph": "^19.0.0"
+  }
+}
